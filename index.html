@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  font-family: Arial;
+  background: #fff;
+  padding: 10px;
+}
+
+/* календар */
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.day {
+  padding: 6px;
+  text-align: center;
+  border-radius: 6px;
+  background: #f3f4f6;
+  font-size: 12px;
+}
+
+.today {
+  background: #f9a8d4;
+  color: #000;
+  font-weight: bold;
+}
+
+/* checklist */
+.task {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.task input {
+  margin-right: 6px;
+}
+
+/* image */
+.img-box {
+  margin-top: 10px;
+}
+
+.img-box img {
+  width: 100%;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h4>April</h4>
+<div class="calendar" id="calendar"></div>
+
+<h4>Задачи</h4>
+
+<div class="task"><input type="checkbox"> Поръчки за старт СТОП</div>
+<div class="task"><input type="checkbox"> Поръчки старт СТОП</div>
+<div class="task"><input type="checkbox"> Промени HC</div>
+<div class="task"><input type="checkbox"> R&R</div>
+<div class="task"><input type="checkbox"> Нови</div>
+<div class="task"><input type="checkbox"> Нули</div>
+
+<div class="img-box">
+<img src="https://i.imgur.com/8Km9tLL.png">
+</div>
+
+<script>
+const calendar = document.getElementById("calendar");
+const today = new Date();
+const currentDay = today.getDate();
+
+for (let i = 1; i <= 30; i++) {
+  const day = document.createElement("div");
+  day.className = "day";
+
+  if (i === currentDay) {
+    day.classList.add("today");
+  }
+
+  day.innerText = i;
+  calendar.appendChild(day);
+}
+</script>
+
+</body>
+</html>
