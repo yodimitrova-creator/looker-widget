@@ -159,7 +159,28 @@
       gap:10px;
     }
 
-    .wheel-stage{
+
+    .wheel-pointer{
+      position:absolute;
+      top:-2px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;
+      height:0;
+      border-left:10px solid transparent;
+      border-right:10px solid transparent;
+      border-bottom:18px solid var(--danger);
+      z-index:4;
+    }
+
+    .wheel-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+
+    .wheel-canvas-wrap{
       position:relative;
       width:220px;
       height:220px;
@@ -178,68 +199,10 @@
       z-index:4;
     }
 
-    .wheel{
+    #wheelCanvas{
+      display:block;
       width:220px;
       height:220px;
-      border-radius:50%;
-      position:relative;
-      overflow:hidden;
-      border:2px solid #dec9e6;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
-      transition:transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1);
-      background:conic-gradient(
-        from -90deg,
-        #9fc7ff 0deg 120deg,
-        #f7bfdc 120deg 240deg,
-        #dac4f3 240deg 360deg
-      );
-    }
-
-    .wheel::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      border-radius:50%;
-      background:conic-gradient(
-        from -90deg,
-        transparent 0deg 118.5deg,
-        rgba(255,255,255,.9) 118.5deg 121.5deg,
-        transparent 121.5deg 238.5deg,
-        rgba(255,255,255,.9) 238.5deg 241.5deg,
-        transparent 241.5deg 358.5deg,
-        rgba(255,255,255,.9) 358.5deg 360deg
-      );
-      z-index:1;
-      pointer-events:none;
-    }
-
-    .wheel::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:50%;
-      transform:translate(-50%, -50%);
-      width:42px;
-      height:42px;
-      background:#fff;
-      border:2px solid #ead8ec;
-      border-radius:50%;
-      z-index:3;
-    }
-
-    .wheel-segment-label{
-      position:absolute;
-      left:50%;
-      top:50%;
-      width:88px;
-      text-align:center;
-      font-size:14px;
-      font-weight:700;
-      color:#5d4665;
-      transform-origin:center center;
-      z-index:2;
-      pointer-events:none;
-      text-shadow:0 1px 0 rgba(255,255,255,.45);
     }
 
     .wheel-button,
@@ -935,9 +898,9 @@
         <div class="card wheel-card">
           <div class="wheel-title">Колело на късмета</div>
           <div class="wheel-wrap">
-            <div class="wheel-stage">
+            <div class="wheel-canvas-wrap">
               <div class="wheel-pointer"></div>
-              <div id="wheel" class="wheel"></div>
+              <canvas id="wheelCanvas" width="220" height="220"></canvas>
             </div>
             <button id="spinWheelBtn" class="wheel-button">🎯 Завърти</button>
             <div id="wheelResult" class="wheel-result">Натисни, за да избереш случаен потребител.</div>
@@ -1324,9 +1287,9 @@
     ];
 
     const wheelUsers = [
-      { name: "Йо", startDeg: 0, endDeg: 120 },
-      { name: "Боби", startDeg: 120, endDeg: 240 },
-      { name: "Тея", startDeg: 240, endDeg: 360 }
+      { name: "Йо", color: "#9fc0ee" },
+      { name: "Боби", color: "#e7b4cf" },
+      { name: "Тея", color: "#c8b4e3" }
     ];
 
     const app = initializeApp(firebaseConfig);
@@ -1359,7 +1322,8 @@
     const forumInput = document.getElementById("forumInput");
     const addForumBtn = document.getElementById("addForumBtn");
     const forumList = document.getElementById("forumList");
-    const wheel = document.getElementById("wheel");
+    const wheelCanvas = document.getElementById("wheelCanvas");
+    const wheelCtx = wheelCanvas.getContext("2d");
     const spinWheelBtn = document.getElementById("spinWheelBtn");
     const wheelResult = document.getElementById("wheelResult");
     const reloadClickUpBtn = document.getElementById("reloadClickUpBtn");
@@ -1433,19 +1397,6 @@
         .replaceAll("'", "&#039;");
     }
 
-    function renderWheelLabels() {
-      wheel.innerHTML = "";
-      wheelUsers.forEach(segment => {
-        const label = document.createElement("div");
-        label.className = "wheel-segment-label";
-        label.textContent = segment.name;
-        const center = (segment.startDeg + segment.endDeg) / 2;
-        const rotate = center - 90;
-        const radius = 72;
-        label.style.transform = `translate(-50%, -50%) rotate(${rotate}deg) translateY(-${radius}px) rotate(${-rotate}deg)`;
-        wheel.appendChild(label);
-      });
-    }
 
     function getWinnerFromRotation(rotationDeg) {
       const normalized = ((rotationDeg % 360) + 360) % 360;
@@ -1818,31 +1769,120 @@
       });
     }
 
+    const wheelSize = wheelCanvas.width;
+    const wheelCx = wheelSize / 2;
+    const wheelCy = wheelSize / 2;
+    const wheelRadius = wheelSize / 2 - 5;
+    const wheelInnerRadius = 20;
+
+    let currentWheelRotation = 0;
+    let wheelSpinning = false;
+
+    function degToRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    function drawWheel(rotationDeg = 0) {
+      wheelCtx.clearRect(0, 0, wheelSize, wheelSize);
+
+      const sliceAngle = 360 / wheelUsers.length;
+      const rotationRad = degToRad(rotationDeg - 90);
+
+      for (let i = 0; i < wheelUsers.length; i++) {
+        const startDeg = i * sliceAngle;
+        const endDeg = startDeg + sliceAngle;
+
+        const start = degToRad(startDeg) + rotationRad;
+        const end = degToRad(endDeg) + rotationRad;
+
+        wheelCtx.beginPath();
+        wheelCtx.moveTo(wheelCx, wheelCy);
+        wheelCtx.arc(wheelCx, wheelCy, wheelRadius, start, end);
+        wheelCtx.closePath();
+        wheelCtx.fillStyle = wheelUsers[i].color;
+        wheelCtx.fill();
+
+        wheelCtx.strokeStyle = "#ffffff";
+        wheelCtx.lineWidth = 3;
+        wheelCtx.stroke();
+
+        wheelCtx.save();
+        wheelCtx.translate(wheelCx, wheelCy);
+        const mid = (start + end) / 2;
+        wheelCtx.rotate(mid);
+        wheelCtx.textAlign = "center";
+        wheelCtx.fillStyle = "#4d3d57";
+        wheelCtx.font = "bold 18px Arial";
+        wheelCtx.fillText(wheelUsers[i].name, wheelRadius * 0.62, 6);
+        wheelCtx.restore();
+      }
+
+      wheelCtx.beginPath();
+      wheelCtx.arc(wheelCx, wheelCy, wheelRadius, 0, Math.PI * 2);
+      wheelCtx.lineWidth = 3;
+      wheelCtx.strokeStyle = "#d2bfd8";
+      wheelCtx.stroke();
+
+      wheelCtx.beginPath();
+      wheelCtx.arc(wheelCx, wheelCy, wheelInnerRadius, 0, Math.PI * 2);
+      wheelCtx.fillStyle = "#fff";
+      wheelCtx.fill();
+      wheelCtx.lineWidth = 3;
+      wheelCtx.strokeStyle = "#ead8ec";
+      wheelCtx.stroke();
+    }
+
+    function getWinnerIndex(rotationDeg) {
+      const sliceAngle = 360 / wheelUsers.length;
+      const normalized = ((360 - (rotationDeg % 360)) + 360) % 360;
+      return Math.floor(normalized / sliceAngle) % wheelUsers.length;
+    }
+
     function spinWheel() {
       if (wheelSpinning) return;
+
       wheelSpinning = true;
-
-      const winnerIndex = Math.floor(Math.random() * wheelUsers.length);
-      const winner = wheelUsers[winnerIndex];
-
-      const centerAngle = (winner.startDeg + winner.endDeg) / 2;
-      const extraSpins = (5 + Math.floor(Math.random() * 3)) * 360;
-
-      const normalizedCurrent = ((currentWheelRotation % 360) + 360) % 360;
-      const targetRotation = (360 - centerAngle) % 360;
-      const delta = (targetRotation - normalizedCurrent + 360) % 360;
-
-      currentWheelRotation += extraSpins + delta;
-
-      wheel.style.transition = "transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1)";
-      wheel.style.transform = `rotate(${currentWheelRotation}deg)`;
+      spinWheelBtn.disabled = true;
       wheelResult.textContent = "Колелото се върти...";
 
-      window.setTimeout(() => {
-        wheelResult.innerHTML = `🎉 Избрано: <b>${winner.name}</b>`;
-        wheelSpinning = false;
-      }, 4200);
+      const extraSpins = 5 + Math.random() * 3;
+      const randomOffset = Math.random() * 360;
+      const targetRotation = currentWheelRotation + extraSpins * 360 + randomOffset;
+
+      const duration = 4200;
+      const startTime = performance.now();
+      const startRotation = currentWheelRotation;
+      const change = targetRotation - startRotation;
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function animate(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutCubic(progress);
+
+        currentWheelRotation = startRotation + change * eased;
+        drawWheel(currentWheelRotation);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          currentWheelRotation = targetRotation % 360;
+          drawWheel(currentWheelRotation);
+
+          const winnerIndex = getWinnerIndex(currentWheelRotation);
+          wheelResult.innerHTML = `🎉 Избрано: <b>${wheelUsers[winnerIndex].name}</b>`;
+
+          wheelSpinning = false;
+          spinWheelBtn.disabled = false;
+        }
+      }
+
+      requestAnimationFrame(animate);
     }
+
 
     function parseClickUpDate(value) {
       if (!value && value !== 0) return null;
@@ -2010,7 +2050,7 @@
     });
 
     async function bootstrap() {
-      renderWheelLabels();
+      drawWheel();
       renderShippingTable();
 
       onValue(calendarNotesRef, (snapshot) => {
