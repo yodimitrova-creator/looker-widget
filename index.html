@@ -24,7 +24,7 @@
       --blue:#9fc7ff;
       --green:#78c98d;
       --danger:#ef6c8f;
-      --shadow:0 10px 30px rgba(166,123,163,.12);
+      --shadow:0 10px 28px rgba(166,123,163,.10);
     }
 
     * { box-sizing:border-box; }
@@ -35,22 +35,22 @@
       color:var(--text);
       background:
         radial-gradient(circle at top left, #fff7fb 0%, #fff8fc 32%, #fbf5ff 62%, #f7f1fd 100%);
-      padding:16px;
+      padding:12px;
     }
 
     .app{
       max-width:1720px;
       margin:0 auto;
       display:grid;
-      grid-template-columns:290px minmax(0, 1fr) 370px;
-      gap:16px;
+      grid-template-columns:280px minmax(0, 1fr) 345px;
+      gap:12px;
       align-items:start;
     }
 
     .card{
       background:linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
       border:1px solid var(--line);
-      border-radius:20px;
+      border-radius:18px;
       box-shadow:var(--shadow);
     }
 
@@ -58,23 +58,23 @@
     .right-col{
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:12px;
       position:sticky;
-      top:16px;
+      top:12px;
     }
 
     .main-col{
       display:flex;
       flex-direction:column;
-      gap:16px;
+      gap:12px;
       min-width:0;
     }
 
-    .calendar-card{ padding:12px; }
+    .calendar-card{ padding:10px; }
     .calendar-title{
-      margin:0 0 10px 0;
+      margin:0 0 8px 0;
       text-align:center;
-      font-size:15px;
+      font-size:14px;
       font-weight:700;
       color:var(--title);
       letter-spacing:.2px;
@@ -91,7 +91,7 @@
       text-align:center;
       padding:6px 0;
       border-radius:8px;
-      min-height:28px;
+      min-height:26px;
     }
 
     .dow{
@@ -111,49 +111,124 @@
       border-color:#e66ab0;
       color:#fff;
       font-weight:700;
-      box-shadow:0 6px 14px rgba(239,143,194,.28);
+      box-shadow:0 6px 14px rgba(239,143,194,.24);
     }
 
-    .image-card{
-      padding:10px;
-    }
-
+    .image-card{ padding:8px; }
     .image-card img{
       width:100%;
       display:block;
-      border-radius:16px;
+      border-radius:14px;
       border:1px solid #efd9ec;
       background:#fff;
     }
 
-    .main-card{
-      padding:16px;
+    .wheel-card{
+      padding:10px;
     }
+
+    .wheel-title{
+      margin:0 0 8px 0;
+      text-align:center;
+      font-size:14px;
+      font-weight:700;
+      color:var(--title);
+    }
+
+    .wheel-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+    }
+
+    .wheel-svg{
+      width:100%;
+      max-width:220px;
+      aspect-ratio:1/1;
+      display:block;
+    }
+
+    .wheel-button,
+    .action-btn,
+    .link-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:110px;
+      padding:8px 12px;
+      border-radius:12px;
+      border:1px solid #dbc5e3;
+      background:linear-gradient(180deg,#fff3fa 0%,#f3ebff 100%);
+      color:#694c73;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:700;
+      transition:.15s ease;
+      white-space:nowrap;
+      cursor:pointer;
+    }
+
+    .wheel-button:hover,
+    .action-btn:hover,
+    .link-btn:hover{
+      transform:translateY(-1px);
+      border-color:#caa5d7;
+      box-shadow:0 6px 16px rgba(165,123,173,.14);
+    }
+
+    .action-btn.danger{
+      background:linear-gradient(180deg,#fff1f5 0%,#ffe6ef 100%);
+      border-color:#f0bfd0;
+      color:#a54d70;
+    }
+
+    .action-btn.secondary{
+      background:#fff;
+      border-color:#e5d8ea;
+    }
+
+    .link-btn.disabled,
+    .action-btn.disabled{
+      opacity:.48;
+      pointer-events:none;
+      filter:grayscale(.2);
+    }
+
+    .wheel-result{
+      text-align:center;
+      font-size:12px;
+      color:#6f5b77;
+      line-height:1.4;
+      min-height:32px;
+    }
+
+    .main-card{ padding:12px; }
 
     .topbar{
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
 
     .title-wrap h1{
       margin:0;
-      font-size:26px;
+      font-size:22px;
       color:var(--title);
     }
 
     .title-wrap p{
-      margin:4px 0 0 0;
+      margin:3px 0 0 0;
       font-size:12px;
       color:var(--muted);
     }
 
     .top-actions{
       display:flex;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
       align-items:center;
     }
@@ -165,7 +240,7 @@
       background:#fff;
       border:1px solid var(--line);
       border-radius:999px;
-      padding:8px 12px;
+      padding:7px 10px;
       font-size:12px;
       color:#6d5875;
       white-space:nowrap;
@@ -191,19 +266,19 @@
     }
 
     .text-area{
-      min-height:110px;
+      min-height:92px;
       resize:vertical;
       line-height:1.45;
     }
 
     .table-search{
-      min-width:220px;
+      min-width:180px;
       width:auto;
     }
 
     .info-banner{
-      margin-bottom:14px;
-      padding:10px 12px;
+      margin-bottom:10px;
+      padding:9px 11px;
       border:1px solid #ecdff0;
       border-radius:14px;
       background:#fff;
@@ -212,23 +287,36 @@
       line-height:1.45;
     }
 
-    .layout{
+    .inside-top-grid{
       display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:16px;
+      grid-template-columns:minmax(0, 1fr) 265px;
+      gap:12px;
       align-items:start;
+      margin-bottom:12px;
+    }
+
+    .inside-links-card{
+      padding:12px;
     }
 
     .section-title{
-      margin:0 0 10px 0;
-      font-size:16px;
+      margin:0 0 8px 0;
+      font-size:15px;
       color:var(--title);
     }
 
     .subtle-title{
       margin:0 0 8px 0;
-      font-size:14px;
+      font-size:13px;
       color:#6b5174;
+    }
+
+    .compact-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:8px;
     }
 
     .table-wrap{
@@ -241,23 +329,28 @@
     table{
       width:100%;
       border-collapse:collapse;
-      min-width:860px;
+      min-width:700px;
+    }
+
+    .check-table{
+      width:auto;
+      min-width:560px;
     }
 
     thead th{
       background:linear-gradient(180deg, #f2d9e9 0%, #eadbfb 100%);
       color:#5a4562;
-      font-size:13px;
+      font-size:12.5px;
       text-align:left;
-      padding:11px 10px;
+      padding:10px 9px;
       border-bottom:1px solid #dccae1;
       white-space:nowrap;
     }
 
     tbody td{
-      padding:9px 10px;
+      padding:8px 9px;
       border-bottom:1px solid #f2e8f3;
-      font-size:13px;
+      font-size:12.5px;
       vertical-align:middle;
     }
 
@@ -270,20 +363,21 @@
     }
 
     .col-index{
-      width:54px;
+      width:50px;
       text-align:center;
       color:#8b7391;
       font-size:12px;
     }
 
     .col-check{
-      width:86px;
+      width:72px;
       text-align:center;
     }
 
     .task-name{
       font-weight:500;
       color:#4f3f57;
+      min-width:300px;
     }
 
     .checkbox-wrap{
@@ -322,101 +416,50 @@
     .yo:checked{ background:var(--blue); border-color:#6ea7f0; }
 
     .status-note{
-      margin-top:10px;
+      margin-top:8px;
       font-size:11.5px;
       color:#8a728f;
     }
 
     .stack{
       display:grid;
-      gap:16px;
-    }
-
-    .links-card, .operations-card, .shipping-card, .orders-card, .forum-card{
-      padding:14px;
+      gap:12px;
     }
 
     .links-grid{
       display:grid;
-      gap:10px;
+      gap:8px;
     }
 
     .link-row{
       display:grid;
       grid-template-columns:1fr auto;
-      gap:10px;
+      gap:8px;
       align-items:center;
-      padding:12px;
+      padding:10px;
       border:1px solid #ecdff0;
       border-radius:14px;
       background:#fff;
     }
 
     .link-row-title{
-      font-size:13px;
+      font-size:12.5px;
       font-weight:700;
       color:#5f4967;
-      margin:0 0 4px 0;
+      margin:0 0 3px 0;
+      line-height:1.25;
     }
 
     .link-row-note{
-      font-size:11.5px;
+      font-size:11px;
       color:#8a728f;
       margin:0;
       line-height:1.35;
     }
 
-    .link-btn,
-    .action-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:120px;
-      padding:10px 14px;
-      border-radius:12px;
-      border:1px solid #dbc5e3;
-      background:linear-gradient(180deg,#fff3fa 0%,#f3ebff 100%);
-      color:#694c73;
-      text-decoration:none;
-      font-size:12px;
-      font-weight:700;
-      transition:.15s ease;
-      white-space:nowrap;
-      cursor:pointer;
-    }
-
-    .action-btn{
-      min-width:auto;
-    }
-
-    .link-btn:hover,
-    .action-btn:hover{
-      transform:translateY(-1px);
-      border-color:#caa5d7;
-      box-shadow:0 6px 16px rgba(165,123,173,.14);
-    }
-
-    .link-btn.disabled,
-    .action-btn.disabled{
-      opacity:.48;
-      pointer-events:none;
-      filter:grayscale(.2);
-    }
-
-    .action-btn.danger{
-      background:linear-gradient(180deg,#fff1f5 0%,#ffe6ef 100%);
-      border-color:#f0bfd0;
-      color:#a54d70;
-    }
-
-    .action-btn.secondary{
-      background:#fff;
-      border-color:#e5d8ea;
-    }
-
     .helper-box{
-      margin-top:10px;
-      padding:10px 12px;
+      margin-top:8px;
+      padding:9px 11px;
       border-radius:14px;
       background:linear-gradient(180deg,#fff7fb 0%,#f6effc 100%);
       border:1px dashed #dcc8e0;
@@ -433,61 +476,81 @@
       font-size:11px;
     }
 
+    .mid-layout{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+      gap:12px;
+      align-items:start;
+    }
+
+    .orders-card,
+    .operations-card,
+    .shipping-card,
+    .forum-card{
+      padding:12px;
+    }
+
     .ops-header{
-      padding:0 0 12px 0;
+      padding:0 0 10px 0;
       border-bottom:1px solid #ece0f1;
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
 
     .ops-header h2{
       margin:0;
-      font-size:24px;
+      font-size:20px;
       color:#3f2b7a;
+      font-family: Arial, sans-serif;
     }
 
     .ops-header p{
       color:#7a6fa3;
-      margin:5px 0 0 0;
-      font-size:14px;
+      margin:4px 0 0 0;
+      font-size:13px;
+      font-family: Arial, sans-serif;
     }
 
     .ops-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-bottom:12px;
+      gap:10px;
+      margin-bottom:10px;
     }
 
     .ops-box{
       background:#fff;
       border:1px solid #e6e1f5;
       border-radius:14px;
-      padding:14px;
+      padding:12px;
+      font-family: Arial, sans-serif;
     }
 
-    .ops-box h3, .ops-box h4{
+    .ops-box h3{
       margin:0 0 8px 0;
       color:#3f2b7a;
-      font-size:18px;
+      font-size:16px;
+      font-family: Arial, sans-serif;
     }
 
     .ops-box p{
-      margin:0 0 10px 0;
+      margin:0 0 8px 0;
       color:#333;
+      font-size:12.5px;
+      font-family: Arial, sans-serif;
     }
 
     .ops-box ul, .ops-box ol{
       padding-left:18px;
       margin:0;
-      line-height:1.6;
+      line-height:1.55;
       color:#333;
+      font-size:12.5px;
+      font-family: Arial, sans-serif;
     }
 
-    .ops-box ul + h4,
     .ops-box ul + h3,
-    .ops-box p + h4,
     .ops-box p + h3{
-      margin-top:14px;
+      margin-top:12px;
     }
 
     .shipping-toolbar,
@@ -495,14 +558,14 @@
     .orders-toolbar,
     .forum-toolbar{
       display:flex;
-      gap:10px;
+      gap:8px;
       flex-wrap:wrap;
       align-items:center;
-      margin-bottom:12px;
+      margin-bottom:10px;
     }
 
     .shipping-table{
-      min-width:780px;
+      min-width:760px;
     }
 
     .sortable{
@@ -520,21 +583,21 @@
     .small-note{
       font-size:11.5px;
       color:#7e6b87;
-      margin-top:10px;
+      margin-top:8px;
       line-height:1.4;
     }
 
     .order-links-list{
       display:grid;
       gap:8px;
-      margin-top:12px;
+      margin-top:10px;
     }
 
     .order-item{
       background:#fff;
       border:1px solid #ead9ef;
       border-radius:14px;
-      padding:12px;
+      padding:10px;
       display:grid;
       gap:8px;
     }
@@ -542,7 +605,8 @@
     .order-id{
       font-weight:700;
       color:#5d4766;
-      font-size:13px;
+      font-size:12.5px;
+      word-break:break-word;
     }
 
     .order-actions{
@@ -553,8 +617,8 @@
 
     .forum-list{
       display:grid;
-      gap:10px;
-      max-height:900px;
+      gap:8px;
+      max-height:940px;
       overflow:auto;
       padding-right:2px;
     }
@@ -563,15 +627,15 @@
       background:#fff;
       border:1px solid #ead9ef;
       border-radius:16px;
-      padding:12px;
+      padding:10px;
     }
 
     .forum-item-top{
       display:flex;
       justify-content:space-between;
       align-items:flex-start;
-      gap:10px;
-      margin-bottom:8px;
+      gap:8px;
+      margin-bottom:6px;
     }
 
     .forum-author{
@@ -581,14 +645,14 @@
     }
 
     .forum-time{
-      font-size:11px;
+      font-size:10.5px;
       color:#9a839f;
       margin-top:2px;
     }
 
     .forum-text{
-      font-size:13px;
-      line-height:1.5;
+      font-size:12.5px;
+      line-height:1.45;
       color:#4b3e52;
       white-space:pre-wrap;
       word-break:break-word;
@@ -598,11 +662,11 @@
       border:none;
       background:#fff1f5;
       color:#b45576;
-      width:28px;
-      height:28px;
+      width:26px;
+      height:26px;
       border-radius:999px;
       cursor:pointer;
-      font-size:14px;
+      font-size:13px;
       font-weight:700;
       border:1px solid #f2c4d3;
     }
@@ -617,12 +681,12 @@
       background:#fff;
       border:1px dashed #e4d3e7;
       border-radius:14px;
-      padding:14px;
+      padding:12px;
     }
 
-    @media (max-width:1450px){
+    @media (max-width:1500px){
       .app{
-        grid-template-columns:290px 1fr;
+        grid-template-columns:280px minmax(0, 1fr);
       }
       .right-col{
         position:static;
@@ -631,9 +695,8 @@
     }
 
     @media (max-width:1180px){
-      .layout{
-        grid-template-columns:1fr;
-      }
+      .inside-top-grid,
+      .mid-layout,
       .ops-grid{
         grid-template-columns:1fr;
       }
@@ -661,6 +724,31 @@
       <div class="card image-card">
         <img src="./2026_image.png" alt="Uploaded image" />
       </div>
+
+      <div class="card wheel-card">
+        <div class="wheel-title">Колело на късмета</div>
+        <div class="wheel-wrap">
+          <svg id="wheelSvg" class="wheel-svg" viewBox="0 0 220 220" aria-label="Wheel of luck">
+            <g id="wheelRotator" transform="rotate(0 110 110)">
+              <path d="M110,110 L110,10 A100,100 0 0,1 196.6,160 Z" fill="#f7bfdc"></path>
+              <path d="M110,110 L196.6,160 A100,100 0 0,1 23.4,160 Z" fill="#dac4f3"></path>
+              <path d="M110,110 L23.4,160 A100,100 0 0,1 110,10 Z" fill="#9fc7ff"></path>
+
+              <text x="142" y="55" text-anchor="middle" font-size="15" font-weight="700" fill="#5b4263" transform="rotate(30 142 55)">Боби</text>
+              <text x="150" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#5b4263" transform="rotate(90 150 150)">Тея</text>
+              <text x="70" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#5b4263" transform="rotate(-30 70 150)">Йо</text>
+
+              <circle cx="110" cy="110" r="18" fill="#fff" stroke="#e5cfe8" stroke-width="2"></circle>
+            </g>
+
+            <polygon points="110,2 100,22 120,22" fill="#ef6c8f"></polygon>
+            <circle cx="110" cy="110" r="100" fill="none" stroke="#e6d4e9" stroke-width="2"></circle>
+          </svg>
+
+          <button id="spinWheelBtn" class="wheel-button">🎯 Завърти</button>
+          <div id="wheelResult" class="wheel-result">Натисни, за да избереш случаен потребител.</div>
+        </div>
+      </div>
     </div>
 
     <div class="main-col">
@@ -674,7 +762,7 @@
           <div class="top-actions">
             <label class="pill" for="activeUserSelect">
               👤 Активен потребител
-              <select id="activeUserSelect" class="user-select">
+              <select id="activeUserSelect" class="user-select" style="width:auto;min-width:90px;">
                 <option value="Боби">Боби</option>
                 <option value="Тея">Тея</option>
                 <option value="Йо">Йо</option>
@@ -692,215 +780,212 @@
           Отметките се виждат от всички, които са отворили страницата. Ако някой отбележи задача, другите ще я видят веднага.
         </div>
 
-        <div class="layout">
-          <div class="stack">
-            <div>
-              <h2 class="section-title">Checklist</h2>
+        <div class="inside-top-grid">
+          <div>
+            <h2 class="section-title">Checklist</h2>
 
-              <div class="tasks-toolbar">
-                <input id="newTaskInput" class="text-input" type="text" placeholder="Нова задача..." />
-                <button id="addTaskBtn" class="action-btn">➕ Добави задача</button>
-                <button id="resetTasksBtn" class="action-btn danger">↺ Reset на всички отметки</button>
-              </div>
-
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th class="col-index">№</th>
-                      <th class="col-check">БОБИ</th>
-                      <th class="col-check">ТЕЯ</th>
-                      <th class="col-check">ЙО</th>
-                      <th>ЗАДАЧИ ЗА ДЕНЯ</th>
-                    </tr>
-                  </thead>
-                  <tbody id="tasksBody"></tbody>
-                </table>
-              </div>
-
-              <div class="status-note" id="statusNote">Свързване...</div>
+            <div class="tasks-toolbar">
+              <input id="newTaskInput" class="text-input" type="text" placeholder="Нова задача..." />
+              <button id="addTaskBtn" class="action-btn">➕ Добави задача</button>
+              <button id="resetTasksBtn" class="action-btn danger">↺ Reset</button>
             </div>
 
-            <div class="card orders-card">
-              <h2 class="section-title">NS Order Link Generator</h2>
-
-              <div class="orders-toolbar">
-                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга..."></textarea>
-              </div>
-
-              <div class="orders-toolbar">
-                <button id="generateOrdersBtn" class="action-btn">🔗 Генерирай линкове</button>
-                <button id="clearOrdersBtn" class="action-btn secondary">🧹 Изчисти</button>
-              </div>
-
-              <div class="helper-box">
-                Постави до 50 поръчки, всяка на нов ред. За всяка поръчка ще се генерират:
-                <br>• NS ACTIVE ORDERS
-                <br>• NS CANCELLED ORDERS
-              </div>
-
-              <div id="orderLinksList" class="order-links-list"></div>
+            <div class="table-wrap" style="display:inline-block;max-width:100%;">
+              <table class="check-table">
+                <thead>
+                  <tr>
+                    <th class="col-index">№</th>
+                    <th class="col-check">БОБИ</th>
+                    <th class="col-check">ТЕЯ</th>
+                    <th class="col-check">ЙО</th>
+                    <th>ЗАДАЧИ ЗА ДЕНЯ</th>
+                  </tr>
+                </thead>
+                <tbody id="tasksBody"></tbody>
+              </table>
             </div>
 
-            <div class="card operations-card">
-              <div class="ops-header">
-                <h2>Обработка поръчки</h2>
-                <p>Оперативна логика за обработка на поръчки и действия</p>
-              </div>
-
-              <div class="ops-grid">
-                <div class="ops-box">
-                  <h3>Поръчка за предлагане</h3>
-                  <ul>
-                    <li>Трием продуктите, които нямаме</li>
-                    <li>Слагаме таг <b>STOP</b></li>
-                    <li>Горе вдясно трябва да светне <b>RESERVED</b></li>
-                    <li>Пишем коментар на немски</li>
-                    <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
-                  </ul>
-
-                  <h3>Поръчка за сторно</h3>
-                  <ul>
-                    <li>Слагаме таг <b>STOP</b></li>
-                    <li>Пишем коментар на немски</li>
-                    <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
-                  </ul>
-
-                  <h3>Поръчка за адрес</h3>
-                  <ul>
-                    <li>Слагаме таг <b>STOP</b></li>
-                    <li>Пишем коментар на немски</li>
-                    <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
-                  </ul>
-                </div>
-
-                <div class="ops-box">
-                  <h3>Поръчки Qogita</h3>
-                  <ul>
-                    <li>Ако не се генерира label → коригираме ръчно кг в поръчката (максимум до 2 цифри след десетичната запетая)</li>
-                    <li>Изписваме отделно преди всеки файл</li>
-                    <li>Label-ите се правят отделно (UPS)</li>
-                    <li>Тракинг номерът се записва като коментар в поръчката</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="ops-grid">
-                <div class="ops-box">
-                  <h3>ClickUp тагване</h3>
-
-                  <p><b>Тагваме Радина за:</b></p>
-                  <ul>
-                    <li>Kaufland / Ebay – предлагане</li>
-                    <li>Kaufland / Ebay – сторно</li>
-                    <li>Kaufland / Ebay – адрес</li>
-                  </ul>
-
-                  <p style="margin-top:10px;"><b>Тагваме Слав за:</b></p>
-                  <ul>
-                    <li>Сайт – предлагане</li>
-                    <li>Сайт – сторно</li>
-                    <li>Сайт – адрес</li>
-                    <li>Otto</li>
-                  </ul>
-                </div>
-
-                <div class="ops-box">
-                  <h3>STOP / Noverstock</h3>
-                  <ul>
-                    <li>При слагане на <b>STOP</b> таг → винаги се пише причина</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="ops-box" style="margin-bottom:12px;">
-                <h3>ONFY (увиснала поръчка)</h3>
-
-                <p>Когато нямаме продуктите → канселираме:</p>
-
-                <ol>
-                  <li>
-                    <b>NS:</b><br>
-                    Горе ляво → Cancel order → Reason: Out of Stock → N/A → Submit cancel
-                  </li>
-                  <li>
-                    <b>Shopify:</b><br>
-                    Cancel order → Reason: Items unavailable<br>
-                    Махаме отметките:
-                    <ul>
-                      <li>Restock inventory</li>
-                      <li>Notify customer</li>
-                    </ul>
-                    Натискаме Cancel
-                  </li>
-                  <li>
-                    Даваме на Радо:
-                    <ul>
-                      <li>Номер на поръчката</li>
-                      <li>Статус: ONFY Cancelled</li>
-                    </ul>
-                  </li>
-                </ol>
-              </div>
-
-              <div class="ops-box">
-                <h3>Допълнителни правила</h3>
-                <ul>
-                  <li>Ebay поръчка не чака транспорт</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="card shipping-card">
-              <h2 class="section-title">Транспортни цени</h2>
-
-              <div class="shipping-toolbar">
-                <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
-                <select id="zoneFilter" class="table-filter">
-                  <option value="">Всички зони</option>
-                  <option value="Domestic">Domestic</option>
-                  <option value="1">Zone 1</option>
-                  <option value="2">Zone 2</option>
-                  <option value="3">Zone 3</option>
-                </select>
-              </div>
-
-              <div class="table-wrap">
-                <table class="shipping-table">
-                  <thead>
-                    <tr>
-                      <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
-                      <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
-                      <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
-                      <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
-                      <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
-                      <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
-                    </tr>
-                  </thead>
-                  <tbody id="shippingBody"></tbody>
-                </table>
-              </div>
-
-              <div class="small-note">
-                Таблицата може да се филтрира по зона, да се търси и да се сортира по колони.
-              </div>
-            </div>
+            <div class="status-note" id="statusNote">Свързване...</div>
           </div>
 
-          <div class="stack">
-            <div class="card links-card">
-              <h2 class="section-title">Полезни линкове</h2>
+          <div class="card inside-links-card">
+            <h2 class="section-title">Полезни линкове</h2>
 
-              <div class="links-grid" id="linksGrid"></div>
+            <div class="links-grid" id="linksGrid"></div>
 
-              <div class="helper-box">
-                За да добавиш нов ред по-късно, отвори <code>index.html</code> и добави нов обект в масива <code>usefulLinks</code>.
-                Същото важи и за задачите — добавят се в <code>initialTasks</code>.
-                <br><br>
-                Забележка: бутонът „само Йо може“ е UI ограничение. Без login система това не е реална защита.
-              </div>
+            <div class="helper-box">
+              За да добавиш нов ред по-късно, отвори <code>index.html</code> и добави нов обект в масива <code>usefulLinks</code>.
             </div>
           </div>
+        </div>
+
+        <div class="mid-layout">
+          <div class="card orders-card">
+            <h2 class="section-title">NS Order Link Generator</h2>
+
+            <div class="orders-toolbar">
+              <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга или със запетая..."></textarea>
+            </div>
+
+            <div class="orders-toolbar">
+              <button id="generateOrdersBtn" class="action-btn">🔗 Генерирай линкове</button>
+              <button id="clearOrdersBtn" class="action-btn secondary">🧹 Изчисти</button>
+            </div>
+
+            <div class="helper-box">
+              Примери:
+              <br><code>1796430
+1797052</code>
+              <br>или
+              <br><code>1796430, 1797052</code>
+            </div>
+
+            <div id="orderLinksList" class="order-links-list"></div>
+          </div>
+
+          <div class="card shipping-card">
+            <h2 class="section-title">Транспортни цени</h2>
+
+            <div class="shipping-toolbar">
+              <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
+              <select id="zoneFilter" class="table-filter" style="width:auto;">
+                <option value="">Всички зони</option>
+                <option value="Domestic">Domestic</option>
+                <option value="1">Zone 1</option>
+                <option value="2">Zone 2</option>
+                <option value="3">Zone 3</option>
+              </select>
+            </div>
+
+            <div class="table-wrap">
+              <table class="shipping-table">
+                <thead>
+                  <tr>
+                    <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
+                    <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
+                    <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
+                    <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
+                    <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
+                    <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
+                  </tr>
+                </thead>
+                <tbody id="shippingBody"></tbody>
+              </table>
+            </div>
+
+            <div class="small-note">
+              Таблицата може да се филтрира по зона, да се търси и да се сортира по колони.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card operations-card">
+        <div class="ops-header">
+          <h2>Обработка поръчки</h2>
+          <p>Оперативна логика за обработка на поръчки и действия</p>
+        </div>
+
+        <div class="ops-grid">
+          <div class="ops-box">
+            <h3>Поръчка за предлагане</h3>
+            <ul>
+              <li>Трием продуктите, които нямаме</li>
+              <li>Слагаме таг <b>STOP</b></li>
+              <li>Горе вдясно трябва да светне <b>RESERVED</b></li>
+              <li>Пишем коментар на немски</li>
+              <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+            </ul>
+
+            <h3>Поръчка за сторно</h3>
+            <ul>
+              <li>Слагаме таг <b>STOP</b></li>
+              <li>Пишем коментар на немски</li>
+              <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+            </ul>
+
+            <h3>Поръчка за адрес</h3>
+            <ul>
+              <li>Слагаме таг <b>STOP</b></li>
+              <li>Пишем коментар на немски</li>
+              <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+            </ul>
+          </div>
+
+          <div class="ops-box">
+            <h3>Поръчки Qogita</h3>
+            <ul>
+              <li>Ако не се генерира label → коригираме ръчно кг в поръчката (максимум до 2 цифри след десетичната запетая)</li>
+              <li>Изписваме отделно преди всеки файл</li>
+              <li>Label-ите се правят отделно (UPS)</li>
+              <li>Тракинг номерът се записва като коментар в поръчката</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ops-grid">
+          <div class="ops-box">
+            <h3>ClickUp тагване</h3>
+
+            <p><b>Тагваме Радина за:</b></p>
+            <ul>
+              <li>Kaufland / Ebay – предлагане</li>
+              <li>Kaufland / Ebay – сторно</li>
+              <li>Kaufland / Ebay – адрес</li>
+            </ul>
+
+            <p style="margin-top:10px;"><b>Тагваме Слав за:</b></p>
+            <ul>
+              <li>Сайт – предлагане</li>
+              <li>Сайт – сторно</li>
+              <li>Сайт – адрес</li>
+              <li>Otto</li>
+            </ul>
+          </div>
+
+          <div class="ops-box">
+            <h3>STOP / Noverstock</h3>
+            <ul>
+              <li>При слагане на <b>STOP</b> таг → винаги се пише причина</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ops-box" style="margin-bottom:10px;">
+          <h3>ONFY (увиснала поръчка)</h3>
+
+          <p>Когато нямаме продуктите → канселираме:</p>
+
+          <ol>
+            <li>
+              <b>NS:</b><br>
+              Горе ляво → Cancel order → Reason: Out of Stock → N/A → Submit cancel
+            </li>
+            <li>
+              <b>Shopify:</b><br>
+              Cancel order → Reason: Items unavailable<br>
+              Махаме отметките:
+              <ul>
+                <li>Restock inventory</li>
+                <li>Notify customer</li>
+              </ul>
+              Натискаме Cancel
+            </li>
+            <li>
+              Даваме на Радо:
+              <ul>
+                <li>Номер на поръчката</li>
+                <li>Статус: ONFY Cancelled</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="ops-box">
+          <h3>Допълнителни правила</h3>
+          <ul>
+            <li>Ebay поръчка не чака транспорт</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -921,7 +1006,7 @@
           Коментарите се пазят постоянно, докато не натиснеш хиксчето и не ги изтриеш.
         </div>
 
-        <div id="forumList" class="forum-list" style="margin-top:12px;"></div>
+        <div id="forumList" class="forum-list" style="margin-top:10px;"></div>
       </div>
     </div>
   </div>
@@ -1020,11 +1105,18 @@
       { country: "Finland", zone: "3", kg01: "~18.00", kg12: "~18.50", kg23: "~19.00", kg35: "~20.00" }
     ];
 
+    const wheelUsers = [
+      { name: "Боби", baseAngle: 60 },
+      { name: "Тея", baseAngle: 180 },
+      { name: "Йо", baseAngle: 300 }
+    ];
+
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
     const tasksRef = ref(db, "dailyChecklist/tasks");
     const forumRef = ref(db, "dailyChecklist/forum");
+
     const statusNote = document.getElementById("statusNote");
     const tasksBody = document.getElementById("tasksBody");
     const activeUserSelect = document.getElementById("activeUserSelect");
@@ -1042,8 +1134,13 @@
     const forumInput = document.getElementById("forumInput");
     const addForumBtn = document.getElementById("addForumBtn");
     const forumList = document.getElementById("forumList");
+    const wheelRotator = document.getElementById("wheelRotator");
+    const spinWheelBtn = document.getElementById("spinWheelBtn");
+    const wheelResult = document.getElementById("wheelResult");
 
     let shippingSort = { key: "country", direction: "asc" };
+    let currentWheelRotation = 0;
+    let wheelSpinning = false;
 
     const savedUser = localStorage.getItem("activeUserName");
     if (savedUser) activeUserSelect.value = savedUser;
@@ -1277,7 +1374,7 @@
 
     function normalizeOrders(raw) {
       return raw
-        .split(/\r?\n/)
+        .split(/[\n,]+/)
         .map(x => x.trim())
         .filter(Boolean)
         .slice(0, 50);
@@ -1364,7 +1461,7 @@
         <div class="forum-item">
           <div class="forum-item-top">
             <div>
-              <div class="forum-author">${item.author || "Потребител"}</div>
+              <div class="forum-author">${escapeHtml(item.author || "Потребител")}</div>
               <div class="forum-time">${formatDateTime(item.createdAt)}</div>
             </div>
             <button class="delete-comment-btn" data-delete-key="${item.key}" title="Изтрий">✕</button>
@@ -1387,6 +1484,28 @@
         .replaceAll("'", "&#039;");
     }
 
+    function spinWheel() {
+      if (wheelSpinning) return;
+      wheelSpinning = true;
+
+      const winnerIndex = Math.floor(Math.random() * wheelUsers.length);
+      const winner = wheelUsers[winnerIndex];
+
+      const extraSpins = 5 + Math.floor(Math.random() * 3);
+      const targetAngle = (360 * extraSpins) + (360 - winner.baseAngle);
+      currentWheelRotation += targetAngle;
+
+      wheelRotator.style.transition = "transform 4.2s cubic-bezier(0.18, 0.75, 0.2, 1)";
+      wheelRotator.style.transform = `rotate(${currentWheelRotation}deg)`;
+
+      wheelResult.textContent = "Колелото се върти...";
+
+      setTimeout(() => {
+        wheelResult.innerHTML = `🎉 Избрано: <b>${winner.name}</b>`;
+        wheelSpinning = false;
+      }, 4200);
+    }
+
     shippingSearch.addEventListener("input", renderShippingTable);
     zoneFilter.addEventListener("change", renderShippingTable);
     addTaskBtn.addEventListener("click", addNewTask);
@@ -1400,6 +1519,7 @@
       orderLinksList.innerHTML = "";
     });
     addForumBtn.addEventListener("click", addForumComment);
+    spinWheelBtn.addEventListener("click", spinWheel);
 
     document.querySelectorAll(".sortable").forEach(th => {
       th.addEventListener("click", () => {
