@@ -1228,7 +1228,8 @@
     import {
       getAuth,
       GoogleAuthProvider,
-      signInWithPopup,
+      signInWithRedirect,
+      getRedirectResult,
       onAuthStateChanged,
       signOut
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
@@ -1394,10 +1395,10 @@
       try {
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({ prompt: "select_account" });
-        await signInWithPopup(auth, provider);
+        await signInWithRedirect(auth, provider);
       } catch (err) {
         console.error(err);
-        authMsg.textContent = "Грешка при вход.";
+        authMsg.textContent = err.code || err.message || "Грешка при вход.";
       }
     }
 
@@ -2058,7 +2059,10 @@
       await loadClickUp(true);
       startClickupAutoRefresh();
     }
-
+    getRedirectResult(auth).catch((err) => {
+      console.error(err);
+      authMsg.textContent = err.code || err.message || "Грешка при вход.";
+    });
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         showAuthGate("");
