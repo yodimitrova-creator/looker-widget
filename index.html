@@ -1231,6 +1231,8 @@
       signInWithRedirect,
       getRedirectResult,
       onAuthStateChanged,
+      setPersistence,
+      browserLocalPersistence,
       signOut
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
@@ -1393,11 +1395,12 @@
     async function handleLogin() {
       authMsg.textContent = "Влизане...";
       try {
+        await setPersistence(auth, browserLocalPersistence);
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({ prompt: "select_account" });
         await signInWithRedirect(auth, provider);
       } catch (err) {
-        console.error(err);
+        console.error("LOGIN ERROR:", err);
         authMsg.textContent = err.code || err.message || "Грешка при вход.";
       }
     }
@@ -2059,11 +2062,19 @@
       await loadClickUp(true);
       startClickupAutoRefresh();
     }
-    getRedirectResult(auth).catch((err) => {
-      console.error(err);
-      authMsg.textContent = err.code || err.message || "Грешка при вход.";
-    });
+    getRedirectResult(auth)
+      .then((result) => {
+        console.log("REDIRECT RESULT:", result);
+      })
+      .catch((err) => {
+        console.error("REDIRECT ERROR:", err);
+        authMsg.textContent = err.code || err.message || "Грешка при вход.";
+      });
+
     onAuthStateChanged(auth, async (user) => {
+      console.log("AUTH USER:", user);
+      console.log("AUTH EMAIL:", user?.email);
+
       if (!user) {
         showAuthGate("");
         return;
@@ -2073,7 +2084,7 @@
         try {
           await signOut(auth);
         } catch (err) {
-          console.error(err);
+          console.error("SIGNOUT ERROR:", err);
         }
         showAuthGate("Този имейл няма достъп.");
         return;
@@ -2083,6 +2094,7 @@
 
       if (!appStarted) {
         appStarted = true;
+        console.log("BOOTSTRAP START");
         bootstrap();
       }
     });
