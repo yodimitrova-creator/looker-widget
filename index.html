@@ -420,21 +420,21 @@
 
     .check-table{
       width:100%;
-      min-width:680px;
+      min-width:520px;
     }
 
     thead th{
       background:linear-gradient(180deg, #f2d9e9 0%, #eadbfb 100%);
       color:#5a4562;
-      font-size:12.5px;
+      font-size:12px;
       text-align:left;
-      padding:10px 9px;
+      padding:8px 6px;
       border-bottom:1px solid #dccae1;
       white-space:nowrap;
     }
 
     tbody td{
-      padding:8px 9px;
+      padding:6px 6px;
       border-bottom:1px solid #f2e8f3;
       font-size:12.5px;
       vertical-align:middle;
@@ -444,21 +444,21 @@
     tbody tr:hover{ background:rgba(235,219,246,.42); }
 
     .col-index{
-      width:50px;
+      width:40px;
       text-align:center;
       color:#8b7391;
       font-size:12px;
     }
 
     .col-check{
-      width:72px;
+      width:52px;
       text-align:center;
     }
 
     .task-name{
       font-weight:500;
       color:#4f3f57;
-      min-width:300px;
+      min-width:180px;
     }
 
     .checkbox-wrap{
@@ -508,8 +508,34 @@
     .orders-card,
     .operations-card,
     .shipping-card,
-    .forum-card{
+    .forum-card,
+    .auth-card{
       padding:12px;
+    }
+
+    .auth-card{
+      max-width:460px;
+      margin:40px auto;
+      text-align:center;
+    }
+
+    .auth-title{
+      margin:0 0 10px 0;
+      color:#694c73;
+    }
+
+    .auth-text{
+      margin:0 0 16px 0;
+      color:#7d6b86;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .auth-msg{
+      margin-top:12px;
+      font-size:12px;
+      color:#8a728f;
+      min-height:18px;
     }
 
     .useful-links-add{
@@ -568,6 +594,7 @@
       font-size:11.5px;
       color:#7a6783;
       line-height:1.45;
+      white-space:pre-line;
     }
 
     .helper-box code{
@@ -886,297 +913,302 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="left-col">
-      <div class="card calendar-card">
-        <div class="calendar-title" id="calendarTitle">Календар</div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </div>
+  <div id="authGate" class="card auth-card">
+    <h2 class="auth-title">Вход</h2>
+    <p class="auth-text">Влез с разрешен имейл, за да отвориш checklist-а.</p>
+    <button id="loginBtn" class="action-btn">Вход с Google</button>
+    <div id="authMsg" class="auth-msg"></div>
+  </div>
 
-      <div class="card image-card">
-        <img src="./2026_image.png" alt="Uploaded image" />
-      </div>
+  <div id="appShell" style="display:none;">
+    <div class="app">
+      <div class="left-col">
+        <div class="card calendar-card">
+          <div class="calendar-title" id="calendarTitle">Календар</div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
 
-      <div class="card wheel-card">
-        <div class="wheel-title">Колело на късмета</div>
-        <div class="wheel-wrap">
-          <div class="wheel-stage">
-            <div class="wheel-pointer"></div>
-            <div id="wheel" class="wheel"></div>
+        <div class="card image-card">
+          <img src="./2026_image.png" alt="Uploaded image" />
+        </div>
+
+        <div class="card wheel-card">
+          <div class="wheel-title">Колело на късмета</div>
+          <div class="wheel-wrap">
+            <div class="wheel-stage">
+              <div class="wheel-pointer"></div>
+              <div id="wheel" class="wheel"></div>
+            </div>
+            <button id="spinWheelBtn" class="wheel-button">🎯 Завърти</button>
+            <div id="wheelResult" class="wheel-result">Натисни, за да избереш случаен потребител.</div>
           </div>
-          <button id="spinWheelBtn" class="wheel-button">🎯 Завърти</button>
-          <div id="wheelResult" class="wheel-result">Натисни, за да избереш случаен потребител.</div>
+        </div>
+
+        <div class="card useful-links-card">
+          <h2 class="section-title">Полезни линкове</h2>
+          <div class="useful-links-add">
+            <div class="useful-links-fields">
+              <input id="linkTitleInput" class="text-input" type="text" placeholder="Заглавие" />
+              <input id="linkUrlInput" class="text-input" type="url" placeholder="Линк" />
+            </div>
+            <button id="addLinkBtn" class="icon-btn" title="Добави линк">＋</button>
+          </div>
+          <div class="links-grid" id="linksGrid"></div>
         </div>
       </div>
 
-      <div class="card useful-links-card">
-        <h2 class="section-title">Полезни линкове</h2>
-        <div class="useful-links-add">
-          <div class="useful-links-fields">
-            <input id="linkTitleInput" class="text-input" type="text" placeholder="Заглавие" />
-            <input id="linkUrlInput" class="text-input" type="url" placeholder="Линк" />
-          </div>
-          <button id="addLinkBtn" class="icon-btn" title="Добави линк">＋</button>
-        </div>
-        <div class="links-grid" id="linksGrid"></div>
-      </div>
-    </div>
-
-    <div class="main-col">
-      <div class="card main-card">
-        <div class="topbar">
-          <div class="title-wrap">
-            <h1>ЗАДАЧИ ЗА ДЕНЯ</h1>
-            <p>Live checklist за екипа • БОБИ / ТЕЯ / ЙО</p>
-          </div>
-
-          <div class="top-actions">
-            <label class="pill" for="activeUserSelect">
-              👤 Активен потребител
-              <select id="activeUserSelect" class="user-select" style="width:auto;min-width:90px;">
-                <option value="Боби">Боби</option>
-                <option value="Тея">Тея</option>
-                <option value="Йо">Йо</option>
-              </select>
-            </label>
-
-            <div class="pill">
-              <span class="live-dot"></span>
-              <span>Live синхронизация</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="info-banner">
-          Отметките се виждат от всички, които са отворили страницата. Ако някой отбележи задача, другите ще я видят веднага.
-        </div>
-
-        <div class="main-top-grid">
-          <div class="card checklist-card">
-            <h2 class="section-title">Checklist</h2>
-
-            <div class="tasks-input-row">
-              <input id="newTaskInput" class="text-input" type="text" placeholder="Нова задача..." />
+      <div class="main-col">
+        <div class="card main-card">
+          <div class="topbar">
+            <div class="title-wrap">
+              <h1>ЗАДАЧИ ЗА ДЕНЯ</h1>
+              <p>Live checklist за екипа • БОБИ / ТЕЯ / ЙО</p>
             </div>
 
-            <div class="tasks-toolbar">
-              <button id="addTaskBtn" class="action-btn">➕ Добави задача</button>
-              <button id="resetTasksBtn" class="action-btn danger">↺ Reset</button>
-            </div>
-
-            <div class="table-wrap">
-              <table class="check-table">
-                <thead>
-                  <tr>
-                    <th class="col-index">№</th>
-                    <th class="col-check">БОБИ</th>
-                    <th class="col-check">ТЕЯ</th>
-                    <th class="col-check">ЙО</th>
-                    <th>ЗАДАЧИ ЗА ДЕНЯ</th>
-                  </tr>
-                </thead>
-                <tbody id="tasksBody"></tbody>
-              </table>
-            </div>
-
-            <div class="status-note" id="statusNote">Свързване...</div>
-          </div>
-
-          <div class="card clickup-card">
-            <h2 class="section-title">ClickUp</h2>
-            <div class="clickup-toolbar">
-              <button id="reloadClickUpBtn" class="action-btn">🔄 Обнови</button>
-            </div>
-            <div id="clickupGrid" class="clickup-grid"></div>
-          </div>
-        </div>
-
-        <div class="mid-layout">
-          <div class="stack">
-            <div class="card orders-card">
-              <h2 class="section-title">NS Order Link Generator</h2>
-
-              <div class="orders-toolbar">
-                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките."></textarea>
-              </div>
-
-              <div class="orders-toolbar">
-                <button id="generateOrdersBtn" class="action-btn">🔗 Генерирай линкове</button>
-                <button id="clearOrdersBtn" class="action-btn secondary">🧹 Изчисти</button>
-              </div>
-
-              <div class="helper-box">
-                Приема:
-                <br><code>1796430 1797052</code>
-                <br>или
-                <br><code>1796430, 1797052</code>
-                <br>или
-                <br><code>1796430
-1797052
-1798001</code>
-              </div>
-
-              <div id="orderLinksList" class="order-links-list"></div>
-            </div>
-
-            <div class="card shipping-card">
-              <h2 class="section-title">Транспортни цени</h2>
-
-              <div class="shipping-toolbar">
-                <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
-                <select id="zoneFilter" class="table-filter" style="width:auto;">
-                  <option value="">Всички зони</option>
-                  <option value="Domestic">Domestic</option>
-                  <option value="1">Zone 1</option>
-                  <option value="2">Zone 2</option>
-                  <option value="3">Zone 3</option>
+            <div class="top-actions">
+              <label class="pill" for="activeUserSelect">
+                👤 Активен потребител
+                <select id="activeUserSelect" class="user-select" style="width:auto;min-width:90px;">
+                  <option value="Боби">Боби</option>
+                  <option value="Тея">Тея</option>
+                  <option value="Йо">Йо</option>
                 </select>
+              </label>
+
+              <div class="pill">
+                <span class="live-dot"></span>
+                <span>Live синхронизация</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-banner">
+            Отметките се виждат от всички, които са отворили страницата. Ако някой отбележи задача, другите ще я видят веднага.
+          </div>
+
+          <div class="main-top-grid">
+            <div class="card checklist-card">
+              <h2 class="section-title">Checklist</h2>
+
+              <div class="tasks-input-row">
+                <input id="newTaskInput" class="text-input" type="text" placeholder="Нова задача..." />
+              </div>
+
+              <div class="tasks-toolbar">
+                <button id="addTaskBtn" class="action-btn">➕ Добави задача</button>
+                <button id="resetTasksBtn" class="action-btn danger">↺ Reset</button>
               </div>
 
               <div class="table-wrap">
-                <table class="shipping-table">
+                <table class="check-table">
                   <thead>
                     <tr>
-                      <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
-                      <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
-                      <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
-                      <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
-                      <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
-                      <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
+                      <th class="col-index">№</th>
+                      <th class="col-check">БОБИ</th>
+                      <th class="col-check">ТЕЯ</th>
+                      <th class="col-check">ЙО</th>
+                      <th>ЗАДАЧИ ЗА ДЕНЯ</th>
                     </tr>
                   </thead>
-                  <tbody id="shippingBody"></tbody>
+                  <tbody id="tasksBody"></tbody>
                 </table>
+              </div>
+
+              <div class="status-note" id="statusNote">Свързване...</div>
+            </div>
+
+            <div class="card clickup-card">
+              <h2 class="section-title">ClickUp</h2>
+              <div class="clickup-toolbar">
+                <button id="reloadClickUpBtn" class="action-btn">🔄 Обнови</button>
+              </div>
+              <div id="clickupGrid" class="clickup-grid"></div>
+            </div>
+          </div>
+
+          <div class="mid-layout">
+            <div class="stack">
+              <div class="card orders-card">
+                <h2 class="section-title">NS Order Link Generator</h2>
+
+                <div class="orders-toolbar">
+                  <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките."></textarea>
+                </div>
+
+                <div class="orders-toolbar">
+                  <button id="generateOrdersBtn" class="action-btn">🔗 Генерирай линкове</button>
+                  <button id="clearOrdersBtn" class="action-btn secondary">🧹 Изчисти</button>
+                </div>
+
+                <div class="helper-box">Приема:
+<code>1796430 1797052</code>
+или
+<code>1796430, 1797052</code>
+или
+<code>1796430
+1797052
+1798001</code></div>
+
+                <div id="orderLinksList" class="order-links-list"></div>
+              </div>
+
+              <div class="card shipping-card">
+                <h2 class="section-title">Транспортни цени</h2>
+
+                <div class="shipping-toolbar">
+                  <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
+                  <select id="zoneFilter" class="table-filter" style="width:auto;">
+                    <option value="">Всички зони</option>
+                    <option value="Domestic">Domestic</option>
+                    <option value="1">Zone 1</option>
+                    <option value="2">Zone 2</option>
+                    <option value="3">Zone 3</option>
+                  </select>
+                </div>
+
+                <div class="table-wrap">
+                  <table class="shipping-table">
+                    <thead>
+                      <tr>
+                        <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
+                        <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
+                        <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
+                        <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
+                        <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
+                        <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
+                      </tr>
+                    </thead>
+                    <tbody id="shippingBody"></tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="card operations-card">
+          <div class="ops-header">
+            <h2>Обработка поръчки</h2>
+            <p>Оперативна логика за обработка на поръчки и действия</p>
+          </div>
+
+          <div class="ops-grid">
+            <div class="ops-box">
+              <h3>Поръчка за предлагане</h3>
+              <ul>
+                <li>Трием продуктите, които нямаме</li>
+                <li>Слагаме таг <b>STOP</b></li>
+                <li>Горе вдясно трябва да светне <b>RESERVED</b></li>
+                <li>Пишем коментар на немски</li>
+                <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+              </ul>
+
+              <h3>Поръчка за сторно</h3>
+              <ul>
+                <li>Слагаме таг <b>STOP</b></li>
+                <li>Пишем коментар на немски</li>
+                <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+              </ul>
+
+              <h3>Поръчка за адрес</h3>
+              <ul>
+                <li>Слагаме таг <b>STOP</b></li>
+                <li>Пишем коментар на немски</li>
+                <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+              </ul>
+            </div>
+
+            <div class="ops-box">
+              <h3>Поръчки Qogita</h3>
+              <ul>
+                <li>Ако не се генерира label → коригираме ръчно кг в поръчката (максимум до 2 цифри след десетичната запетая)</li>
+                <li>Изписваме отделно преди всеки файл</li>
+                <li>Label-ите се правят отделно (UPS)</li>
+                <li>Тракинг номерът се записва като коментар в поръчката</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ops-grid">
+            <div class="ops-box">
+              <h3>ClickUp тагване</h3>
+              <p><b>Тагваме Радина за:</b></p>
+              <ul>
+                <li>Kaufland / Ebay – предлагане</li>
+                <li>Kaufland / Ebay – сторно</li>
+                <li>Kaufland / Ebay – адрес</li>
+              </ul>
+
+              <p style="margin-top:10px;"><b>Тагваме Слав за:</b></p>
+              <ul>
+                <li>Сайт – предлагане</li>
+                <li>Сайт – сторно</li>
+                <li>Сайт – адрес</li>
+                <li>Otto</li>
+              </ul>
+            </div>
+
+            <div class="ops-box">
+              <h3>STOP / Noverstock</h3>
+              <ul>
+                <li>При слагане на <b>STOP</b> таг → винаги се пише причина</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="ops-box" style="margin-bottom:10px;">
+            <h3>ONFY (увиснала поръчка)</h3>
+            <p>Когато нямаме продуктите → канселираме:</p>
+            <ol>
+              <li>
+                <b>NS:</b><br>
+                Горе ляво → Cancel order → Reason: Out of Stock → N/A → Submit cancel
+              </li>
+              <li>
+                <b>Shopify:</b><br>
+                Cancel order → Reason: Items unavailable<br>
+                Махаме отметките:
+                <ul>
+                  <li>Restock inventory</li>
+                  <li>Notify customer</li>
+                </ul>
+                Натискаме Cancel
+              </li>
+              <li>
+                Даваме на Радо:
+                <ul>
+                  <li>Номер на поръчката</li>
+                  <li>Статус: ONFY Cancelled</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+
+          <div class="ops-box">
+            <h3>Допълнителни правила</h3>
+            <ul>
+              <li>Ebay поръчка не чака транспорт</li>
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div class="card operations-card">
-        <div class="ops-header">
-          <h2>Обработка поръчки</h2>
-          <p>Оперативна логика за обработка на поръчки и действия</p>
-        </div>
+      <div class="right-col">
+        <div class="card forum-card">
+          <h2 class="section-title">Форум / Коментари</h2>
 
-        <div class="ops-grid">
-          <div class="ops-box">
-            <h3>Поръчка за предлагане</h3>
-            <ul>
-              <li>Трием продуктите, които нямаме</li>
-              <li>Слагаме таг <b>STOP</b></li>
-              <li>Горе вдясно трябва да светне <b>RESERVED</b></li>
-              <li>Пишем коментар на немски</li>
-              <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
-            </ul>
-
-            <h3>Поръчка за сторно</h3>
-            <ul>
-              <li>Слагаме таг <b>STOP</b></li>
-              <li>Пишем коментар на немски</li>
-              <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
-            </ul>
-
-            <h3>Поръчка за адрес</h3>
-            <ul>
-              <li>Слагаме таг <b>STOP</b></li>
-              <li>Пишем коментар на немски</li>
-              <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
-            </ul>
+          <div class="forum-toolbar">
+            <textarea id="forumInput" class="text-area" placeholder="Напиши коментар..."></textarea>
           </div>
 
-          <div class="ops-box">
-            <h3>Поръчки Qogita</h3>
-            <ul>
-              <li>Ако не се генерира label → коригираме ръчно кг в поръчката (максимум до 2 цифри след десетичната запетая)</li>
-              <li>Изписваме отделно преди всеки файл</li>
-              <li>Label-ите се правят отделно (UPS)</li>
-              <li>Тракинг номерът се записва като коментар в поръчката</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="ops-grid">
-          <div class="ops-box">
-            <h3>ClickUp тагване</h3>
-            <p><b>Тагваме Радина за:</b></p>
-            <ul>
-              <li>Kaufland / Ebay – предлагане</li>
-              <li>Kaufland / Ebay – сторно</li>
-              <li>Kaufland / Ebay – адрес</li>
-            </ul>
-
-            <p style="margin-top:10px;"><b>Тагваме Слав за:</b></p>
-            <ul>
-              <li>Сайт – предлагане</li>
-              <li>Сайт – сторно</li>
-              <li>Сайт – адрес</li>
-              <li>Otto</li>
-            </ul>
+          <div class="forum-toolbar">
+            <button id="addForumBtn" class="action-btn">💬 Публикувай</button>
           </div>
 
-          <div class="ops-box">
-            <h3>STOP / Noverstock</h3>
-            <ul>
-              <li>При слагане на <b>STOP</b> таг → винаги се пише причина</li>
-            </ul>
-          </div>
+          <div class="helper-box">Коментарите се пазят постоянно. Можеш да ги pin-ваш и да ги триеш с хикс.</div>
+
+          <div id="forumList" class="forum-list" style="margin-top:10px;"></div>
         </div>
-
-        <div class="ops-box" style="margin-bottom:10px;">
-          <h3>ONFY (увиснала поръчка)</h3>
-          <p>Когато нямаме продуктите → канселираме:</p>
-          <ol>
-            <li>
-              <b>NS:</b><br>
-              Горе ляво → Cancel order → Reason: Out of Stock → N/A → Submit cancel
-            </li>
-            <li>
-              <b>Shopify:</b><br>
-              Cancel order → Reason: Items unavailable<br>
-              Махаме отметките:
-              <ul>
-                <li>Restock inventory</li>
-                <li>Notify customer</li>
-              </ul>
-              Натискаме Cancel
-            </li>
-            <li>
-              Даваме на Радо:
-              <ul>
-                <li>Номер на поръчката</li>
-                <li>Статус: ONFY Cancelled</li>
-              </ul>
-            </li>
-          </ol>
-        </div>
-
-        <div class="ops-box">
-          <h3>Допълнителни правила</h3>
-          <ul>
-            <li>Ebay поръчка не чака транспорт</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="right-col">
-      <div class="card forum-card">
-        <h2 class="section-title">Форум / Коментари</h2>
-
-        <div class="forum-toolbar">
-          <textarea id="forumInput" class="text-area" placeholder="Напиши коментар..."></textarea>
-        </div>
-
-        <div class="forum-toolbar">
-          <button id="addForumBtn" class="action-btn">💬 Публикувай</button>
-        </div>
-
-        <div class="helper-box">
-          Коментарите се пазят постоянно. Можеш да ги pin-ваш и да ги триеш с хикс.
-        </div>
-
-        <div id="forumList" class="forum-list" style="margin-top:10px;"></div>
       </div>
     </div>
   </div>
@@ -1193,6 +1225,13 @@
       remove,
       get
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD9VcNRNImcdSEY9BbiC64Jz2SNrIZixN8",
@@ -1207,6 +1246,9 @@
 
     const CLICKUP_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwMSDYadAB1h8FYYidUhG6e5PiBlW6gCh5TcQEctxntvCpFF2ci6Izh2xV4QI9b8b3B/exec";
     const CLICKUP_REFRESH_MS = 5 * 60 * 1000;
+    const ALLOWED_EMAILS = [
+      "yo.dimitrova@polarmoda.bg"
+    ];
 
     const initialTasks = [
       { id: 1, bobi: false, teya: false, yo: false, name: "Поръчки с таг СТОП - pending - 8:30h" },
@@ -1286,12 +1328,17 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+    const auth = getAuth(app);
 
     const tasksRef = ref(db, "dailyChecklist/tasks");
     const forumRef = ref(db, "dailyChecklist/forum");
     const calendarNotesRef = ref(db, "dailyChecklist/calendarNotes");
     const usefulLinksRef = ref(db, "dailyChecklist/usefulLinks");
 
+    const authGate = document.getElementById("authGate");
+    const appShell = document.getElementById("appShell");
+    const loginBtn = document.getElementById("loginBtn");
+    const authMsg = document.getElementById("authMsg");
     const statusNote = document.getElementById("statusNote");
     const tasksBody = document.getElementById("tasksBody");
     const activeUserSelect = document.getElementById("activeUserSelect");
@@ -1324,6 +1371,7 @@
     let calendarNotesMap = {};
     let usefulLinks = [];
     let clickupRefreshTimer = null;
+    let appStarted = false;
 
     const savedUser = localStorage.getItem("activeUserName");
     if (savedUser) activeUserSelect.value = savedUser;
@@ -1332,6 +1380,37 @@
       localStorage.setItem("activeUserName", activeUserSelect.value);
       renderLinks();
     });
+
+    function normalizeEmail(email) {
+      return String(email || "").trim().toLowerCase();
+    }
+
+    function isAllowedUser(user) {
+      return ALLOWED_EMAILS.includes(normalizeEmail(user?.email));
+    }
+
+    async function handleLogin() {
+      authMsg.textContent = "Влизане...";
+      try {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        console.error(err);
+        authMsg.textContent = "Грешка при вход.";
+      }
+    }
+
+    function showAuthGate(message = "") {
+      authGate.style.display = "block";
+      appShell.style.display = "none";
+      authMsg.textContent = message;
+    }
+
+    function showAppShell() {
+      authGate.style.display = "none";
+      appShell.style.display = "block";
+    }
 
     function formatYMD(dateObj) {
       const y = dateObj.getFullYear();
@@ -1366,8 +1445,7 @@
     function getWinnerFromRotation(rotationDeg) {
       const normalized = ((rotationDeg % 360) + 360) % 360;
       const pointedAngle = (360 - normalized) % 360;
-      const winner = wheelUsers.find(seg => pointedAngle >= seg.startDeg && pointedAngle < seg.endDeg) || wheelUsers[0];
-      return winner;
+      return wheelUsers.find(seg => pointedAngle >= seg.startDeg && pointedAngle < seg.endDeg) || wheelUsers[0];
     }
 
     function renderCalendar() {
@@ -1788,21 +1866,6 @@
       return ["closed", "done", "complete", "completed", "finished", "resolved", "cancelled", "canceled"].some(x => s.includes(x));
     }
 
-    function isUrgentItem(item) {
-      const priority = String(item.priority || "").toLowerCase();
-      const tags = Array.isArray(item.tags) ? item.tags.map(t => String(t?.name || t).toLowerCase()) : [];
-      return priority.includes("urgent") || priority.includes("high") || tags.some(t => t.includes("urgent") || t.includes("спеш"));
-    }
-
-    function sameDay(a, b) {
-      return a && b && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-    }
-
-    function formatDueText(item) {
-      const d = parseClickUpDate(item.due_date || item.dueDate || item.due);
-      return d ? formatDateTime(d.getTime()) : String(item.due_date || item.dueDate || item.due || "-");
-    }
-
     async function fetchClickUpView(view) {
       const res = await fetch(`${CLICKUP_WEBAPP_URL}?view=${encodeURIComponent(view)}&t=${Date.now()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -1818,6 +1881,11 @@
         if (!map.has(key)) map.set(key, item);
       });
       return [...map.values()];
+    }
+
+    function formatDueText(item) {
+      const d = parseClickUpDate(item.due_date || item.dueDate || item.due);
+      return d ? formatDateTime(d.getTime()) : String(item.due_date || item.dueDate || item.due || "-");
     }
 
     function renderClickUpSection(title, items, isOverdue = false) {
@@ -1850,38 +1918,39 @@
         const today = dedupeClickUpItems(todayRaw);
         const urgent = dedupeClickUpItems(urgentRaw);
         const common = dedupeClickUpItems(commonRaw);
-
         const combined = dedupeClickUpItems([...today, ...urgent, ...common]);
         const now = new Date();
+        const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
         const overdue = combined.filter(item => {
           const due = parseClickUpDate(item.due_date || item.dueDate || item.due);
           if (!due) return false;
-          return due < new Date(now.getFullYear(), now.getMonth(), now.getDate()) && !isClosedStatus(item.status);
+          return due < dayStart && !isClosedStatus(item.status);
         });
 
         const todayFiltered = today.filter(item => {
           const due = parseClickUpDate(item.due_date || item.dueDate || item.due);
-          return due ? sameDay(due, now) : true;
+          if (!due) return true;
+          return due.getFullYear() === now.getFullYear() && due.getMonth() === now.getMonth() && due.getDate() === now.getDate();
         });
 
-        const urgentFiltered = urgent.filter(item => isUrgentItem(item) || true);
-        const commonFiltered = common.filter(item => !overdue.some(o => (o.id || o.url || o.name) === (item.id || item.url || item.name)));
+        const commonFiltered = common.filter(item => !overdue.some(o => String(o.id || o.url || o.name) === String(item.id || item.url || item.name)));
 
         clickupGrid.innerHTML = [
           renderClickUpSection("За днес", todayFiltered),
-          renderClickUpSection("Спешни", urgentFiltered),
+          renderClickUpSection("Спешни", urgent),
           renderClickUpSection("Общи", commonFiltered),
           renderClickUpSection("Просрочени", dedupeClickUpItems(overdue), true)
         ].join("");
       } catch (err) {
         console.error(err);
         if (force || !clickupGrid.innerHTML) {
-          clickupGrid.innerHTML = `
-            <div class="clickup-section"><div class="clickup-section-title">За днес</div><div class="clickup-empty">—</div></div>
-            <div class="clickup-section"><div class="clickup-section-title">Спешни</div><div class="clickup-empty">—</div></div>
-            <div class="clickup-section"><div class="clickup-section-title">Общи</div><div class="clickup-empty">—</div></div>
-            <div class="clickup-section overdue"><div class="clickup-section-title">Просрочени</div><div class="clickup-empty">—</div></div>
-          `;
+          clickupGrid.innerHTML = [
+            renderClickUpSection("За днес", []),
+            renderClickUpSection("Спешни", []),
+            renderClickUpSection("Общи", []),
+            renderClickUpSection("Просрочени", [], true)
+          ].join("");
         }
       }
     }
@@ -1891,6 +1960,7 @@
       clickupRefreshTimer = setInterval(() => loadClickUp(false), CLICKUP_REFRESH_MS);
     }
 
+    loginBtn.addEventListener("click", handleLogin);
     shippingSearch.addEventListener("input", renderShippingTable);
     zoneFilter.addEventListener("change", renderShippingTable);
 
@@ -1989,7 +2059,29 @@
       startClickupAutoRefresh();
     }
 
-    bootstrap();
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        showAuthGate("");
+        return;
+      }
+
+      if (!isAllowedUser(user)) {
+        try {
+          await signOut(auth);
+        } catch (err) {
+          console.error(err);
+        }
+        showAuthGate("Този имейл няма достъп.");
+        return;
+      }
+
+      showAppShell();
+
+      if (!appStarted) {
+        appStarted = true;
+        bootstrap();
+      }
+    });
   </script>
 </body>
 </html>
