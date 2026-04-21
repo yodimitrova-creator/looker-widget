@@ -964,7 +964,7 @@
           </div>
 
           <div class="info-banner">
-            Отметките се виждат от всички, които са отворили страницата. Ако някой отбележи задача, другите ще я видят веднага.
+            Ако искаш да добавиш бележка в календара или да изтриеш коментар във форума посети този линк: https://yodimitrova-creator.github.io/looker-widget/
           </div>
 
           <div class="main-top-grid">
@@ -1660,42 +1660,44 @@
     }
 
     function normalizeOrders(raw) {
-      const tokens = raw
-        .replace(/\r/g, "\n")
-        .replace(/[;,]+/g, "\n")
-        .replace(/\s*\n\s*/g, ",")
-        .split(",")
-        .map(x => x.trim())
-        .filter(Boolean)
-        .slice(0, 100);
-      return [...new Set(tokens)];
+      return [...new Set(
+        String(raw)
+          .replace(/[\r\n;]+/g, ",")
+          .split(",")
+          .map(x => x.trim())
+          .filter(Boolean)
+      )];
     }
 
-    function buildNsActiveUrl(orderId) {
-      return `https://app.noverstock.eu/orders?filter%5BexternalId%5D=${encodeURIComponent(orderId)}&pagination%5Blimit%5D=100`;
+    function buildNsActiveUrl(orderIds) {
+      return `https://app.noverstock.eu/orders?filter%5BexternalId%5D=${encodeURIComponent(orderIds.join(","))}&pagination%5Blimit%5D=100`;
     }
 
-    function buildNsCancelledUrl(orderId) {
-      return `https://app.noverstock.eu/cancelled-orders?filter%5BexternalId%5D=${encodeURIComponent(orderId)}&pagination%5Blimit%5D=100`;
+    function buildNsCancelledUrl(orderIds) {
+      return `https://app.noverstock.eu/cancelled-orders?filter%5BexternalId%5D=${encodeURIComponent(orderIds.join(","))}&pagination%5Blimit%5D=100`;
     }
 
     function renderOrderLinks() {
       const orders = normalizeOrders(ordersInput.value);
       ordersInput.value = orders.join(", ");
+
       if (!orders.length) {
         orderLinksList.innerHTML = "";
         return;
       }
 
-      orderLinksList.innerHTML = orders.map(orderId => `
+      const activeUrl = buildNsActiveUrl(orders);
+      const cancelledUrl = buildNsCancelledUrl(orders);
+
+      orderLinksList.innerHTML = `
         <div class="order-item">
-          <div class="order-id">${escapeHtml(orderId)}</div>
+          <div class="order-id">${escapeHtml(orders.join(", "))}</div>
           <div class="order-actions">
-            <a class="link-btn" href="${buildNsActiveUrl(orderId)}" target="_blank" rel="noopener noreferrer">NS ACTIVE ORDERS</a>
-            <a class="link-btn" href="${buildNsCancelledUrl(orderId)}" target="_blank" rel="noopener noreferrer">NS CANCELLED ORDERS</a>
+            <a class="link-btn" href="${activeUrl}" target="_blank" rel="noopener noreferrer">NS ACTIVE ORDERS</a>
+            <a class="link-btn" href="${cancelledUrl}" target="_blank" rel="noopener noreferrer">NS CANCELLED ORDERS</a>
           </div>
         </div>
-      `).join("");
+      `;
     }
 
     function formatDateTime(ts) {
