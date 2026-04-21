@@ -2063,14 +2063,7 @@
       await loadClickUp(true);
       startClickupAutoRefresh();
     }
-    getRedirectResult(auth)
-      .then((result) => {
-        console.log("REDIRECT RESULT:", result);
-      })
-      .catch((err) => {
-        console.error("REDIRECT ERROR:", err);
-        authMsg.textContent = err.code || err.message || "Грешка при вход.";
-      });
+
 
     onAuthStateChanged(auth, async (user) => {
       console.log("AUTH USER:", user);
