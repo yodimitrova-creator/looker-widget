@@ -841,6 +841,24 @@
       line-height:1.45;
     }
 
+    .clickup-item-name a{
+      color:#56425e;
+      text-decoration:none;
+    }
+
+    .clickup-item-name a:hover{
+      text-decoration:underline;
+    }
+
+    .clickup-meta-row{
+      margin-top:2px;
+    }
+
+    .clickup-meta-label{
+      font-weight:700;
+      color:#6f5b77;
+    }
+
     .clickup-empty{
       font-size:11.5px;
       color:#8d7993;
@@ -1398,12 +1416,6 @@
     }
 
 
-    function getWinnerFromRotation(rotationDeg) {
-      const normalized = ((rotationDeg % 360) + 360) % 360;
-      const pointedAngle = (360 - normalized) % 360;
-      return wheelUsers.find(seg => pointedAngle >= seg.startDeg && pointedAngle < seg.endDeg) || wheelUsers[0];
-    }
-
     function renderCalendar() {
       const grid = document.getElementById("calendarGrid");
       const title = document.getElementById("calendarTitle");
@@ -1933,20 +1945,66 @@
       return d ? formatDateTime(d.getTime()) : String(item.due_date || item.dueDate || item.due || "-");
     }
 
+    function getClickUpUrl(item) {
+      return item.url || item.link || item.task_url || item.permalink || "";
+    }
+
+    function getClickUpAssignees(item) {
+      const raw = item.assignees || item.assigned || item.tagged || item.members || [];
+
+      if (Array.isArray(raw)) {
+        const names = raw
+          .map(person => {
+            if (typeof person === "string") return person;
+            return person.username || person.name || person.email || person.initials || "";
+          })
+          .filter(Boolean);
+
+        return names.length ? names.join(", ") : "-";
+      }
+
+      if (typeof raw === "string" && raw.trim()) {
+        return raw.trim();
+      }
+
+      return "-";
+    }
+
+
     function renderClickUpSection(title, items, isOverdue = false) {
       return `
         <div class="clickup-section ${isOverdue ? "overdue" : ""}">
           <div class="clickup-section-title">${escapeHtml(title)}</div>
           <div class="clickup-items">
-            ${items.length ? items.map(item => `
-              <div class="clickup-item ${isOverdue ? "overdue" : ""}">
-                <div class="clickup-item-name">${escapeHtml(item.name || "")}</div>
-                <div class="clickup-item-meta">
-                  ${escapeHtml(item.status || "-")}<br>
-                  ${escapeHtml(formatDueText(item))}
+            ${items.length ? items.map(item => {
+              const taskUrl = getClickUpUrl(item);
+              const assignees = getClickUpAssignees(item);
+              const dueText = formatDueText(item);
+              const statusText = item.status || "-";
+
+              return `
+                <div class="clickup-item ${isOverdue ? "overdue" : ""}">
+                  <div class="clickup-item-name">
+                    ${
+                      taskUrl
+                        ? `<a href="${escapeHtml(taskUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name || "")}</a>`
+                        : `${escapeHtml(item.name || "")}`
+                    }
+                  </div>
+                  <div class="clickup-item-meta">
+                    <div class="clickup-meta-row">
+                      <span class="clickup-meta-label">Статус:</span> ${escapeHtml(statusText)}
+                    </div>
+                    <div class="clickup-meta-row">
+                      <span class="clickup-meta-label">Крайна дата:</span> ${escapeHtml(dueText)}
+                    </div>
+                    <div class="clickup-meta-row">
+                      <span class="clickup-meta-label">Тагнат:</span> ${escapeHtml(assignees)}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            `).join("") : `<div class="clickup-empty">—</div>`}
+              `;
+            }).join("") : `<div class="clickup-empty">—</div>`}
           </div>
         </div>
       `;
