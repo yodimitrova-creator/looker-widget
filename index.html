@@ -29,14 +29,13 @@
       --shadow:0 10px 28px rgba(166,123,163,.10);
     }
 
-    * { box-sizing:border-box; }
+    *{ box-sizing:border-box; }
 
     body{
       margin:0;
-      font-family: Arial, sans-serif;
+      font-family:Arial, sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(circle at top left, #fff7fb 0%, #fff8fc 32%, #fbf5ff 62%, #f7f1fd 100%);
+      background:radial-gradient(circle at top left, #fff7fb 0%, #fff8fc 32%, #fbf5ff 62%, #f7f1fd 100%);
       padding:12px;
     }
 
@@ -75,7 +74,7 @@
     .stack{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:12px;
     }
 
     .calendar-card{ padding:10px; }
@@ -205,15 +204,15 @@
       position:absolute;
       inset:0;
       border-radius:50%;
-      background:
-        conic-gradient(from -90deg,
-          transparent 0deg 119deg,
-          rgba(255,255,255,.7) 119deg 121deg,
-          transparent 121deg 239deg,
-          rgba(255,255,255,.7) 239deg 241deg,
-          transparent 241deg 359deg,
-          rgba(255,255,255,.7) 359deg 360deg
-        );
+      background:conic-gradient(
+        from -90deg,
+        transparent 0deg 118.5deg,
+        rgba(255,255,255,.85) 118.5deg 121.5deg,
+        transparent 121.5deg 238.5deg,
+        rgba(255,255,255,.85) 238.5deg 241.5deg,
+        transparent 241.5deg 358.5deg,
+        rgba(255,255,255,.85) 358.5deg 360deg
+      );
       z-index:1;
       pointer-events:none;
     }
@@ -236,7 +235,7 @@
       position:absolute;
       left:50%;
       top:50%;
-      width:84px;
+      width:88px;
       text-align:center;
       font-size:14px;
       font-weight:700;
@@ -244,7 +243,7 @@
       transform-origin:center center;
       z-index:2;
       pointer-events:none;
-      text-shadow:0 1px 0 rgba(255,255,255,.4);
+      text-shadow:0 1px 0 rgba(255,255,255,.45);
     }
 
     .wheel-button,
@@ -370,7 +369,7 @@
       padding:8px 10px;
       font-size:12px;
       color:var(--text);
-      font-family: Arial, sans-serif;
+      font-family:Arial, sans-serif;
       width:100%;
     }
 
@@ -396,9 +395,9 @@
       line-height:1.45;
     }
 
-    .inside-top-grid{
+    .main-top-grid{
       display:grid;
-      grid-template-columns:minmax(0, 1fr);
+      grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
       gap:12px;
       align-items:start;
       margin-bottom:12px;
@@ -408,14 +407,6 @@
       margin:0 0 8px 0;
       font-size:15px;
       color:var(--title);
-    }
-
-    .compact-row{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-bottom:8px;
     }
 
     .table-wrap{
@@ -515,7 +506,15 @@
       color:#8a728f;
     }
 
-    .useful-links-card{ padding:12px; }
+    .checklist-card,
+    .clickup-card,
+    .useful-links-card,
+    .orders-card,
+    .operations-card,
+    .shipping-card,
+    .forum-card{
+      padding:12px;
+    }
 
     .useful-links-add{
       display:grid;
@@ -585,17 +584,9 @@
 
     .mid-layout{
       display:grid;
-      grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-columns:minmax(0, 1fr);
       gap:12px;
       align-items:start;
-    }
-
-    .orders-card,
-    .operations-card,
-    .shipping-card,
-    .forum-card,
-    .clickup-card{
-      padding:12px;
     }
 
     .ops-header{
@@ -656,8 +647,7 @@
     .shipping-toolbar,
     .tasks-toolbar,
     .orders-toolbar,
-    .forum-toolbar,
-    .clickup-toolbar{
+    .forum-toolbar{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
@@ -687,13 +677,6 @@
       margin-left:6px;
       color:#8b7391;
       font-size:11px;
-    }
-
-    .small-note{
-      font-size:11.5px;
-      color:#7e6b87;
-      margin-top:8px;
-      line-height:1.4;
     }
 
     .order-links-list{
@@ -802,128 +785,54 @@
       border:1px solid #f2c4d3;
     }
 
-    .forum-empty{
+    .forum-empty,
+    .clickup-placeholder{
       font-size:12px;
       color:#8c7691;
       background:#fff;
       border:1px dashed #e4d3e7;
       border-radius:14px;
       padding:12px;
+      line-height:1.55;
     }
 
-    .clickup-summary{
+    .clickup-toolbar{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
+      align-items:center;
       margin-bottom:10px;
     }
 
-    .summary-chip,
-    .task-chip{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:700;
-      border:1px solid #e1cfe8;
-      background:#fff;
-      color:#6d5776;
+    .clickup-placeholder ul{
+      margin:8px 0 0;
+      padding-left:18px;
     }
 
-    .summary-chip.danger,
-    .task-chip.danger{
-      background:var(--danger-soft);
-      border-color:var(--danger-line);
-      color:#b54d73;
-    }
-
-    .summary-chip.today,
-    .task-chip.today{
-      background:#fff4fa;
-      border-color:#f0c8da;
-      color:#8f4c6a;
-    }
-
-    .summary-chip.urgent,
-    .task-chip.urgent{
-      background:#fff5f6;
-      border-color:#f2ccd6;
-      color:#b3496c;
-    }
-
-    .summary-chip.common,
-    .task-chip.common{
-      background:#f5f0ff;
-      border-color:#dfd0f4;
-      color:#6a4f93;
-    }
-
-    .summary-chip.subtask,
-    .task-chip.subtask{
-      background:#eef5ff;
-      border-color:#d1e2fb;
-      color:#5679a4;
-    }
-
-    .clickup-list{
-      display:grid;
-      gap:8px;
-    }
-
-    .clickup-item{
-      padding:10px;
+    .clickup-placeholder code{
       background:#fff;
       border:1px solid #ead9ef;
-      border-radius:14px;
-    }
-
-    .clickup-item.overdue{
-      border-color:var(--danger-line);
-      background:linear-gradient(180deg, #fff8fb 0%, #fff1f5 100%);
-      box-shadow:0 0 0 1px rgba(239,108,143,.06);
-    }
-
-    .clickup-item-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:8px;
-      margin-bottom:6px;
-    }
-
-    .clickup-item-name{
-      font-size:12.5px;
-      font-weight:700;
-      color:#56425e;
-      line-height:1.35;
-    }
-
-    .clickup-item.overdue .clickup-item-name{ color:#8d3658; }
-
-    .clickup-meta{
+      border-radius:6px;
+      padding:2px 6px;
       font-size:11px;
-      color:#8a728f;
-      line-height:1.45;
-    }
-
-    .clickup-tags{
-      display:flex;
-      gap:6px;
-      flex-wrap:wrap;
-      margin:6px 0 8px;
     }
 
     @media (max-width:1500px){
-      .app{ grid-template-columns:280px minmax(0, 1fr); }
-      .right-col{ position:static; grid-column:1 / -1; }
+      .app{
+        grid-template-columns:280px minmax(0, 1fr);
+      }
+      .right-col{
+        position:static;
+        grid-column:1 / -1;
+      }
     }
 
     @media (max-width:1180px){
-      .inside-top-grid,
+      .main-top-grid,
       .mid-layout,
-      .ops-grid{ grid-template-columns:1fr; }
+      .ops-grid{
+        grid-template-columns:1fr;
+      }
     }
 
     @media (max-width:980px){
@@ -955,7 +864,6 @@
             <div class="wheel-pointer"></div>
             <div id="wheel" class="wheel"></div>
           </div>
-
           <button id="spinWheelBtn" class="wheel-button">🎯 Завърти</button>
           <div id="wheelResult" class="wheel-result">Натисни, за да избереш случаен потребител.</div>
         </div>
@@ -1005,8 +913,8 @@
           Отметките се виждат от всички, които са отворили страницата. Ако някой отбележи задача, другите ще я видят веднага.
         </div>
 
-        <div class="inside-top-grid">
-          <div>
+        <div class="main-top-grid">
+          <div class="card checklist-card">
             <h2 class="section-title">Checklist</h2>
 
             <div class="tasks-input-row">
@@ -1035,6 +943,25 @@
 
             <div class="status-note" id="statusNote">Свързване...</div>
           </div>
+
+          <div class="card clickup-card">
+            <h2 class="section-title">ClickUp</h2>
+
+            <div class="clickup-toolbar">
+              <button id="reloadClickUpBtn" class="action-btn">🔄 Обнови</button>
+            </div>
+
+            <div id="clickupPlaceholder" class="clickup-placeholder">
+              <b>PLACEHOLDER ЗА CLICKUP</b>
+              <ul>
+                <li>За днес:</li>
+                <li>Спешни:</li>
+                <li>Общи:</li>
+                <li>Просрочени:</li>
+              </ul>
+              Лесно за редакция: смени съдържанието в елемента с id <code>clickupPlaceholder</code>.
+            </div>
+          </div>
         </div>
 
         <div class="mid-layout">
@@ -1043,7 +970,7 @@
               <h2 class="section-title">NS Order Link Generator</h2>
 
               <div class="orders-toolbar">
-                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга, със запетая, точка и запетая или интервал..."></textarea>
+                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките. Може и на отделни редове."></textarea>
               </div>
 
               <div class="orders-toolbar">
@@ -1053,12 +980,13 @@
 
               <div class="helper-box">
                 Приема:
-                <br><code>1796430
-1797052</code>
+                <br><code>1796430 1797052</code>
                 <br>или
                 <br><code>1796430, 1797052</code>
                 <br>или
-                <br><code>1796430; 1797052 1798001</code>
+                <br><code>1796430;
+1797052
+1798001</code>
               </div>
 
               <div id="orderLinksList" class="order-links-list"></div>
@@ -1093,19 +1021,6 @@
                   <tbody id="shippingBody"></tbody>
                 </table>
               </div>
-            </div>
-          </div>
-
-          <div class="stack">
-            <div class="card clickup-card">
-              <h2 class="section-title">ClickUp</h2>
-
-              <div class="clickup-toolbar">
-                <button id="reloadClickUpBtn" class="action-btn">🔄 Обнови</button>
-              </div>
-
-              <div id="clickupSummary" class="clickup-summary"></div>
-              <div id="clickupList" class="clickup-list"></div>
             </div>
           </div>
         </div>
@@ -1184,9 +1099,7 @@
 
         <div class="ops-box" style="margin-bottom:10px;">
           <h3>ONFY (увиснала поръчка)</h3>
-
           <p>Когато нямаме продуктите → канселираме:</p>
-
           <ol>
             <li>
               <b>NS:</b><br>
@@ -1267,6 +1180,7 @@
     };
 
     const CLICKUP_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwMSDYadAB1h8FYYidUhG6e5PiBlW6gCh5TcQEctxntvCpFF2ci6Izh2xV4QI9b8b3B/exec";
+    const CLICKUP_REFRESH_MS = 5 * 60 * 1000;
 
     const initialTasks = [
       { id: 1, bobi: false, teya: false, yo: false, name: "Поръчки с таг СТОП - pending - 8:30h" },
@@ -1339,9 +1253,9 @@
     ];
 
     const wheelUsers = [
-      { name: "Йо", startDeg: 0, endDeg: 120, color: "#9fc7ff" },
-      { name: "Боби", startDeg: 120, endDeg: 240, color: "#f7bfdc" },
-      { name: "Тея", startDeg: 240, endDeg: 360, color: "#dac4f3" }
+      { name: "Йо", startDeg: 0, endDeg: 120 },
+      { name: "Боби", startDeg: 120, endDeg: 240 },
+      { name: "Тея", startDeg: 240, endDeg: 360 }
     ];
 
     const app = initializeApp(firebaseConfig);
@@ -1373,17 +1287,18 @@
     const spinWheelBtn = document.getElementById("spinWheelBtn");
     const wheelResult = document.getElementById("wheelResult");
     const reloadClickUpBtn = document.getElementById("reloadClickUpBtn");
-    const clickupList = document.getElementById("clickupList");
-    const clickupSummary = document.getElementById("clickupSummary");
     const linkTitleInput = document.getElementById("linkTitleInput");
     const linkUrlInput = document.getElementById("linkUrlInput");
     const addLinkBtn = document.getElementById("addLinkBtn");
+    const clickupPlaceholder = document.getElementById("clickupPlaceholder");
 
     let shippingSort = { key: "country", direction: "asc" };
     let currentWheelRotation = 0;
     let wheelSpinning = false;
     let calendarNotesMap = {};
     let usefulLinks = [];
+    let clickupRefreshTimer = null;
+    let lastClickupRefreshAt = 0;
 
     const savedUser = localStorage.getItem("activeUserName");
     if (savedUser) activeUserSelect.value = savedUser;
@@ -1409,6 +1324,12 @@
         .replaceAll("'", "&#039;");
     }
 
+    function simpleTextPrompt(title, initialValue = "") {
+      const value = window.prompt(title, initialValue);
+      if (value === null) return null;
+      return value.trim();
+    }
+
     function renderWheelLabels() {
       wheel.innerHTML = "";
 
@@ -1419,7 +1340,7 @@
 
         const center = (segment.startDeg + segment.endDeg) / 2;
         const rotate = center - 90;
-        const radius = 74;
+        const radius = 72;
         label.style.transform = `translate(-50%, -50%) rotate(${rotate}deg) translateY(-${radius}px) rotate(${-rotate}deg)`;
         wheel.appendChild(label);
       });
@@ -1439,7 +1360,7 @@
       ];
       const dayNames = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
-      title.textContent = monthNames[month] + " " + year;
+      title.textContent = `${monthNames[month]} ${year}`;
       grid.innerHTML = "";
 
       dayNames.forEach((d, idx) => {
@@ -1453,7 +1374,6 @@
       const firstDay = new Date(year, month, 1);
       let firstDayIndex = firstDay.getDay();
       firstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-
       const daysInMonth = new Date(year, month + 1, 0).getDate();
 
       for (let i = 0; i < firstDayIndex; i++) {
@@ -1473,21 +1393,27 @@
         el.className = "day" + (d === today ? " today" : "") + (isWeekend ? " weekend" : "") + (hasNote ? " has-note" : "");
         el.textContent = d;
         el.title = hasNote ? calendarNotesMap[ymd].text : "Кликни за бележка";
+
         el.addEventListener("click", async () => {
           const currentText = calendarNotesMap[ymd]?.text || "";
-          const nextText = prompt(`Бележка за ${d}.${String(month + 1).padStart(2, "0")}.${year}`, currentText);
+          const nextText = simpleTextPrompt(`Бележка за ${d}.${String(month + 1).padStart(2, "0")}.${year}`, currentText);
           if (nextText === null) return;
 
-          if (!nextText.trim()) {
-            await remove(ref(db, `dailyChecklist/calendarNotes/${ymd}`));
-          } else {
-            await set(ref(db, `dailyChecklist/calendarNotes/${ymd}`), {
-              text: nextText.trim(),
-              author: activeUserSelect.value,
-              updatedAt: Date.now()
-            });
+          try {
+            if (!nextText) {
+              await remove(ref(db, `dailyChecklist/calendarNotes/${ymd}`));
+            } else {
+              await set(ref(db, `dailyChecklist/calendarNotes/${ymd}`), {
+                text: nextText,
+                author: activeUserSelect.value,
+                updatedAt: Date.now()
+              });
+            }
+          } catch (err) {
+            console.error(err);
           }
         });
+
         grid.appendChild(el);
       }
     }
@@ -1520,10 +1446,7 @@
               href="${allowed ? escapeHtml(link.url || "#") : "#"}"
               target="_blank"
               rel="noopener noreferrer"
-              title="${allowed ? "Отваряне" : "Само " + onlyUser + " може да го ползва"}"
-            >
-              ${escapeHtml(link.buttonText || "Отвори")}
-            </a>
+            >${escapeHtml(link.buttonText || "Отвори")}</a>
             <button class="icon-btn delete-link-btn" data-link-id="${escapeHtml(link.id || "")}" title="Изтрий линк">✕</button>
           `;
           linksGrid.appendChild(row);
@@ -1539,27 +1462,13 @@
 
       tasks.forEach(task => {
         const tr = document.createElement("tr");
-
         tr.innerHTML = `
           <td class="col-index">${task.id}</td>
-          <td class="col-check">
-            <label class="checkbox-wrap">
-              <input class="bobi" type="checkbox" data-id="${task.id}" data-field="bobi" ${task.bobi ? "checked" : ""}>
-            </label>
-          </td>
-          <td class="col-check">
-            <label class="checkbox-wrap">
-              <input class="teya" type="checkbox" data-id="${task.id}" data-field="teya" ${task.teya ? "checked" : ""}>
-            </label>
-          </td>
-          <td class="col-check">
-            <label class="checkbox-wrap">
-              <input class="yo" type="checkbox" data-id="${task.id}" data-field="yo" ${task.yo ? "checked" : ""}>
-            </label>
-          </td>
+          <td class="col-check"><label class="checkbox-wrap"><input class="bobi" type="checkbox" data-id="${task.id}" data-field="bobi" ${task.bobi ? "checked" : ""}></label></td>
+          <td class="col-check"><label class="checkbox-wrap"><input class="teya" type="checkbox" data-id="${task.id}" data-field="teya" ${task.teya ? "checked" : ""}></label></td>
+          <td class="col-check"><label class="checkbox-wrap"><input class="yo" type="checkbox" data-id="${task.id}" data-field="yo" ${task.yo ? "checked" : ""}></label></td>
           <td class="task-name">${escapeHtml(task.name)}</td>
         `;
-
         tasksBody.appendChild(tr);
       });
 
@@ -1570,9 +1479,7 @@
           const checked = e.target.checked;
 
           try {
-            await update(ref(db, `dailyChecklist/tasks/${id}`), {
-              [field]: checked
-            });
+            await update(ref(db, `dailyChecklist/tasks/${id}`), { [field]: checked });
             statusNote.textContent = "Записано.";
           } catch (err) {
             console.error(err);
@@ -1609,21 +1516,21 @@
     }
 
     async function resetAllTasks() {
-      const confirmed = confirm("Сигурна ли си, че искаш да занулиш всички отметки?");
+      const confirmed = window.confirm("Сигурна ли си, че искаш да занулиш всички отметки?");
       if (!confirmed) return;
 
       try {
         const snap = await get(tasksRef);
         const value = snap.val() || {};
-        const updates = {};
+        const updatesObj = {};
 
         Object.values(value).forEach(task => {
-          updates[`${task.id}/bobi`] = false;
-          updates[`${task.id}/teya`] = false;
-          updates[`${task.id}/yo`] = false;
+          updatesObj[`${task.id}/bobi`] = false;
+          updatesObj[`${task.id}/teya`] = false;
+          updatesObj[`${task.id}/yo`] = false;
         });
 
-        await update(tasksRef, updates);
+        await update(tasksRef, updatesObj);
         statusNote.textContent = "Всички отметки са нулирани.";
       } catch (err) {
         console.error(err);
@@ -1660,7 +1567,7 @@
 
     async function deleteUsefulLink(linkId) {
       if (!linkId) return;
-      const confirmed = confirm("Да изтрия ли този линк?");
+      const confirmed = window.confirm("Да изтрия ли този линк?");
       if (!confirmed) return;
       await remove(ref(db, `dailyChecklist/usefulLinks/${linkId}`));
     }
@@ -1681,16 +1588,10 @@
     function renderShippingTable() {
       const q = shippingSearch.value.trim().toLowerCase();
       const zone = zoneFilter.value;
-
       let rows = [...shippingData];
 
       if (zone) rows = rows.filter(r => String(r.zone) === zone);
-
-      if (q) {
-        rows = rows.filter(r =>
-          Object.values(r).some(v => String(v).toLowerCase().includes(q))
-        );
-      }
+      if (q) rows = rows.filter(r => Object.values(r).some(v => String(v).toLowerCase().includes(q)));
 
       rows.sort((a, b) => {
         const av = parseSortValue(a[shippingSort.key]);
@@ -1715,14 +1616,14 @@
     }
 
     function normalizeOrders(raw) {
-      const tokens = raw
-        .replace(/[\t\r]+/g, "\n")
-        .split(/[\n,; ]+/)
+      const normalized = raw
+        .replace(/[\t\r,;]+/g, "\n")
+        .split(/\n+/)
         .map(x => x.trim())
         .filter(Boolean)
         .slice(0, 100);
 
-      return [...new Set(tokens)];
+      return [...new Set(normalized)];
     }
 
     function buildNsActiveUrl(orderId) {
@@ -1735,7 +1636,6 @@
 
     function renderOrderLinks() {
       const orders = normalizeOrders(ordersInput.value);
-
       if (!orders.length) {
         orderLinksList.innerHTML = "";
         return;
@@ -1781,15 +1681,21 @@
     }
 
     async function deleteForumComment(key) {
-      const confirmed = confirm("Да изтрия ли този коментар?");
+      const confirmed = window.confirm("Да изтрия ли този коментар?");
       if (!confirmed) return;
-      await remove(ref(db, `dailyChecklist/forum/${key}`));
+      try {
+        await remove(ref(db, `dailyChecklist/forum/${key}`));
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     async function togglePinComment(key, currentValue) {
-      await update(ref(db, `dailyChecklist/forum/${key}`), {
-        pinned: !currentValue
-      });
+      try {
+        await update(ref(db, `dailyChecklist/forum/${key}`), { pinned: !currentValue });
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     function renderForum(value) {
@@ -1836,234 +1742,56 @@
 
       const winner = wheelUsers[Math.floor(Math.random() * wheelUsers.length)];
       const centerAngle = (winner.startDeg + winner.endDeg) / 2;
-      const extraSpins = 5 + Math.floor(Math.random() * 3);
-      const target = extraSpins * 360 + (360 - centerAngle);
-
-      currentWheelRotation = currentWheelRotation + target;
+      const pointerAngle = 0;
+      const normalizedCurrent = ((currentWheelRotation % 360) + 360) % 360;
+      const targetWithinCircle = (pointerAngle - centerAngle + 360) % 360;
+      const delta = (targetWithinCircle - normalizedCurrent + 360) % 360;
+      const extraSpins = (5 + Math.floor(Math.random() * 3)) * 360;
+      currentWheelRotation += extraSpins + delta;
 
       wheel.style.transition = "transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1)";
       wheel.style.transform = `rotate(${currentWheelRotation}deg)`;
-
       wheelResult.textContent = "Колелото се върти...";
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         wheelResult.innerHTML = `🎉 Избрано: <b>${winner.name}</b>`;
         wheelSpinning = false;
       }, 4200);
     }
 
-    function parseClickUpDate(value) {
-      if (!value && value !== 0) return null;
+    async function loadClickUpPlaceholder(force = false) {
+      const now = Date.now();
+      if (!force && now - lastClickupRefreshAt < CLICKUP_REFRESH_MS) return;
+      lastClickupRefreshAt = now;
 
-      if (typeof value === "number" || /^\d{10,}$/.test(String(value))) {
-        const ts = Number(value);
-        const ms = String(Math.abs(ts)).length <= 10 ? ts * 1000 : ts;
-        const d = new Date(ms);
-        return isNaN(d.getTime()) ? null : d;
-      }
-
-      const raw = String(value).trim();
-      if (!raw) return null;
-
-      const isoTry = new Date(raw);
-      if (!isNaN(isoTry.getTime())) return isoTry;
-
-      const m = raw.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{2,4})(?:\s+(\d{1,2}):(\d{2}))?$/);
-      if (m) {
-        const day = Number(m[1]);
-        const month = Number(m[2]) - 1;
-        const year = Number(m[3].length === 2 ? `20${m[3]}` : m[3]);
-        const hour = Number(m[4] || 0);
-        const minute = Number(m[5] || 0);
-        const d = new Date(year, month, day, hour, minute);
-        return isNaN(d.getTime()) ? null : d;
-      }
-
-      return null;
-    }
-
-    function isClosedStatus(status) {
-      const s = String(status || "").toLowerCase();
-      return ["closed", "done", "complete", "completed", "finished", "resolved", "cancelled", "canceled"].some(x => s.includes(x));
-    }
-
-    function sameCalendarDay(a, b) {
-      return a && b &&
-        a.getFullYear() === b.getFullYear() &&
-        a.getMonth() === b.getMonth() &&
-        a.getDate() === b.getDate();
-    }
-
-    function toDayStart(date) {
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    }
-
-    function normalizeClickUpItems(allResponses) {
-      const map = new Map();
-
-      allResponses.forEach(({ view, items }) => {
-        items.forEach(item => {
-          const key = String(item.id || item.task_id || item.url || `${item.name || ""}|${item.due_date || ""}|${view}`);
-          if (!map.has(key)) {
-            map.set(key, {
-              ...item,
-              _views: new Set([view])
-            });
-          } else {
-            const existing = map.get(key);
-            existing._views.add(view);
-            existing.name = existing.name || item.name;
-            existing.status = existing.status || item.status;
-            existing.priority = existing.priority || item.priority;
-            existing.due_date = existing.due_date || item.due_date;
-            existing.url = existing.url || item.url;
-            existing.list_name = existing.list_name || item.list_name;
-            existing.tags = existing.tags || item.tags;
-          }
-        });
-      });
-
-      const today = toDayStart(new Date());
-
-      return [...map.values()].map(item => {
-        const dueObj = parseClickUpDate(item.due_date || item.dueDate || item.due);
-        const dueStart = dueObj ? toDayStart(dueObj) : null;
-        const overdue = !!dueStart && dueStart < today && !isClosedStatus(item.status);
-        const dueToday = !!dueObj && sameCalendarDay(dueObj, new Date());
-        const views = [...item._views];
-        const priorityText = String(item.priority || "").toLowerCase();
-        const urgent = views.includes("urgent") || priorityText.includes("urgent") || priorityText.includes("high");
-        const nonurgent = views.includes("nonurgent") || (!urgent && views.includes("board"));
-        const subtask = views.includes("subtasks");
-        const boardToday = views.includes("board") || dueToday;
-
-        return {
-          ...item,
-          dueObj,
-          overdue,
-          dueToday,
-          urgent,
-          nonurgent,
-          subtask,
-          boardToday,
-          _viewsArr: views
-        };
-      }).sort((a, b) => {
-        const score = x => {
-          if (x.overdue) return 0;
-          if (x.dueToday) return 1;
-          if (x.urgent) return 2;
-          if (x.nonurgent) return 3;
-          return 4;
-        };
-
-        const sa = score(a);
-        const sb = score(b);
-        if (sa !== sb) return sa - sb;
-
-        const at = a.dueObj ? a.dueObj.getTime() : Number.MAX_SAFE_INTEGER;
-        const bt = b.dueObj ? b.dueObj.getTime() : Number.MAX_SAFE_INTEGER;
-        if (at !== bt) return at - bt;
-
-        return String(a.name || "").localeCompare(String(b.name || ""), "bg");
-      });
-    }
-
-    function renderClickUp(items) {
-      if (!items.length) {
-        clickupSummary.innerHTML = "";
-        clickupList.innerHTML = `<div class="forum-empty">Няма резултати.</div>`;
-        return;
-      }
-
-      const counts = {
-        overdue: items.filter(x => x.overdue).length,
-        today: items.filter(x => x.dueToday).length,
-        urgent: items.filter(x => x.urgent).length,
-        common: items.filter(x => x.nonurgent).length,
-        all: items.length
-      };
-
-      clickupSummary.innerHTML = `
-        <span class="summary-chip">Всичко: ${counts.all}</span>
-        <span class="summary-chip today">За днес: ${counts.today}</span>
-        <span class="summary-chip urgent">Спешни: ${counts.urgent}</span>
-        <span class="summary-chip common">Общи: ${counts.common}</span>
-        <span class="summary-chip danger">Просрочени: ${counts.overdue}</span>
+      clickupPlaceholder.innerHTML = `
+        <b>PLACEHOLDER ЗА CLICKUP</b>
+        <ul>
+          <li>За днес:</li>
+          <li>Спешни:</li>
+          <li>Общи:</li>
+          <li>Просрочени:</li>
+        </ul>
+        Auto refresh: на всеки 5 минути.<br>
+        URL: <code>${escapeHtml(CLICKUP_WEBAPP_URL)}</code>
       `;
-
-      clickupList.innerHTML = items.map(item => {
-        const dueText = item.dueObj ? formatDateTime(item.dueObj.getTime()) : (item.due_date || "-");
-        const tags = [];
-        if (item.overdue) tags.push(`<span class="task-chip danger">Просрочена</span>`);
-        if (item.dueToday) tags.push(`<span class="task-chip today">За днес</span>`);
-        if (item.urgent) tags.push(`<span class="task-chip urgent">Спешна</span>`);
-        if (item.nonurgent) tags.push(`<span class="task-chip common">Обща</span>`);
-        if (item.subtask) tags.push(`<span class="task-chip subtask">Подзадача</span>`);
-        if (!item.subtask && item.boardToday) tags.push(`<span class="task-chip subtask">Board</span>`);
-
-        return `
-          <div class="clickup-item ${item.overdue ? "overdue" : ""}">
-            <div class="clickup-item-top">
-              <div class="clickup-item-name">${escapeHtml(item.name || "")}</div>
-              ${item.url ? `<a class="link-btn" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Отвори в ClickUp</a>` : ""}
-            </div>
-            <div class="clickup-tags">${tags.join("")}</div>
-            <div class="clickup-meta">
-              Статус: ${escapeHtml(item.status || "-")}<br>
-              Due: ${escapeHtml(dueText || "-")}<br>
-              Priority: ${escapeHtml(item.priority || "-")}
-            </div>
-          </div>
-        `;
-      }).join("");
     }
 
-    async function fetchClickUpView(view) {
-      const res = await fetch(`${CLICKUP_WEBAPP_URL}?view=${encodeURIComponent(view)}&t=${Date.now()}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      const items = data.subtasks || data.tasks_due_today || data.tasks_tagged || data.items || [];
-      return { view, items: Array.isArray(items) ? items : [] };
-    }
-
-    async function loadClickUpUnified() {
-      if (!CLICKUP_WEBAPP_URL || CLICKUP_WEBAPP_URL === "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE") {
-        clickupSummary.innerHTML = "";
-        clickupList.innerHTML = `<div class="forum-empty">Сложи Apps Script Web App URL в <code>CLICKUP_WEBAPP_URL</code>.</div>`;
-        return;
-      }
-
-      clickupSummary.innerHTML = "";
-      clickupList.innerHTML = `<div class="forum-empty">Зареждане...</div>`;
-
-      try {
-        const responses = await Promise.allSettled([
-          fetchClickUpView("subtasks"),
-          fetchClickUpView("board"),
-          fetchClickUpView("urgent"),
-          fetchClickUpView("nonurgent")
-        ]);
-
-        const ok = responses
-          .filter(x => x.status === "fulfilled")
-          .map(x => x.value);
-
-        const normalized = normalizeClickUpItems(ok);
-        renderClickUp(normalized);
-      } catch (err) {
-        console.error(err);
-        clickupSummary.innerHTML = "";
-        clickupList.innerHTML = `<div class="forum-empty">Грешка при зареждане на ClickUp.</div>`;
-      }
+    function startClickupAutoRefresh() {
+      if (clickupRefreshTimer) clearInterval(clickupRefreshTimer);
+      clickupRefreshTimer = setInterval(() => {
+        loadClickUpPlaceholder(false);
+      }, CLICKUP_REFRESH_MS);
     }
 
     shippingSearch.addEventListener("input", renderShippingTable);
     zoneFilter.addEventListener("change", renderShippingTable);
+
     addTaskBtn.addEventListener("click", addNewTask);
     newTaskInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") addNewTask();
     });
+
     addLinkBtn.addEventListener("click", addUsefulLink);
     linkTitleInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") addUsefulLink();
@@ -2071,15 +1799,17 @@
     linkUrlInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") addUsefulLink();
     });
+
     resetTasksBtn.addEventListener("click", resetAllTasks);
     generateOrdersBtn.addEventListener("click", renderOrderLinks);
     clearOrdersBtn.addEventListener("click", () => {
       ordersInput.value = "";
       orderLinksList.innerHTML = "";
     });
+
     addForumBtn.addEventListener("click", addForumComment);
     spinWheelBtn.addEventListener("click", spinWheel);
-    reloadClickUpBtn.addEventListener("click", loadClickUpUnified);
+    reloadClickUpBtn.addEventListener("click", () => loadClickUpPlaceholder(true));
 
     document.querySelectorAll(".sortable").forEach(th => {
       th.addEventListener("click", () => {
@@ -2152,7 +1882,8 @@
         console.error(error);
       });
 
-      loadClickUpUnified();
+      await loadClickUpPlaceholder(true);
+      startClickupAutoRefresh();
     }
 
     bootstrap();
