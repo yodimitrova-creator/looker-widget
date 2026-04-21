@@ -1822,21 +1822,24 @@
       if (wheelSpinning) return;
       wheelSpinning = true;
 
-      const targetWinner = wheelUsers[Math.floor(Math.random() * wheelUsers.length)];
-      const targetCenter = (targetWinner.startDeg + targetWinner.endDeg) / 2;
-      const normalizedCurrent = ((currentWheelRotation % 360) + 360) % 360;
-      const targetRotation = (360 - targetCenter) % 360;
-      const delta = (targetRotation - normalizedCurrent + 360) % 360;
+      const winnerIndex = Math.floor(Math.random() * wheelUsers.length);
+      const winner = wheelUsers[winnerIndex];
+
+      const centerAngle = (winner.startDeg + winner.endDeg) / 2;
       const extraSpins = (5 + Math.floor(Math.random() * 3)) * 360;
 
+      const normalizedCurrent = ((currentWheelRotation % 360) + 360) % 360;
+      const targetRotation = (360 - centerAngle) % 360;
+      const delta = (targetRotation - normalizedCurrent + 360) % 360;
+
       currentWheelRotation += extraSpins + delta;
+
       wheel.style.transition = "transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1)";
       wheel.style.transform = `rotate(${currentWheelRotation}deg)`;
       wheelResult.textContent = "Колелото се върти...";
 
       window.setTimeout(() => {
-        const actualWinner = getWinnerFromRotation(currentWheelRotation);
-        wheelResult.innerHTML = `🎉 Избрано: <b>${actualWinner.name}</b>`;
+        wheelResult.innerHTML = `🎉 Избрано: <b>${winner.name}</b>`;
         wheelSpinning = false;
       }, 4200);
     }
