@@ -12,7 +12,6 @@
       --panel:#fffafd;
       --panel-2:#f8f0fb;
       --line:#ead8ec;
-      --line-strong:#dfc6e4;
       --text:#4d3d56;
       --muted:#7d6b86;
       --title:#694c73;
@@ -24,6 +23,7 @@
       --blue:#9fc7ff;
       --green:#78c98d;
       --danger:#ef6c8f;
+      --weekend:#e9dcfb;
       --shadow:0 10px 28px rgba(166,123,163,.10);
     }
 
@@ -39,10 +39,10 @@
     }
 
     .app{
-      max-width:1720px;
+      max-width:1760px;
       margin:0 auto;
       display:grid;
-      grid-template-columns:280px minmax(0, 1fr) 345px;
+      grid-template-columns:280px minmax(0, 1fr) 340px;
       gap:12px;
       align-items:start;
     }
@@ -77,7 +77,6 @@
       font-size:14px;
       font-weight:700;
       color:var(--title);
-      letter-spacing:.2px;
     }
 
     .calendar-grid{
@@ -91,7 +90,8 @@
       text-align:center;
       padding:6px 0;
       border-radius:8px;
-      min-height:26px;
+      min-height:28px;
+      position:relative;
     }
 
     .dow{
@@ -104,14 +104,33 @@
       background:#fff;
       border:1px solid #f0e2f3;
       color:#5b4b63;
+      cursor:pointer;
     }
 
-    .today{
+    .day.weekend{
+      background:var(--weekend);
+      border-color:#dccaf7;
+    }
+
+    .day.today{
       background:var(--pink-strong);
       border-color:#e66ab0;
       color:#fff;
       font-weight:700;
       box-shadow:0 6px 14px rgba(239,143,194,.24);
+    }
+
+    .day.has-note::after{
+      content:"●";
+      position:absolute;
+      bottom:2px;
+      right:6px;
+      font-size:9px;
+      color:#7b4d85;
+    }
+
+    .day.today.has-note::after{
+      color:#fff;
     }
 
     .image-card{ padding:8px; }
@@ -123,10 +142,7 @@
       background:#fff;
     }
 
-    .wheel-card{
-      padding:10px;
-    }
-
+    .wheel-card{ padding:10px; }
     .wheel-title{
       margin:0 0 8px 0;
       text-align:center;
@@ -142,12 +158,63 @@
       gap:8px;
     }
 
-    .wheel-svg{
-      width:100%;
-      max-width:220px;
-      aspect-ratio:1/1;
-      display:block;
+    .wheel-stage{
+      position:relative;
+      width:220px;
+      height:220px;
     }
+
+    .wheel-pointer{
+      position:absolute;
+      top:-2px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;
+      height:0;
+      border-left:10px solid transparent;
+      border-right:10px solid transparent;
+      border-bottom:18px solid var(--danger);
+      z-index:3;
+    }
+
+    .wheel{
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      border:2px solid #dec9e6;
+      background:conic-gradient(
+        from -90deg,
+        #f7bfdc 0deg 120deg,
+        #dac4f3 120deg 240deg,
+        #9fc7ff 240deg 360deg
+      );
+      position:relative;
+      transition:transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+    }
+
+    .wheel::after{
+      content:"";
+      position:absolute;
+      inset:88px;
+      background:#fff;
+      border:2px solid #ead8ec;
+      border-radius:50%;
+      z-index:2;
+    }
+
+    .wheel-label{
+      position:absolute;
+      font-size:14px;
+      font-weight:700;
+      color:#5d4665;
+      z-index:1;
+      pointer-events:none;
+    }
+
+    .wheel-label.bobi{ top:24px; left:126px; transform:rotate(14deg); }
+    .wheel-label.teya{ top:125px; right:16px; transform:rotate(82deg); }
+    .wheel-label.yo{ bottom:42px; left:44px; transform:rotate(-42deg); }
 
     .wheel-button,
     .action-btn,
@@ -266,7 +333,7 @@
     }
 
     .text-area{
-      min-height:92px;
+      min-height:88px;
       resize:vertical;
       line-height:1.45;
     }
@@ -289,26 +356,18 @@
 
     .inside-top-grid{
       display:grid;
-      grid-template-columns:minmax(0, 1fr) 265px;
+      grid-template-columns:minmax(0, 1fr) 260px;
       gap:12px;
       align-items:start;
       margin-bottom:12px;
     }
 
-    .inside-links-card{
-      padding:12px;
-    }
+    .inside-links-card{ padding:12px; }
 
     .section-title{
       margin:0 0 8px 0;
       font-size:15px;
       color:var(--title);
-    }
-
-    .subtle-title{
-      margin:0 0 8px 0;
-      font-size:13px;
-      color:#6b5174;
     }
 
     .compact-row{
@@ -421,11 +480,6 @@
       color:#8a728f;
     }
 
-    .stack{
-      display:grid;
-      gap:12px;
-    }
-
     .links-grid{
       display:grid;
       gap:8px;
@@ -486,7 +540,8 @@
     .orders-card,
     .operations-card,
     .shipping-card,
-    .forum-card{
+    .forum-card,
+    .clickup-card{
       padding:12px;
     }
 
@@ -500,14 +555,12 @@
       margin:0;
       font-size:20px;
       color:#3f2b7a;
-      font-family: Arial, sans-serif;
     }
 
     .ops-header p{
       color:#7a6fa3;
       margin:4px 0 0 0;
       font-size:13px;
-      font-family: Arial, sans-serif;
     }
 
     .ops-grid{
@@ -522,21 +575,18 @@
       border:1px solid #e6e1f5;
       border-radius:14px;
       padding:12px;
-      font-family: Arial, sans-serif;
     }
 
     .ops-box h3{
       margin:0 0 8px 0;
       color:#3f2b7a;
       font-size:16px;
-      font-family: Arial, sans-serif;
     }
 
     .ops-box p{
       margin:0 0 8px 0;
       color:#333;
       font-size:12.5px;
-      font-family: Arial, sans-serif;
     }
 
     .ops-box ul, .ops-box ol{
@@ -545,7 +595,6 @@
       line-height:1.55;
       color:#333;
       font-size:12.5px;
-      font-family: Arial, sans-serif;
     }
 
     .ops-box ul + h3,
@@ -556,7 +605,8 @@
     .shipping-toolbar,
     .tasks-toolbar,
     .orders-toolbar,
-    .forum-toolbar{
+    .forum-toolbar,
+    .clickup-toolbar{
       display:flex;
       gap:8px;
       flex-wrap:wrap;
@@ -630,6 +680,11 @@
       padding:10px;
     }
 
+    .forum-item.pinned{
+      border-color:#d6b4e4;
+      box-shadow:0 0 0 2px rgba(185,149,235,.12);
+    }
+
     .forum-item-top{
       display:flex;
       justify-content:space-between;
@@ -658,21 +713,34 @@
       word-break:break-word;
     }
 
-    .delete-comment-btn{
+    .forum-buttons{
+      display:flex;
+      gap:6px;
+    }
+
+    .mini-btn{
       border:none;
-      background:#fff1f5;
-      color:#b45576;
       width:26px;
       height:26px;
       border-radius:999px;
       cursor:pointer;
       font-size:13px;
       font-weight:700;
-      border:1px solid #f2c4d3;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .delete-comment-btn:hover{
-      background:#ffe4ec;
+    .pin-btn{
+      background:#f3ebff;
+      border:1px solid #dfc6e4;
+      color:#7d4f98;
+    }
+
+    .delete-comment-btn{
+      background:#fff1f5;
+      color:#b45576;
+      border:1px solid #f2c4d3;
     }
 
     .forum-empty{
@@ -682,6 +750,55 @@
       border:1px dashed #e4d3e7;
       border-radius:14px;
       padding:12px;
+    }
+
+    .clickup-tabs{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .clickup-tab{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid #e1cfe8;
+      background:#fff;
+      color:#6d5776;
+      font-size:12px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .clickup-tab.active{
+      background:linear-gradient(180deg,#fff2fa 0%,#f2ebff 100%);
+      border-color:#c9a9d7;
+      color:#5b3f66;
+    }
+
+    .clickup-list{
+      display:grid;
+      gap:8px;
+    }
+
+    .clickup-item{
+      padding:10px;
+      background:#fff;
+      border:1px solid #ead9ef;
+      border-radius:14px;
+    }
+
+    .clickup-item-name{
+      font-size:12.5px;
+      font-weight:700;
+      color:#56425e;
+      margin-bottom:4px;
+    }
+
+    .clickup-meta{
+      font-size:11px;
+      color:#8a728f;
+      line-height:1.45;
     }
 
     @media (max-width:1500px){
@@ -728,22 +845,14 @@
       <div class="card wheel-card">
         <div class="wheel-title">Колело на късмета</div>
         <div class="wheel-wrap">
-          <svg id="wheelSvg" class="wheel-svg" viewBox="0 0 220 220" aria-label="Wheel of luck">
-            <g id="wheelRotator" transform="rotate(0 110 110)">
-              <path d="M110,110 L110,10 A100,100 0 0,1 196.6,160 Z" fill="#f7bfdc"></path>
-              <path d="M110,110 L196.6,160 A100,100 0 0,1 23.4,160 Z" fill="#dac4f3"></path>
-              <path d="M110,110 L23.4,160 A100,100 0 0,1 110,10 Z" fill="#9fc7ff"></path>
-
-              <text x="142" y="55" text-anchor="middle" font-size="15" font-weight="700" fill="#5b4263" transform="rotate(30 142 55)">Боби</text>
-              <text x="150" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#5b4263" transform="rotate(90 150 150)">Тея</text>
-              <text x="70" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#5b4263" transform="rotate(-30 70 150)">Йо</text>
-
-              <circle cx="110" cy="110" r="18" fill="#fff" stroke="#e5cfe8" stroke-width="2"></circle>
-            </g>
-
-            <polygon points="110,2 100,22 120,22" fill="#ef6c8f"></polygon>
-            <circle cx="110" cy="110" r="100" fill="none" stroke="#e6d4e9" stroke-width="2"></circle>
-          </svg>
+          <div class="wheel-stage">
+            <div class="wheel-pointer"></div>
+            <div id="wheel" class="wheel">
+              <div class="wheel-label bobi">Боби</div>
+              <div class="wheel-label teya">Тея</div>
+              <div class="wheel-label yo">Йо</div>
+            </div>
+          </div>
 
           <button id="spinWheelBtn" class="wheel-button">🎯 Завърти</button>
           <div id="wheelResult" class="wheel-result">Натисни, за да избереш случаен потребител.</div>
@@ -810,71 +919,87 @@
 
           <div class="card inside-links-card">
             <h2 class="section-title">Полезни линкове</h2>
-
             <div class="links-grid" id="linksGrid"></div>
-
-            <div class="helper-box">
-              За да добавиш нов ред по-късно, отвори <code>index.html</code> и добави нов обект в масива <code>usefulLinks</code>.
-            </div>
           </div>
         </div>
 
         <div class="mid-layout">
-          <div class="card orders-card">
-            <h2 class="section-title">NS Order Link Generator</h2>
+          <div class="stack">
+            <div class="card orders-card">
+              <h2 class="section-title">NS Order Link Generator</h2>
 
-            <div class="orders-toolbar">
-              <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга или със запетая..."></textarea>
-            </div>
+              <div class="orders-toolbar">
+                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга или със запетая..."></textarea>
+              </div>
 
-            <div class="orders-toolbar">
-              <button id="generateOrdersBtn" class="action-btn">🔗 Генерирай линкове</button>
-              <button id="clearOrdersBtn" class="action-btn secondary">🧹 Изчисти</button>
-            </div>
+              <div class="orders-toolbar">
+                <button id="generateOrdersBtn" class="action-btn">🔗 Генерирай линкове</button>
+                <button id="clearOrdersBtn" class="action-btn secondary">🧹 Изчисти</button>
+              </div>
 
-            <div class="helper-box">
-              Примери:
-              <br><code>1796430
+              <div class="helper-box">
+                Приема:
+                <br><code>1796430
 1797052</code>
-              <br>или
-              <br><code>1796430, 1797052</code>
+                <br>или
+                <br><code>1796430, 1797052</code>
+              </div>
+
+              <div id="orderLinksList" class="order-links-list"></div>
             </div>
 
-            <div id="orderLinksList" class="order-links-list"></div>
+            <div class="card shipping-card">
+              <h2 class="section-title">Транспортни цени</h2>
+
+              <div class="shipping-toolbar">
+                <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
+                <select id="zoneFilter" class="table-filter" style="width:auto;">
+                  <option value="">Всички зони</option>
+                  <option value="Domestic">Domestic</option>
+                  <option value="1">Zone 1</option>
+                  <option value="2">Zone 2</option>
+                  <option value="3">Zone 3</option>
+                </select>
+              </div>
+
+              <div class="table-wrap">
+                <table class="shipping-table">
+                  <thead>
+                    <tr>
+                      <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
+                      <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
+                      <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
+                      <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
+                      <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
+                      <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
+                    </tr>
+                  </thead>
+                  <tbody id="shippingBody"></tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
-          <div class="card shipping-card">
-            <h2 class="section-title">Транспортни цени</h2>
+          <div class="stack">
+            <div class="card clickup-card">
+              <h2 class="section-title">ClickUp</h2>
 
-            <div class="shipping-toolbar">
-              <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
-              <select id="zoneFilter" class="table-filter" style="width:auto;">
-                <option value="">Всички зони</option>
-                <option value="Domestic">Domestic</option>
-                <option value="1">Zone 1</option>
-                <option value="2">Zone 2</option>
-                <option value="3">Zone 3</option>
-              </select>
-            </div>
+              <div class="clickup-toolbar">
+                <button id="reloadClickUpBtn" class="action-btn">🔄 Обнови</button>
+              </div>
 
-            <div class="table-wrap">
-              <table class="shipping-table">
-                <thead>
-                  <tr>
-                    <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
-                    <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
-                    <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
-                    <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
-                    <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
-                    <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
-                  </tr>
-                </thead>
-                <tbody id="shippingBody"></tbody>
-              </table>
-            </div>
+              <div class="clickup-tabs">
+                <button class="clickup-tab active" data-view="subtasks">Подзадачи</button>
+                <button class="clickup-tab" data-view="board">Board Today</button>
+                <button class="clickup-tab" data-view="urgent">Спешни</button>
+                <button class="clickup-tab" data-view="nonurgent">Общи</button>
+              </div>
 
-            <div class="small-note">
-              Таблицата може да се филтрира по зона, да се търси и да се сортира по колони.
+              <div class="helper-box">
+                ClickUp token не се слага тук в HTML. Той стои в Apps Script Script Properties.
+              </div>
+
+              <div id="clickupList" class="clickup-list" style="margin-top:10px;"></div>
             </div>
           </div>
         </div>
@@ -1003,7 +1128,7 @@
         </div>
 
         <div class="helper-box">
-          Коментарите се пазят постоянно, докато не натиснеш хиксчето и не ги изтриеш.
+          Коментарите се пазят постоянно. Можеш да ги pin-ваш и да ги триеш с хикс.
         </div>
 
         <div id="forumList" class="forum-list" style="margin-top:10px;"></div>
@@ -1035,6 +1160,8 @@
       measurementId: "G-GWXLJB86LJ"
     };
 
+    const CLICKUP_WEBAPP_URL = "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE";
+
     const initialTasks = [
       { id: 1, bobi: false, teya: false, yo: false, name: "Поръчки с таг СТОП - pending - 8:30h" },
       { id: 2, bobi: false, teya: false, yo: false, name: "Поръчки с таг СТОП - pending - 15:30h" },
@@ -1056,7 +1183,7 @@
       { id: 18, bobi: false, teya: false, yo: false, name: "Затваряне на Корекция ПХ на продукти..." },
       { id: 19, bobi: false, teya: false, yo: false, name: "Таг Follow" },
       { id: 20, bobi: false, teya: false, yo: false, name: "PG Laden - 8:30h" },
-      { id: 21, bobi: false, teya: false, yo: true,  name: "PG Laden - 16:30h" },
+      { id: 21, bobi: false, teya: false, yo: true, name: "PG Laden - 16:30h" },
       { id: 22, bobi: false, teya: false, yo: false, name: "Микс" }
     ];
 
@@ -1106,9 +1233,9 @@
     ];
 
     const wheelUsers = [
-      { name: "Боби", baseAngle: 60 },
-      { name: "Тея", baseAngle: 180 },
-      { name: "Йо", baseAngle: 300 }
+      { name: "Боби", segmentIndex: 0 },
+      { name: "Тея", segmentIndex: 1 },
+      { name: "Йо", segmentIndex: 2 }
     ];
 
     const app = initializeApp(firebaseConfig);
@@ -1116,6 +1243,7 @@
 
     const tasksRef = ref(db, "dailyChecklist/tasks");
     const forumRef = ref(db, "dailyChecklist/forum");
+    const calendarNotesRef = ref(db, "dailyChecklist/calendarNotes");
 
     const statusNote = document.getElementById("statusNote");
     const tasksBody = document.getElementById("tasksBody");
@@ -1134,13 +1262,17 @@
     const forumInput = document.getElementById("forumInput");
     const addForumBtn = document.getElementById("addForumBtn");
     const forumList = document.getElementById("forumList");
-    const wheelRotator = document.getElementById("wheelRotator");
+    const wheel = document.getElementById("wheel");
     const spinWheelBtn = document.getElementById("spinWheelBtn");
     const wheelResult = document.getElementById("wheelResult");
+    const reloadClickUpBtn = document.getElementById("reloadClickUpBtn");
+    const clickupList = document.getElementById("clickupList");
 
     let shippingSort = { key: "country", direction: "asc" };
     let currentWheelRotation = 0;
     let wheelSpinning = false;
+    let calendarNotesMap = {};
+    let activeClickUpView = "subtasks";
 
     const savedUser = localStorage.getItem("activeUserName");
     if (savedUser) activeUserSelect.value = savedUser;
@@ -1149,6 +1281,13 @@
       localStorage.setItem("activeUserName", activeUserSelect.value);
       renderLinks();
     });
+
+    function formatYMD(dateObj) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
+      return `${y}-${m}-${d}`;
+    }
 
     function renderCalendar() {
       const grid = document.getElementById("calendarGrid");
@@ -1167,9 +1306,10 @@
       title.textContent = monthNames[month] + " " + year;
       grid.innerHTML = "";
 
-      dayNames.forEach(d => {
+      dayNames.forEach((d, idx) => {
         const el = document.createElement("div");
         el.className = "dow";
+        if (idx >= 5) el.style.background = "#ecdefa";
         el.textContent = d;
         grid.appendChild(el);
       });
@@ -1187,9 +1327,31 @@
       }
 
       for (let d = 1; d <= daysInMonth; d++) {
+        const dateObj = new Date(year, month, d);
+        const ymd = formatYMD(dateObj);
+        const dayOfWeek = dateObj.getDay();
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        const hasNote = !!calendarNotesMap[ymd];
+
         const el = document.createElement("div");
-        el.className = "day" + (d === today ? " today" : "");
+        el.className = "day" + (d === today ? " today" : "") + (isWeekend ? " weekend" : "") + (hasNote ? " has-note" : "");
         el.textContent = d;
+        el.title = hasNote ? calendarNotesMap[ymd].text : "Кликни за бележка";
+        el.addEventListener("click", async () => {
+          const currentText = calendarNotesMap[ymd]?.text || "";
+          const nextText = prompt(`Бележка за ${d}.${String(month + 1).padStart(2, "0")}.${year}`, currentText);
+          if (nextText === null) return;
+
+          if (!nextText.trim()) {
+            await remove(ref(db, `dailyChecklist/calendarNotes/${ymd}`));
+          } else {
+            await set(ref(db, `dailyChecklist/calendarNotes/${ymd}`), {
+              text: nextText.trim(),
+              author: activeUserSelect.value,
+              updatedAt: Date.now()
+            });
+          }
+        });
         grid.appendChild(el);
       }
     }
@@ -1339,9 +1501,7 @@
 
       let rows = [...shippingData];
 
-      if (zone) {
-        rows = rows.filter(r => String(r.zone) === zone);
-      }
+      if (zone) rows = rows.filter(r => String(r.zone) === zone);
 
       if (q) {
         rows = rows.filter(r =>
@@ -1352,7 +1512,6 @@
       rows.sort((a, b) => {
         const av = parseSortValue(a[shippingSort.key]);
         const bv = parseSortValue(b[shippingSort.key]);
-
         if (av < bv) return shippingSort.direction === "asc" ? -1 : 1;
         if (av > bv) return shippingSort.direction === "asc" ? 1 : -1;
         return 0;
@@ -1422,12 +1581,11 @@
       const text = forumInput.value.trim();
       if (!text) return;
 
-      const author = activeUserSelect.value;
-
       try {
         await push(forumRef, {
-          author,
+          author: activeUserSelect.value,
           text,
+          pinned: false,
           createdAt: Date.now()
         });
         forumInput.value = "";
@@ -1439,12 +1597,13 @@
     async function deleteForumComment(key) {
       const confirmed = confirm("Да изтрия ли този коментар?");
       if (!confirmed) return;
+      await remove(ref(db, `dailyChecklist/forum/${key}`));
+    }
 
-      try {
-        await remove(ref(db, `dailyChecklist/forum/${key}`));
-      } catch (err) {
-        console.error(err);
-      }
+    async function togglePinComment(key, currentValue) {
+      await update(ref(db, `dailyChecklist/forum/${key}`), {
+        pinned: !currentValue
+      });
     }
 
     function renderForum(value) {
@@ -1455,16 +1614,22 @@
 
       const items = Object.entries(value)
         .map(([key, val]) => ({ key, ...val }))
-        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        .sort((a, b) => {
+          if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+          return (b.createdAt || 0) - (a.createdAt || 0);
+        });
 
       forumList.innerHTML = items.map(item => `
-        <div class="forum-item">
+        <div class="forum-item ${item.pinned ? "pinned" : ""}">
           <div class="forum-item-top">
             <div>
-              <div class="forum-author">${escapeHtml(item.author || "Потребител")}</div>
+              <div class="forum-author">${escapeHtml(item.author || "Потребител")}${item.pinned ? " 📌" : ""}</div>
               <div class="forum-time">${formatDateTime(item.createdAt)}</div>
             </div>
-            <button class="delete-comment-btn" data-delete-key="${item.key}" title="Изтрий">✕</button>
+            <div class="forum-buttons">
+              <button class="mini-btn pin-btn" data-pin-key="${item.key}" data-pin-state="${item.pinned ? "1" : "0"}" title="Pin">📌</button>
+              <button class="mini-btn delete-comment-btn" data-delete-key="${item.key}" title="Изтрий">✕</button>
+            </div>
           </div>
           <div class="forum-text">${escapeHtml(item.text || "")}</div>
         </div>
@@ -1472,6 +1637,10 @@
 
       document.querySelectorAll("[data-delete-key]").forEach(btn => {
         btn.addEventListener("click", () => deleteForumComment(btn.dataset.deleteKey));
+      });
+
+      document.querySelectorAll("[data-pin-key]").forEach(btn => {
+        btn.addEventListener("click", () => togglePinComment(btn.dataset.pinKey, btn.dataset.pinState === "1"));
       });
     }
 
@@ -1488,15 +1657,16 @@
       if (wheelSpinning) return;
       wheelSpinning = true;
 
-      const winnerIndex = Math.floor(Math.random() * wheelUsers.length);
-      const winner = wheelUsers[winnerIndex];
-
+      const winner = wheelUsers[Math.floor(Math.random() * wheelUsers.length)];
+      const segmentSize = 120;
+      const centerAngle = winner.segmentIndex * segmentSize + segmentSize / 2;
       const extraSpins = 5 + Math.floor(Math.random() * 3);
-      const targetAngle = (360 * extraSpins) + (360 - winner.baseAngle);
-      currentWheelRotation += targetAngle;
+      const target = extraSpins * 360 + (360 - centerAngle);
 
-      wheelRotator.style.transition = "transform 4.2s cubic-bezier(0.18, 0.75, 0.2, 1)";
-      wheelRotator.style.transform = `rotate(${currentWheelRotation}deg)`;
+      currentWheelRotation = currentWheelRotation + target;
+
+      wheel.style.transition = "transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1)";
+      wheel.style.transform = `rotate(${currentWheelRotation}deg)`;
 
       wheelResult.textContent = "Колелото се върти...";
 
@@ -1504,6 +1674,51 @@
         wheelResult.innerHTML = `🎉 Избрано: <b>${winner.name}</b>`;
         wheelSpinning = false;
       }, 4200);
+    }
+
+    async function loadClickUp(view = activeClickUpView) {
+      activeClickUpView = view;
+      document.querySelectorAll(".clickup-tab").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.view === view);
+      });
+
+      if (!CLICKUP_WEBAPP_URL || CLICKUP_WEBAPP_URL === "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE") {
+        clickupList.innerHTML = `<div class="forum-empty">Сложи Apps Script Web App URL в <code>CLICKUP_WEBAPP_URL</code>.</div>`;
+        return;
+      }
+
+      clickupList.innerHTML = `<div class="forum-empty">Зареждане...</div>`;
+
+      try {
+        const res = await fetch(`${CLICKUP_WEBAPP_URL}?view=${encodeURIComponent(view)}`);
+        const data = await res.json();
+
+        const items =
+          data.subtasks ||
+          data.tasks_due_today ||
+          data.tasks_tagged ||
+          [];
+
+        if (!items.length) {
+          clickupList.innerHTML = `<div class="forum-empty">Няма резултати.</div>`;
+          return;
+        }
+
+        clickupList.innerHTML = items.map(item => `
+          <div class="clickup-item">
+            <div class="clickup-item-name">${escapeHtml(item.name || "")}</div>
+            <div class="clickup-meta">
+              Статус: ${escapeHtml(item.status || "-")}<br>
+              Due: ${escapeHtml(item.due_date || "-")}<br>
+              Priority: ${escapeHtml(item.priority || "-")}<br>
+              ${item.url ? `<a class="link-btn" style="margin-top:6px;display:inline-flex;" href="${item.url}" target="_blank" rel="noopener noreferrer">Отвори в ClickUp</a>` : ""}
+            </div>
+          </div>
+        `).join("");
+      } catch (err) {
+        console.error(err);
+        clickupList.innerHTML = `<div class="forum-empty">Грешка при зареждане на ClickUp.</div>`;
+      }
     }
 
     shippingSearch.addEventListener("input", renderShippingTable);
@@ -1520,6 +1735,7 @@
     });
     addForumBtn.addEventListener("click", addForumComment);
     spinWheelBtn.addEventListener("click", spinWheel);
+    reloadClickUpBtn.addEventListener("click", () => loadClickUp(activeClickUpView));
 
     document.querySelectorAll(".sortable").forEach(th => {
       th.addEventListener("click", () => {
@@ -1534,10 +1750,18 @@
       });
     });
 
+    document.querySelectorAll(".clickup-tab").forEach(btn => {
+      btn.addEventListener("click", () => loadClickUp(btn.dataset.view));
+    });
+
     async function bootstrap() {
-      renderCalendar();
       renderLinks();
       renderShippingTable();
+
+      onValue(calendarNotesRef, (snapshot) => {
+        calendarNotesMap = snapshot.val() || {};
+        renderCalendar();
+      });
 
       onValue(tasksRef, async (snapshot) => {
         const value = snapshot.val();
@@ -1565,6 +1789,8 @@
       }, (error) => {
         console.error(error);
       });
+
+      loadClickUp("subtasks");
     }
 
     bootstrap();
