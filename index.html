@@ -23,6 +23,8 @@
       --blue:#9fc7ff;
       --green:#78c98d;
       --danger:#ef6c8f;
+      --danger-soft:#fff1f5;
+      --danger-line:#f3bdd0;
       --weekend:#e9dcfb;
       --shadow:0 10px 28px rgba(166,123,163,.10);
     }
@@ -68,6 +70,12 @@
       flex-direction:column;
       gap:12px;
       min-width:0;
+    }
+
+    .stack{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
 
     .calendar-card{ padding:10px; }
@@ -129,9 +137,7 @@
       color:#7b4d85;
     }
 
-    .day.today.has-note::after{
-      color:#fff;
-    }
+    .day.today.has-note::after{ color:#fff; }
 
     .image-card{ padding:8px; }
     .image-card img{
@@ -142,9 +148,9 @@
       background:#fff;
     }
 
-    .wheel-card{ padding:10px; }
+    .wheel-card{ padding:12px; }
     .wheel-title{
-      margin:0 0 8px 0;
+      margin:0 0 10px 0;
       text-align:center;
       font-size:14px;
       font-weight:700;
@@ -155,7 +161,7 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap:8px;
+      gap:10px;
     }
 
     .wheel-stage{
@@ -174,51 +180,77 @@
       border-left:10px solid transparent;
       border-right:10px solid transparent;
       border-bottom:18px solid var(--danger);
-      z-index:3;
+      z-index:4;
     }
 
     .wheel{
       width:220px;
       height:220px;
       border-radius:50%;
+      position:relative;
+      overflow:hidden;
       border:2px solid #dec9e6;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+      transition:transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1);
       background:conic-gradient(
         from -90deg,
-        #f7bfdc 0deg 120deg,
-        #dac4f3 120deg 240deg,
-        #9fc7ff 240deg 360deg
+        #9fc7ff 0deg 120deg,
+        #f7bfdc 120deg 240deg,
+        #dac4f3 240deg 360deg
       );
-      position:relative;
-      transition:transform 4.2s cubic-bezier(0.16, 0.75, 0.18, 1);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+    }
+
+    .wheel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+      background:
+        conic-gradient(from -90deg,
+          transparent 0deg 119deg,
+          rgba(255,255,255,.7) 119deg 121deg,
+          transparent 121deg 239deg,
+          rgba(255,255,255,.7) 239deg 241deg,
+          transparent 241deg 359deg,
+          rgba(255,255,255,.7) 359deg 360deg
+        );
+      z-index:1;
+      pointer-events:none;
     }
 
     .wheel::after{
       content:"";
       position:absolute;
-      inset:88px;
+      left:50%;
+      top:50%;
+      transform:translate(-50%, -50%);
+      width:42px;
+      height:42px;
       background:#fff;
       border:2px solid #ead8ec;
       border-radius:50%;
-      z-index:2;
+      z-index:3;
     }
 
-    .wheel-label{
+    .wheel-segment-label{
       position:absolute;
+      left:50%;
+      top:50%;
+      width:84px;
+      text-align:center;
       font-size:14px;
       font-weight:700;
       color:#5d4665;
-      z-index:1;
+      transform-origin:center center;
+      z-index:2;
       pointer-events:none;
+      text-shadow:0 1px 0 rgba(255,255,255,.4);
     }
-
-    .wheel-label.bobi{ top:24px; left:126px; transform:rotate(14deg); }
-    .wheel-label.teya{ top:125px; right:16px; transform:rotate(82deg); }
-    .wheel-label.yo{ bottom:42px; left:44px; transform:rotate(-42deg); }
 
     .wheel-button,
     .action-btn,
-    .link-btn{
+    .link-btn,
+    .icon-btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -236,9 +268,18 @@
       cursor:pointer;
     }
 
+    .icon-btn{
+      min-width:auto;
+      width:36px;
+      height:36px;
+      padding:0;
+      border-radius:10px;
+    }
+
     .wheel-button:hover,
     .action-btn:hover,
-    .link-btn:hover{
+    .link-btn:hover,
+    .icon-btn:hover{
       transform:translateY(-1px);
       border-color:#caa5d7;
       box-shadow:0 6px 16px rgba(165,123,173,.14);
@@ -256,7 +297,8 @@
     }
 
     .link-btn.disabled,
-    .action-btn.disabled{
+    .action-btn.disabled,
+    .icon-btn.disabled{
       opacity:.48;
       pointer-events:none;
       filter:grayscale(.2);
@@ -356,13 +398,11 @@
 
     .inside-top-grid{
       display:grid;
-      grid-template-columns:minmax(0, 1fr) 260px;
+      grid-template-columns:minmax(0, 1fr);
       gap:12px;
       align-items:start;
       margin-bottom:12px;
     }
-
-    .inside-links-card{ padding:12px; }
 
     .section-title{
       margin:0 0 8px 0;
@@ -392,8 +432,8 @@
     }
 
     .check-table{
-      width:auto;
-      min-width:560px;
+      width:100%;
+      min-width:680px;
     }
 
     thead th{
@@ -413,13 +453,8 @@
       vertical-align:middle;
     }
 
-    tbody tr:nth-child(even){
-      background:rgba(248,241,251,.58);
-    }
-
-    tbody tr:hover{
-      background:rgba(235,219,246,.42);
-    }
+    tbody tr:nth-child(even){ background:rgba(248,241,251,.58); }
+    tbody tr:hover{ background:rgba(235,219,246,.42); }
 
     .col-index{
       width:50px;
@@ -480,6 +515,22 @@
       color:#8a728f;
     }
 
+    .useful-links-card{ padding:12px; }
+
+    .useful-links-add{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+      margin-bottom:10px;
+      align-items:start;
+    }
+
+    .useful-links-fields{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+    }
+
     .links-grid{
       display:grid;
       gap:8px;
@@ -487,7 +538,7 @@
 
     .link-row{
       display:grid;
-      grid-template-columns:1fr auto;
+      grid-template-columns:minmax(0, 1fr) auto auto;
       gap:8px;
       align-items:center;
       padding:10px;
@@ -502,6 +553,7 @@
       color:#5f4967;
       margin:0 0 3px 0;
       line-height:1.25;
+      word-break:break-word;
     }
 
     .link-row-note{
@@ -509,6 +561,7 @@
       color:#8a728f;
       margin:0;
       line-height:1.35;
+      word-break:break-all;
     }
 
     .helper-box{
@@ -598,9 +651,7 @@
     }
 
     .ops-box ul + h3,
-    .ops-box p + h3{
-      margin-top:12px;
-    }
+    .ops-box p + h3{ margin-top:12px; }
 
     .shipping-toolbar,
     .tasks-toolbar,
@@ -614,9 +665,17 @@
       margin-bottom:10px;
     }
 
-    .shipping-table{
-      min-width:760px;
+    .tasks-input-row{
+      display:block;
+      margin-bottom:8px;
     }
+
+    .tasks-input-row .text-input{
+      width:100%;
+      min-height:38px;
+    }
+
+    .shipping-table{ min-width:760px; }
 
     .sortable{
       cursor:pointer;
@@ -752,28 +811,60 @@
       padding:12px;
     }
 
-    .clickup-tabs{
+    .clickup-summary{
       display:flex;
-      gap:6px;
+      gap:8px;
       flex-wrap:wrap;
       margin-bottom:10px;
     }
 
-    .clickup-tab{
-      padding:7px 10px;
+    .summary-chip,
+    .task-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 10px;
       border-radius:999px;
+      font-size:11px;
+      font-weight:700;
       border:1px solid #e1cfe8;
       background:#fff;
       color:#6d5776;
-      font-size:12px;
-      cursor:pointer;
-      font-weight:700;
     }
 
-    .clickup-tab.active{
-      background:linear-gradient(180deg,#fff2fa 0%,#f2ebff 100%);
-      border-color:#c9a9d7;
-      color:#5b3f66;
+    .summary-chip.danger,
+    .task-chip.danger{
+      background:var(--danger-soft);
+      border-color:var(--danger-line);
+      color:#b54d73;
+    }
+
+    .summary-chip.today,
+    .task-chip.today{
+      background:#fff4fa;
+      border-color:#f0c8da;
+      color:#8f4c6a;
+    }
+
+    .summary-chip.urgent,
+    .task-chip.urgent{
+      background:#fff5f6;
+      border-color:#f2ccd6;
+      color:#b3496c;
+    }
+
+    .summary-chip.common,
+    .task-chip.common{
+      background:#f5f0ff;
+      border-color:#dfd0f4;
+      color:#6a4f93;
+    }
+
+    .summary-chip.subtask,
+    .task-chip.subtask{
+      background:#eef5ff;
+      border-color:#d1e2fb;
+      color:#5679a4;
     }
 
     .clickup-list{
@@ -788,12 +879,28 @@
       border-radius:14px;
     }
 
+    .clickup-item.overdue{
+      border-color:var(--danger-line);
+      background:linear-gradient(180deg, #fff8fb 0%, #fff1f5 100%);
+      box-shadow:0 0 0 1px rgba(239,108,143,.06);
+    }
+
+    .clickup-item-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:8px;
+      margin-bottom:6px;
+    }
+
     .clickup-item-name{
       font-size:12.5px;
       font-weight:700;
       color:#56425e;
-      margin-bottom:4px;
+      line-height:1.35;
     }
+
+    .clickup-item.overdue .clickup-item-name{ color:#8d3658; }
 
     .clickup-meta{
       font-size:11px;
@@ -801,32 +908,31 @@
       line-height:1.45;
     }
 
+    .clickup-tags{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin:6px 0 8px;
+    }
+
     @media (max-width:1500px){
-      .app{
-        grid-template-columns:280px minmax(0, 1fr);
-      }
-      .right-col{
-        position:static;
-        grid-column:1 / -1;
-      }
+      .app{ grid-template-columns:280px minmax(0, 1fr); }
+      .right-col{ position:static; grid-column:1 / -1; }
     }
 
     @media (max-width:1180px){
       .inside-top-grid,
       .mid-layout,
-      .ops-grid{
-        grid-template-columns:1fr;
-      }
+      .ops-grid{ grid-template-columns:1fr; }
     }
 
     @media (max-width:980px){
-      .app{
-        grid-template-columns:1fr;
-      }
+      .app{ grid-template-columns:1fr; }
       .left-col,
-      .right-col{
-        position:static;
-      }
+      .right-col{ position:static; }
+      .link-row{ grid-template-columns:1fr auto; }
+      .link-row > .icon-btn{ grid-column:2; }
+      .useful-links-add{ grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -847,16 +953,26 @@
         <div class="wheel-wrap">
           <div class="wheel-stage">
             <div class="wheel-pointer"></div>
-            <div id="wheel" class="wheel">
-              <div class="wheel-label bobi">Боби</div>
-              <div class="wheel-label teya">Тея</div>
-              <div class="wheel-label yo">Йо</div>
-            </div>
+            <div id="wheel" class="wheel"></div>
           </div>
 
           <button id="spinWheelBtn" class="wheel-button">🎯 Завърти</button>
           <div id="wheelResult" class="wheel-result">Натисни, за да избереш случаен потребител.</div>
         </div>
+      </div>
+
+      <div class="card useful-links-card">
+        <h2 class="section-title">Полезни линкове</h2>
+
+        <div class="useful-links-add">
+          <div class="useful-links-fields">
+            <input id="linkTitleInput" class="text-input" type="text" placeholder="Заглавие" />
+            <input id="linkUrlInput" class="text-input" type="url" placeholder="Линк" />
+          </div>
+          <button id="addLinkBtn" class="icon-btn" title="Добави линк">＋</button>
+        </div>
+
+        <div class="links-grid" id="linksGrid"></div>
       </div>
     </div>
 
@@ -893,13 +1009,16 @@
           <div>
             <h2 class="section-title">Checklist</h2>
 
-            <div class="tasks-toolbar">
+            <div class="tasks-input-row">
               <input id="newTaskInput" class="text-input" type="text" placeholder="Нова задача..." />
+            </div>
+
+            <div class="tasks-toolbar">
               <button id="addTaskBtn" class="action-btn">➕ Добави задача</button>
               <button id="resetTasksBtn" class="action-btn danger">↺ Reset</button>
             </div>
 
-            <div class="table-wrap" style="display:inline-block;max-width:100%;">
+            <div class="table-wrap">
               <table class="check-table">
                 <thead>
                   <tr>
@@ -916,11 +1035,6 @@
 
             <div class="status-note" id="statusNote">Свързване...</div>
           </div>
-
-          <div class="card inside-links-card">
-            <h2 class="section-title">Полезни линкове</h2>
-            <div class="links-grid" id="linksGrid"></div>
-          </div>
         </div>
 
         <div class="mid-layout">
@@ -929,7 +1043,7 @@
               <h2 class="section-title">NS Order Link Generator</h2>
 
               <div class="orders-toolbar">
-                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга или със запетая..."></textarea>
+                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга, със запетая, точка и запетая или интервал..."></textarea>
               </div>
 
               <div class="orders-toolbar">
@@ -943,6 +1057,8 @@
 1797052</code>
                 <br>или
                 <br><code>1796430, 1797052</code>
+                <br>или
+                <br><code>1796430; 1797052 1798001</code>
               </div>
 
               <div id="orderLinksList" class="order-links-list"></div>
@@ -988,18 +1104,8 @@
                 <button id="reloadClickUpBtn" class="action-btn">🔄 Обнови</button>
               </div>
 
-              <div class="clickup-tabs">
-                <button class="clickup-tab active" data-view="subtasks">Подзадачи</button>
-                <button class="clickup-tab" data-view="board">Board Today</button>
-                <button class="clickup-tab" data-view="urgent">Спешни</button>
-                <button class="clickup-tab" data-view="nonurgent">Общи</button>
-              </div>
-
-              <div class="helper-box">
-                ClickUp token не се слага тук в HTML. Той стои в Apps Script Script Properties.
-              </div>
-
-              <div id="clickupList" class="clickup-list" style="margin-top:10px;"></div>
+              <div id="clickupSummary" class="clickup-summary"></div>
+              <div id="clickupList" class="clickup-list"></div>
             </div>
           </div>
         </div>
@@ -1187,7 +1293,7 @@
       { id: 22, bobi: false, teya: false, yo: false, name: "Микс" }
     ];
 
-    const usefulLinks = [
+    const defaultUsefulLinks = [
       {
         title: "Idealo Feed",
         note: "Бърз достъп до feed-а.",
@@ -1233,9 +1339,9 @@
     ];
 
     const wheelUsers = [
-      { name: "Боби", segmentIndex: 0 },
-      { name: "Тея", segmentIndex: 1 },
-      { name: "Йо", segmentIndex: 2 }
+      { name: "Йо", startDeg: 0, endDeg: 120, color: "#9fc7ff" },
+      { name: "Боби", startDeg: 120, endDeg: 240, color: "#f7bfdc" },
+      { name: "Тея", startDeg: 240, endDeg: 360, color: "#dac4f3" }
     ];
 
     const app = initializeApp(firebaseConfig);
@@ -1244,6 +1350,7 @@
     const tasksRef = ref(db, "dailyChecklist/tasks");
     const forumRef = ref(db, "dailyChecklist/forum");
     const calendarNotesRef = ref(db, "dailyChecklist/calendarNotes");
+    const usefulLinksRef = ref(db, "dailyChecklist/usefulLinks");
 
     const statusNote = document.getElementById("statusNote");
     const tasksBody = document.getElementById("tasksBody");
@@ -1267,12 +1374,16 @@
     const wheelResult = document.getElementById("wheelResult");
     const reloadClickUpBtn = document.getElementById("reloadClickUpBtn");
     const clickupList = document.getElementById("clickupList");
+    const clickupSummary = document.getElementById("clickupSummary");
+    const linkTitleInput = document.getElementById("linkTitleInput");
+    const linkUrlInput = document.getElementById("linkUrlInput");
+    const addLinkBtn = document.getElementById("addLinkBtn");
 
     let shippingSort = { key: "country", direction: "asc" };
     let currentWheelRotation = 0;
     let wheelSpinning = false;
     let calendarNotesMap = {};
-    let activeClickUpView = "subtasks";
+    let usefulLinks = [];
 
     const savedUser = localStorage.getItem("activeUserName");
     if (savedUser) activeUserSelect.value = savedUser;
@@ -1287,6 +1398,31 @@
       const m = String(dateObj.getMonth() + 1).padStart(2, "0");
       const d = String(dateObj.getDate()).padStart(2, "0");
       return `${y}-${m}-${d}`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderWheelLabels() {
+      wheel.innerHTML = "";
+
+      wheelUsers.forEach(segment => {
+        const label = document.createElement("div");
+        label.className = "wheel-segment-label";
+        label.textContent = segment.name;
+
+        const center = (segment.startDeg + segment.endDeg) / 2;
+        const rotate = center - 90;
+        const radius = 74;
+        label.style.transform = `translate(-50%, -50%) rotate(${rotate}deg) translateY(-${radius}px) rotate(${-rotate}deg)`;
+        wheel.appendChild(label);
+      });
     }
 
     function renderCalendar() {
@@ -1360,28 +1496,41 @@
       const currentUser = activeUserSelect.value;
       linksGrid.innerHTML = "";
 
-      usefulLinks.forEach(link => {
-        const onlyUser = link.onlyUser;
-        const allowed = !onlyUser || onlyUser === currentUser;
+      if (!usefulLinks.length) {
+        linksGrid.innerHTML = `<div class="forum-empty">Все още няма добавени линкове.</div>`;
+        return;
+      }
 
-        const row = document.createElement("div");
-        row.className = "link-row";
-        row.innerHTML = `
-          <div>
-            <div class="link-row-title">${link.title}</div>
-            <p class="link-row-note">${link.note}${onlyUser ? ` Активен потребител: ${currentUser}.` : ""}</p>
-          </div>
-          <a
-            class="link-btn ${allowed ? "" : "disabled"}"
-            href="${allowed ? link.url : "#"}"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="${allowed ? "Отваряне" : "Само " + onlyUser + " може да го ползва"}"
-          >
-            ${link.buttonText || "Отвори"}
-          </a>
-        `;
-        linksGrid.appendChild(row);
+      usefulLinks
+        .slice()
+        .sort((a, b) => (a.order || 0) - (b.order || 0))
+        .forEach(link => {
+          const onlyUser = link.onlyUser;
+          const allowed = !onlyUser || onlyUser === currentUser;
+
+          const row = document.createElement("div");
+          row.className = "link-row";
+          row.innerHTML = `
+            <div>
+              <div class="link-row-title">${escapeHtml(link.title || "Без заглавие")}</div>
+              <p class="link-row-note">${escapeHtml(link.note || link.url || "")}${onlyUser ? ` Активен потребител: ${escapeHtml(currentUser)}.` : ""}</p>
+            </div>
+            <a
+              class="link-btn ${allowed ? "" : "disabled"}"
+              href="${allowed ? escapeHtml(link.url || "#") : "#"}"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="${allowed ? "Отваряне" : "Само " + onlyUser + " може да го ползва"}"
+            >
+              ${escapeHtml(link.buttonText || "Отвори")}
+            </a>
+            <button class="icon-btn delete-link-btn" data-link-id="${escapeHtml(link.id || "")}" title="Изтрий линк">✕</button>
+          `;
+          linksGrid.appendChild(row);
+        });
+
+      document.querySelectorAll(".delete-link-btn").forEach(btn => {
+        btn.addEventListener("click", () => deleteUsefulLink(btn.dataset.linkId));
       });
     }
 
@@ -1408,13 +1557,13 @@
               <input class="yo" type="checkbox" data-id="${task.id}" data-field="yo" ${task.yo ? "checked" : ""}>
             </label>
           </td>
-          <td class="task-name">${task.name}</td>
+          <td class="task-name">${escapeHtml(task.name)}</td>
         `;
 
         tasksBody.appendChild(tr);
       });
 
-      document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      tasksBody.querySelectorAll('input[type="checkbox"]').forEach(cb => {
         cb.addEventListener("change", async (e) => {
           const id = Number(e.target.dataset.id);
           const field = e.target.dataset.field;
@@ -1482,6 +1631,40 @@
       }
     }
 
+    async function addUsefulLink() {
+      const title = linkTitleInput.value.trim();
+      const url = linkUrlInput.value.trim();
+      if (!title || !url) return;
+
+      const normalizedUrl = /^(https?:)?\/\//i.test(url) ? url : `https://${url}`;
+      const newRef = push(usefulLinksRef);
+      const order = usefulLinks.length ? Math.max(...usefulLinks.map(x => Number(x.order || 0))) + 1 : 1;
+
+      try {
+        await set(newRef, {
+          id: newRef.key,
+          title,
+          url: normalizedUrl,
+          note: normalizedUrl,
+          buttonText: "Отвори",
+          order,
+          createdAt: Date.now(),
+          createdBy: activeUserSelect.value
+        });
+        linkTitleInput.value = "";
+        linkUrlInput.value = "";
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function deleteUsefulLink(linkId) {
+      if (!linkId) return;
+      const confirmed = confirm("Да изтрия ли този линк?");
+      if (!confirmed) return;
+      await remove(ref(db, `dailyChecklist/usefulLinks/${linkId}`));
+    }
+
     function parseSortValue(value) {
       const str = String(value).replace("~", "").trim();
       const first = str.split("-")[0];
@@ -1532,11 +1715,14 @@
     }
 
     function normalizeOrders(raw) {
-      return raw
-        .split(/[\n,]+/)
+      const tokens = raw
+        .replace(/[\t\r]+/g, "\n")
+        .split(/[\n,; ]+/)
         .map(x => x.trim())
         .filter(Boolean)
-        .slice(0, 50);
+        .slice(0, 100);
+
+      return [...new Set(tokens)];
     }
 
     function buildNsActiveUrl(orderId) {
@@ -1557,7 +1743,7 @@
 
       orderLinksList.innerHTML = orders.map(orderId => `
         <div class="order-item">
-          <div class="order-id">${orderId}</div>
+          <div class="order-id">${escapeHtml(orderId)}</div>
           <div class="order-actions">
             <a class="link-btn" href="${buildNsActiveUrl(orderId)}" target="_blank" rel="noopener noreferrer">NS ACTIVE ORDERS</a>
             <a class="link-btn" href="${buildNsCancelledUrl(orderId)}" target="_blank" rel="noopener noreferrer">NS CANCELLED ORDERS</a>
@@ -1644,22 +1830,12 @@
       });
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
     function spinWheel() {
       if (wheelSpinning) return;
       wheelSpinning = true;
 
       const winner = wheelUsers[Math.floor(Math.random() * wheelUsers.length)];
-      const segmentSize = 120;
-      const centerAngle = winner.segmentIndex * segmentSize + segmentSize / 2;
+      const centerAngle = (winner.startDeg + winner.endDeg) / 2;
       const extraSpins = 5 + Math.floor(Math.random() * 3);
       const target = extraSpins * 360 + (360 - centerAngle);
 
@@ -1676,47 +1852,208 @@
       }, 4200);
     }
 
-    async function loadClickUp(view = activeClickUpView) {
-      activeClickUpView = view;
-      document.querySelectorAll(".clickup-tab").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.view === view);
+    function parseClickUpDate(value) {
+      if (!value && value !== 0) return null;
+
+      if (typeof value === "number" || /^\d{10,}$/.test(String(value))) {
+        const ts = Number(value);
+        const ms = String(Math.abs(ts)).length <= 10 ? ts * 1000 : ts;
+        const d = new Date(ms);
+        return isNaN(d.getTime()) ? null : d;
+      }
+
+      const raw = String(value).trim();
+      if (!raw) return null;
+
+      const isoTry = new Date(raw);
+      if (!isNaN(isoTry.getTime())) return isoTry;
+
+      const m = raw.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{2,4})(?:\s+(\d{1,2}):(\d{2}))?$/);
+      if (m) {
+        const day = Number(m[1]);
+        const month = Number(m[2]) - 1;
+        const year = Number(m[3].length === 2 ? `20${m[3]}` : m[3]);
+        const hour = Number(m[4] || 0);
+        const minute = Number(m[5] || 0);
+        const d = new Date(year, month, day, hour, minute);
+        return isNaN(d.getTime()) ? null : d;
+      }
+
+      return null;
+    }
+
+    function isClosedStatus(status) {
+      const s = String(status || "").toLowerCase();
+      return ["closed", "done", "complete", "completed", "finished", "resolved", "cancelled", "canceled"].some(x => s.includes(x));
+    }
+
+    function sameCalendarDay(a, b) {
+      return a && b &&
+        a.getFullYear() === b.getFullYear() &&
+        a.getMonth() === b.getMonth() &&
+        a.getDate() === b.getDate();
+    }
+
+    function toDayStart(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+
+    function normalizeClickUpItems(allResponses) {
+      const map = new Map();
+
+      allResponses.forEach(({ view, items }) => {
+        items.forEach(item => {
+          const key = String(item.id || item.task_id || item.url || `${item.name || ""}|${item.due_date || ""}|${view}`);
+          if (!map.has(key)) {
+            map.set(key, {
+              ...item,
+              _views: new Set([view])
+            });
+          } else {
+            const existing = map.get(key);
+            existing._views.add(view);
+            existing.name = existing.name || item.name;
+            existing.status = existing.status || item.status;
+            existing.priority = existing.priority || item.priority;
+            existing.due_date = existing.due_date || item.due_date;
+            existing.url = existing.url || item.url;
+            existing.list_name = existing.list_name || item.list_name;
+            existing.tags = existing.tags || item.tags;
+          }
+        });
       });
 
+      const today = toDayStart(new Date());
+
+      return [...map.values()].map(item => {
+        const dueObj = parseClickUpDate(item.due_date || item.dueDate || item.due);
+        const dueStart = dueObj ? toDayStart(dueObj) : null;
+        const overdue = !!dueStart && dueStart < today && !isClosedStatus(item.status);
+        const dueToday = !!dueObj && sameCalendarDay(dueObj, new Date());
+        const views = [...item._views];
+        const priorityText = String(item.priority || "").toLowerCase();
+        const urgent = views.includes("urgent") || priorityText.includes("urgent") || priorityText.includes("high");
+        const nonurgent = views.includes("nonurgent") || (!urgent && views.includes("board"));
+        const subtask = views.includes("subtasks");
+        const boardToday = views.includes("board") || dueToday;
+
+        return {
+          ...item,
+          dueObj,
+          overdue,
+          dueToday,
+          urgent,
+          nonurgent,
+          subtask,
+          boardToday,
+          _viewsArr: views
+        };
+      }).sort((a, b) => {
+        const score = x => {
+          if (x.overdue) return 0;
+          if (x.dueToday) return 1;
+          if (x.urgent) return 2;
+          if (x.nonurgent) return 3;
+          return 4;
+        };
+
+        const sa = score(a);
+        const sb = score(b);
+        if (sa !== sb) return sa - sb;
+
+        const at = a.dueObj ? a.dueObj.getTime() : Number.MAX_SAFE_INTEGER;
+        const bt = b.dueObj ? b.dueObj.getTime() : Number.MAX_SAFE_INTEGER;
+        if (at !== bt) return at - bt;
+
+        return String(a.name || "").localeCompare(String(b.name || ""), "bg");
+      });
+    }
+
+    function renderClickUp(items) {
+      if (!items.length) {
+        clickupSummary.innerHTML = "";
+        clickupList.innerHTML = `<div class="forum-empty">Няма резултати.</div>`;
+        return;
+      }
+
+      const counts = {
+        overdue: items.filter(x => x.overdue).length,
+        today: items.filter(x => x.dueToday).length,
+        urgent: items.filter(x => x.urgent).length,
+        common: items.filter(x => x.nonurgent).length,
+        all: items.length
+      };
+
+      clickupSummary.innerHTML = `
+        <span class="summary-chip">Всичко: ${counts.all}</span>
+        <span class="summary-chip today">За днес: ${counts.today}</span>
+        <span class="summary-chip urgent">Спешни: ${counts.urgent}</span>
+        <span class="summary-chip common">Общи: ${counts.common}</span>
+        <span class="summary-chip danger">Просрочени: ${counts.overdue}</span>
+      `;
+
+      clickupList.innerHTML = items.map(item => {
+        const dueText = item.dueObj ? formatDateTime(item.dueObj.getTime()) : (item.due_date || "-");
+        const tags = [];
+        if (item.overdue) tags.push(`<span class="task-chip danger">Просрочена</span>`);
+        if (item.dueToday) tags.push(`<span class="task-chip today">За днес</span>`);
+        if (item.urgent) tags.push(`<span class="task-chip urgent">Спешна</span>`);
+        if (item.nonurgent) tags.push(`<span class="task-chip common">Обща</span>`);
+        if (item.subtask) tags.push(`<span class="task-chip subtask">Подзадача</span>`);
+        if (!item.subtask && item.boardToday) tags.push(`<span class="task-chip subtask">Board</span>`);
+
+        return `
+          <div class="clickup-item ${item.overdue ? "overdue" : ""}">
+            <div class="clickup-item-top">
+              <div class="clickup-item-name">${escapeHtml(item.name || "")}</div>
+              ${item.url ? `<a class="link-btn" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Отвори в ClickUp</a>` : ""}
+            </div>
+            <div class="clickup-tags">${tags.join("")}</div>
+            <div class="clickup-meta">
+              Статус: ${escapeHtml(item.status || "-")}<br>
+              Due: ${escapeHtml(dueText || "-")}<br>
+              Priority: ${escapeHtml(item.priority || "-")}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    async function fetchClickUpView(view) {
+      const res = await fetch(`${CLICKUP_WEBAPP_URL}?view=${encodeURIComponent(view)}&t=${Date.now()}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const items = data.subtasks || data.tasks_due_today || data.tasks_tagged || data.items || [];
+      return { view, items: Array.isArray(items) ? items : [] };
+    }
+
+    async function loadClickUpUnified() {
       if (!CLICKUP_WEBAPP_URL || CLICKUP_WEBAPP_URL === "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE") {
+        clickupSummary.innerHTML = "";
         clickupList.innerHTML = `<div class="forum-empty">Сложи Apps Script Web App URL в <code>CLICKUP_WEBAPP_URL</code>.</div>`;
         return;
       }
 
+      clickupSummary.innerHTML = "";
       clickupList.innerHTML = `<div class="forum-empty">Зареждане...</div>`;
 
       try {
-        const res = await fetch(`${CLICKUP_WEBAPP_URL}?view=${encodeURIComponent(view)}`);
-        const data = await res.json();
+        const responses = await Promise.allSettled([
+          fetchClickUpView("subtasks"),
+          fetchClickUpView("board"),
+          fetchClickUpView("urgent"),
+          fetchClickUpView("nonurgent")
+        ]);
 
-        const items =
-          data.subtasks ||
-          data.tasks_due_today ||
-          data.tasks_tagged ||
-          [];
+        const ok = responses
+          .filter(x => x.status === "fulfilled")
+          .map(x => x.value);
 
-        if (!items.length) {
-          clickupList.innerHTML = `<div class="forum-empty">Няма резултати.</div>`;
-          return;
-        }
-
-        clickupList.innerHTML = items.map(item => `
-          <div class="clickup-item">
-            <div class="clickup-item-name">${escapeHtml(item.name || "")}</div>
-            <div class="clickup-meta">
-              Статус: ${escapeHtml(item.status || "-")}<br>
-              Due: ${escapeHtml(item.due_date || "-")}<br>
-              Priority: ${escapeHtml(item.priority || "-")}<br>
-              ${item.url ? `<a class="link-btn" style="margin-top:6px;display:inline-flex;" href="${item.url}" target="_blank" rel="noopener noreferrer">Отвори в ClickUp</a>` : ""}
-            </div>
-          </div>
-        `).join("");
+        const normalized = normalizeClickUpItems(ok);
+        renderClickUp(normalized);
       } catch (err) {
         console.error(err);
+        clickupSummary.innerHTML = "";
         clickupList.innerHTML = `<div class="forum-empty">Грешка при зареждане на ClickUp.</div>`;
       }
     }
@@ -1727,6 +2064,13 @@
     newTaskInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") addNewTask();
     });
+    addLinkBtn.addEventListener("click", addUsefulLink);
+    linkTitleInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addUsefulLink();
+    });
+    linkUrlInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addUsefulLink();
+    });
     resetTasksBtn.addEventListener("click", resetAllTasks);
     generateOrdersBtn.addEventListener("click", renderOrderLinks);
     clearOrdersBtn.addEventListener("click", () => {
@@ -1735,7 +2079,7 @@
     });
     addForumBtn.addEventListener("click", addForumComment);
     spinWheelBtn.addEventListener("click", spinWheel);
-    reloadClickUpBtn.addEventListener("click", () => loadClickUp(activeClickUpView));
+    reloadClickUpBtn.addEventListener("click", loadClickUpUnified);
 
     document.querySelectorAll(".sortable").forEach(th => {
       th.addEventListener("click", () => {
@@ -1750,17 +2094,35 @@
       });
     });
 
-    document.querySelectorAll(".clickup-tab").forEach(btn => {
-      btn.addEventListener("click", () => loadClickUp(btn.dataset.view));
-    });
-
     async function bootstrap() {
-      renderLinks();
+      renderWheelLabels();
       renderShippingTable();
 
       onValue(calendarNotesRef, (snapshot) => {
         calendarNotesMap = snapshot.val() || {};
         renderCalendar();
+      });
+
+      onValue(usefulLinksRef, async (snapshot) => {
+        const value = snapshot.val();
+
+        if (!value) {
+          const payload = {};
+          defaultUsefulLinks.forEach((link, idx) => {
+            const key = push(usefulLinksRef).key;
+            payload[key] = {
+              ...link,
+              id: key,
+              order: idx + 1,
+              createdAt: Date.now()
+            };
+          });
+          await set(usefulLinksRef, payload);
+          return;
+        }
+
+        usefulLinks = Object.values(value);
+        renderLinks();
       });
 
       onValue(tasksRef, async (snapshot) => {
@@ -1790,7 +2152,7 @@
         console.error(error);
       });
 
-      loadClickUp("subtasks");
+      loadClickUpUnified();
     }
 
     bootstrap();
