@@ -1225,11 +1225,11 @@
       remove,
       get
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
     import {
       getAuth,
       GoogleAuthProvider,
-      signInWithRedirect,
-      getRedirectResult,
+      signInWithPopup,
       onAuthStateChanged,
       setPersistence,
       browserLocalPersistence,
@@ -1398,12 +1398,13 @@
         await setPersistence(auth, browserLocalPersistence);
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({ prompt: "select_account" });
-        await signInWithRedirect(auth, provider);
+        const result = await signInWithPopup(auth, provider);
+        console.log("POPUP RESULT:", result);
       } catch (err) {
         console.error("LOGIN ERROR:", err);
         authMsg.textContent = err.code || err.message || "Грешка при вход.";
       }
-    }
+}
 
     function showAuthGate(message = "") {
       authGate.style.display = "block";
