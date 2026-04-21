@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;">
   <title>Looker Checklist</title>
   <style>
     :root{
@@ -23,6 +23,7 @@
       --yellow:#f5cf62;
       --blue:#9fc7ff;
       --green:#78c98d;
+      --danger:#ef6c8f;
       --shadow:0 10px 30px rgba(166,123,163,.12);
     }
 
@@ -38,10 +39,10 @@
     }
 
     .app{
-      max-width:1450px;
+      max-width:1720px;
       margin:0 auto;
       display:grid;
-      grid-template-columns:290px 1fr;
+      grid-template-columns:290px minmax(0, 1fr) 370px;
       gap:16px;
       align-items:start;
     }
@@ -53,12 +54,20 @@
       box-shadow:var(--shadow);
     }
 
-    .left-col{
+    .left-col,
+    .right-col{
       display:flex;
       flex-direction:column;
       gap:14px;
       position:sticky;
       top:16px;
+    }
+
+    .main-col{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      min-width:0;
     }
 
     .calendar-card{ padding:12px; }
@@ -170,14 +179,26 @@
       box-shadow:0 0 0 6px rgba(71,197,124,.12);
     }
 
-    .user-select{
+    .user-select, .table-filter, .table-search, .text-input, .text-area{
       border:1px solid var(--line);
       border-radius:12px;
       background:#fff;
       padding:8px 10px;
       font-size:12px;
       color:var(--text);
-      min-width:140px;
+      font-family: Arial, sans-serif;
+      width:100%;
+    }
+
+    .text-area{
+      min-height:110px;
+      resize:vertical;
+      line-height:1.45;
+    }
+
+    .table-search{
+      min-width:220px;
+      width:auto;
     }
 
     .info-banner{
@@ -193,7 +214,7 @@
 
     .layout{
       display:grid;
-      grid-template-columns:1.15fr .85fr;
+      grid-template-columns:1.1fr .9fr;
       gap:16px;
       align-items:start;
     }
@@ -202,6 +223,12 @@
       margin:0 0 10px 0;
       font-size:16px;
       color:var(--title);
+    }
+
+    .subtle-title{
+      margin:0 0 8px 0;
+      font-size:14px;
+      color:#6b5174;
     }
 
     .table-wrap{
@@ -300,7 +327,12 @@
       color:#8a728f;
     }
 
-    .links-card{
+    .stack{
+      display:grid;
+      gap:16px;
+    }
+
+    .links-card, .operations-card, .shipping-card, .orders-card, .forum-card{
       padding:14px;
     }
 
@@ -334,7 +366,8 @@
       line-height:1.35;
     }
 
-    .link-btn{
+    .link-btn,
+    .action-btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -349,18 +382,36 @@
       font-weight:700;
       transition:.15s ease;
       white-space:nowrap;
+      cursor:pointer;
     }
 
-    .link-btn:hover{
+    .action-btn{
+      min-width:auto;
+    }
+
+    .link-btn:hover,
+    .action-btn:hover{
       transform:translateY(-1px);
       border-color:#caa5d7;
       box-shadow:0 6px 16px rgba(165,123,173,.14);
     }
 
-    .link-btn.disabled{
+    .link-btn.disabled,
+    .action-btn.disabled{
       opacity:.48;
       pointer-events:none;
       filter:grayscale(.2);
+    }
+
+    .action-btn.danger{
+      background:linear-gradient(180deg,#fff1f5 0%,#ffe6ef 100%);
+      border-color:#f0bfd0;
+      color:#a54d70;
+    }
+
+    .action-btn.secondary{
+      background:#fff;
+      border-color:#e5d8ea;
     }
 
     .helper-box{
@@ -382,8 +433,208 @@
       font-size:11px;
     }
 
+    .ops-header{
+      padding:0 0 12px 0;
+      border-bottom:1px solid #ece0f1;
+      margin-bottom:12px;
+    }
+
+    .ops-header h2{
+      margin:0;
+      font-size:24px;
+      color:#3f2b7a;
+    }
+
+    .ops-header p{
+      color:#7a6fa3;
+      margin:5px 0 0 0;
+      font-size:14px;
+    }
+
+    .ops-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .ops-box{
+      background:#fff;
+      border:1px solid #e6e1f5;
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .ops-box h3, .ops-box h4{
+      margin:0 0 8px 0;
+      color:#3f2b7a;
+      font-size:18px;
+    }
+
+    .ops-box p{
+      margin:0 0 10px 0;
+      color:#333;
+    }
+
+    .ops-box ul, .ops-box ol{
+      padding-left:18px;
+      margin:0;
+      line-height:1.6;
+      color:#333;
+    }
+
+    .ops-box ul + h4,
+    .ops-box ul + h3,
+    .ops-box p + h4,
+    .ops-box p + h3{
+      margin-top:14px;
+    }
+
+    .shipping-toolbar,
+    .tasks-toolbar,
+    .orders-toolbar,
+    .forum-toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:12px;
+    }
+
+    .shipping-table{
+      min-width:780px;
+    }
+
+    .sortable{
+      cursor:pointer;
+      user-select:none;
+      position:relative;
+    }
+
+    .sortable .sort-ind{
+      margin-left:6px;
+      color:#8b7391;
+      font-size:11px;
+    }
+
+    .small-note{
+      font-size:11.5px;
+      color:#7e6b87;
+      margin-top:10px;
+      line-height:1.4;
+    }
+
+    .order-links-list{
+      display:grid;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .order-item{
+      background:#fff;
+      border:1px solid #ead9ef;
+      border-radius:14px;
+      padding:12px;
+      display:grid;
+      gap:8px;
+    }
+
+    .order-id{
+      font-weight:700;
+      color:#5d4766;
+      font-size:13px;
+    }
+
+    .order-actions{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .forum-list{
+      display:grid;
+      gap:10px;
+      max-height:900px;
+      overflow:auto;
+      padding-right:2px;
+    }
+
+    .forum-item{
+      background:#fff;
+      border:1px solid #ead9ef;
+      border-radius:16px;
+      padding:12px;
+    }
+
+    .forum-item-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    .forum-author{
+      font-size:12px;
+      font-weight:700;
+      color:#6a4e73;
+    }
+
+    .forum-time{
+      font-size:11px;
+      color:#9a839f;
+      margin-top:2px;
+    }
+
+    .forum-text{
+      font-size:13px;
+      line-height:1.5;
+      color:#4b3e52;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .delete-comment-btn{
+      border:none;
+      background:#fff1f5;
+      color:#b45576;
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      cursor:pointer;
+      font-size:14px;
+      font-weight:700;
+      border:1px solid #f2c4d3;
+    }
+
+    .delete-comment-btn:hover{
+      background:#ffe4ec;
+    }
+
+    .forum-empty{
+      font-size:12px;
+      color:#8c7691;
+      background:#fff;
+      border:1px dashed #e4d3e7;
+      border-radius:14px;
+      padding:14px;
+    }
+
+    @media (max-width:1450px){
+      .app{
+        grid-template-columns:290px 1fr;
+      }
+      .right-col{
+        position:static;
+        grid-column:1 / -1;
+      }
+    }
+
     @media (max-width:1180px){
       .layout{
+        grid-template-columns:1fr;
+      }
+      .ops-grid{
         grid-template-columns:1fr;
       }
     }
@@ -392,7 +643,8 @@
       .app{
         grid-template-columns:1fr;
       }
-      .left-col{
+      .left-col,
+      .right-col{
         position:static;
       }
     }
@@ -411,68 +663,265 @@
       </div>
     </div>
 
-    <div class="card main-card">
-      <div class="topbar">
-        <div class="title-wrap">
-          <h1>ЗАДАЧИ ЗА ДЕНЯ</h1>
-          <p>Live checklist за екипа • БОБИ / ТЕЯ / ЙО</p>
+    <div class="main-col">
+      <div class="card main-card">
+        <div class="topbar">
+          <div class="title-wrap">
+            <h1>ЗАДАЧИ ЗА ДЕНЯ</h1>
+            <p>Live checklist за екипа • БОБИ / ТЕЯ / ЙО</p>
+          </div>
+
+          <div class="top-actions">
+            <label class="pill" for="activeUserSelect">
+              👤 Активен потребител
+              <select id="activeUserSelect" class="user-select">
+                <option value="Боби">Боби</option>
+                <option value="Тея">Тея</option>
+                <option value="Йо">Йо</option>
+              </select>
+            </label>
+
+            <div class="pill">
+              <span class="live-dot"></span>
+              <span>Live синхронизация</span>
+            </div>
+          </div>
         </div>
 
-        <div class="top-actions">
-          <label class="pill" for="activeUserSelect">
-            👤 Активен потребител
-            <select id="activeUserSelect" class="user-select">
-              <option value="Боби">Боби</option>
-              <option value="Тея">Тея</option>
-              <option value="Йо">Йо</option>
-            </select>
-          </label>
+        <div class="info-banner">
+          Отметките се виждат от всички, които са отворили страницата. Ако някой отбележи задача, другите ще я видят веднага.
+        </div>
 
-          <div class="pill">
-            <span class="live-dot"></span>
-            <span>Live синхронизация</span>
+        <div class="layout">
+          <div class="stack">
+            <div>
+              <h2 class="section-title">Checklist</h2>
+
+              <div class="tasks-toolbar">
+                <input id="newTaskInput" class="text-input" type="text" placeholder="Нова задача..." />
+                <button id="addTaskBtn" class="action-btn">➕ Добави задача</button>
+                <button id="resetTasksBtn" class="action-btn danger">↺ Reset на всички отметки</button>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th class="col-index">№</th>
+                      <th class="col-check">БОБИ</th>
+                      <th class="col-check">ТЕЯ</th>
+                      <th class="col-check">ЙО</th>
+                      <th>ЗАДАЧИ ЗА ДЕНЯ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tasksBody"></tbody>
+                </table>
+              </div>
+
+              <div class="status-note" id="statusNote">Свързване...</div>
+            </div>
+
+            <div class="card orders-card">
+              <h2 class="section-title">NS Order Link Generator</h2>
+
+              <div class="orders-toolbar">
+                <textarea id="ordersInput" class="text-area" placeholder="Пейстни поръчките една под друга..."></textarea>
+              </div>
+
+              <div class="orders-toolbar">
+                <button id="generateOrdersBtn" class="action-btn">🔗 Генерирай линкове</button>
+                <button id="clearOrdersBtn" class="action-btn secondary">🧹 Изчисти</button>
+              </div>
+
+              <div class="helper-box">
+                Постави до 50 поръчки, всяка на нов ред. За всяка поръчка ще се генерират:
+                <br>• NS ACTIVE ORDERS
+                <br>• NS CANCELLED ORDERS
+              </div>
+
+              <div id="orderLinksList" class="order-links-list"></div>
+            </div>
+
+            <div class="card operations-card">
+              <div class="ops-header">
+                <h2>Обработка поръчки</h2>
+                <p>Оперативна логика за обработка на поръчки и действия</p>
+              </div>
+
+              <div class="ops-grid">
+                <div class="ops-box">
+                  <h3>Поръчка за предлагане</h3>
+                  <ul>
+                    <li>Трием продуктите, които нямаме</li>
+                    <li>Слагаме таг <b>STOP</b></li>
+                    <li>Горе вдясно трябва да светне <b>RESERVED</b></li>
+                    <li>Пишем коментар на немски</li>
+                    <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+                  </ul>
+
+                  <h3>Поръчка за сторно</h3>
+                  <ul>
+                    <li>Слагаме таг <b>STOP</b></li>
+                    <li>Пишем коментар на немски</li>
+                    <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+                  </ul>
+
+                  <h3>Поръчка за адрес</h3>
+                  <ul>
+                    <li>Слагаме таг <b>STOP</b></li>
+                    <li>Пишем коментар на немски</li>
+                    <li>Даваме задачата на Слав или Ради в ClickUp (според случая)</li>
+                  </ul>
+                </div>
+
+                <div class="ops-box">
+                  <h3>Поръчки Qogita</h3>
+                  <ul>
+                    <li>Ако не се генерира label → коригираме ръчно кг в поръчката (максимум до 2 цифри след десетичната запетая)</li>
+                    <li>Изписваме отделно преди всеки файл</li>
+                    <li>Label-ите се правят отделно (UPS)</li>
+                    <li>Тракинг номерът се записва като коментар в поръчката</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="ops-grid">
+                <div class="ops-box">
+                  <h3>ClickUp тагване</h3>
+
+                  <p><b>Тагваме Радина за:</b></p>
+                  <ul>
+                    <li>Kaufland / Ebay – предлагане</li>
+                    <li>Kaufland / Ebay – сторно</li>
+                    <li>Kaufland / Ebay – адрес</li>
+                  </ul>
+
+                  <p style="margin-top:10px;"><b>Тагваме Слав за:</b></p>
+                  <ul>
+                    <li>Сайт – предлагане</li>
+                    <li>Сайт – сторно</li>
+                    <li>Сайт – адрес</li>
+                    <li>Otto</li>
+                  </ul>
+                </div>
+
+                <div class="ops-box">
+                  <h3>STOP / Noverstock</h3>
+                  <ul>
+                    <li>При слагане на <b>STOP</b> таг → винаги се пише причина</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="ops-box" style="margin-bottom:12px;">
+                <h3>ONFY (увиснала поръчка)</h3>
+
+                <p>Когато нямаме продуктите → канселираме:</p>
+
+                <ol>
+                  <li>
+                    <b>NS:</b><br>
+                    Горе ляво → Cancel order → Reason: Out of Stock → N/A → Submit cancel
+                  </li>
+                  <li>
+                    <b>Shopify:</b><br>
+                    Cancel order → Reason: Items unavailable<br>
+                    Махаме отметките:
+                    <ul>
+                      <li>Restock inventory</li>
+                      <li>Notify customer</li>
+                    </ul>
+                    Натискаме Cancel
+                  </li>
+                  <li>
+                    Даваме на Радо:
+                    <ul>
+                      <li>Номер на поръчката</li>
+                      <li>Статус: ONFY Cancelled</li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+
+              <div class="ops-box">
+                <h3>Допълнителни правила</h3>
+                <ul>
+                  <li>Ebay поръчка не чака транспорт</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="card shipping-card">
+              <h2 class="section-title">Транспортни цени</h2>
+
+              <div class="shipping-toolbar">
+                <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
+                <select id="zoneFilter" class="table-filter">
+                  <option value="">Всички зони</option>
+                  <option value="Domestic">Domestic</option>
+                  <option value="1">Zone 1</option>
+                  <option value="2">Zone 2</option>
+                  <option value="3">Zone 3</option>
+                </select>
+              </div>
+
+              <div class="table-wrap">
+                <table class="shipping-table">
+                  <thead>
+                    <tr>
+                      <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
+                      <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
+                      <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
+                      <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
+                      <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
+                      <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
+                    </tr>
+                  </thead>
+                  <tbody id="shippingBody"></tbody>
+                </table>
+              </div>
+
+              <div class="small-note">
+                Таблицата може да се филтрира по зона, да се търси и да се сортира по колони.
+              </div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="card links-card">
+              <h2 class="section-title">Полезни линкове</h2>
+
+              <div class="links-grid" id="linksGrid"></div>
+
+              <div class="helper-box">
+                За да добавиш нов ред по-късно, отвори <code>index.html</code> и добави нов обект в масива <code>usefulLinks</code>.
+                Същото важи и за задачите — добавят се в <code>initialTasks</code>.
+                <br><br>
+                Забележка: бутонът „само Йо може“ е UI ограничение. Без login система това не е реална защита.
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="info-banner">
-        Отметките се виждат от всички, които са отворили страницата. Ако някой отбележи задача, другите ще я видят веднага.
-      </div>
+    <div class="right-col">
+      <div class="card forum-card">
+        <h2 class="section-title">Форум / Коментари</h2>
 
-      <div class="layout">
-        <div>
-          <h2 class="section-title">Checklist</h2>
-
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th class="col-index">№</th>
-                  <th class="col-check">БОБИ</th>
-                  <th class="col-check">ТЕЯ</th>
-                  <th class="col-check">ЙО</th>
-                  <th>ЗАДАЧИ ЗА ДЕНЯ</th>
-                </tr>
-              </thead>
-              <tbody id="tasksBody"></tbody>
-            </table>
-          </div>
-
-          <div class="status-note" id="statusNote">Свързване...</div>
+        <div class="forum-toolbar">
+          <textarea id="forumInput" class="text-area" placeholder="Напиши коментар..."></textarea>
         </div>
 
-        <div class="card links-card">
-          <h2 class="section-title">Полезни линкове</h2>
-
-          <div class="links-grid" id="linksGrid"></div>
-
-          <div class="helper-box">
-            За да добавиш нов ред по-късно, отвори <code>index.html</code> и добави нов обект в масива <code>usefulLinks</code>.
-            Същото важи и за задачите — добавят се в <code>initialTasks</code>.
-            <br><br>
-            Забележка: бутонът „само Йо може“ е UI ограничение. Без login система това не е реална защита.
-          </div>
+        <div class="forum-toolbar">
+          <button id="addForumBtn" class="action-btn">💬 Публикувай</button>
         </div>
+
+        <div class="helper-box">
+          Коментарите се пазят постоянно, докато не натиснеш хиксчето и не ги изтриеш.
+        </div>
+
+        <div id="forumList" class="forum-list" style="margin-top:12px;"></div>
       </div>
     </div>
   </div>
@@ -484,12 +933,12 @@
       ref,
       onValue,
       set,
-      update
+      update,
+      push,
+      remove,
+      get
     } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
 
-    // ВАЖНО:
-    // 1) Добави databaseURL от Firebase Realtime Database
-    // 2) Ако полето липсва, live синхронизацията няма да работи
     const firebaseConfig = {
       apiKey: "AIzaSyD9VcNRNImcdSEY9BbiC64Jz2SNrIZixN8",
       authDomain: "looker-checklist.firebaseapp.com",
@@ -501,7 +950,6 @@
       measurementId: "G-GWXLJB86LJ"
     };
 
-    // Лесно добавяш нови задачи тук
     const initialTasks = [
       { id: 1, bobi: false, teya: false, yo: false, name: "Поръчки с таг СТОП - pending - 8:30h" },
       { id: 2, bobi: false, teya: false, yo: false, name: "Поръчки с таг СТОП - pending - 15:30h" },
@@ -527,7 +975,6 @@
       { id: 22, bobi: false, teya: false, yo: false, name: "Микс" }
     ];
 
-    // Лесно добавяш нови линкове тук
     const usefulLinks = [
       {
         title: "Idealo Feed",
@@ -550,14 +997,53 @@
       }
     ];
 
+    const shippingData = [
+      { country: "Germany", zone: "Domestic", kg01: "3.13", kg12: "3.27", kg23: "3.72", kg35: "4.18" },
+      { country: "Austria", zone: "1", kg01: "6.09-6.20", kg12: "6.20-6.44", kg23: "6.50-6.63", kg35: "6.70-7.14" },
+      { country: "Netherlands", zone: "1", kg01: "6.37-6.50", kg12: "6.50-6.66", kg23: "~6.70", kg35: "~7.00" },
+      { country: "Luxembourg", zone: "1", kg01: "6.71-6.95", kg12: "7.00-7.10", kg23: "~7.20", kg35: "~7.30" },
+      { country: "Belgium", zone: "1", kg01: "7.43-7.69", kg12: "7.70-7.85", kg23: "~7.90", kg35: "~8.00" },
+      { country: "France", zone: "1", kg01: "7.87-8.03", kg12: "8.20-8.47", kg23: "8.50-8.86", kg35: "~9.00" },
+      { country: "Czech Republic", zone: "1", kg01: "4.96", kg12: "~5.00", kg23: "~5.20", kg35: "~5.50" },
+      { country: "Denmark", zone: "1", kg01: "~10.50", kg12: "~11.20", kg23: "~11.50", kg35: "~12.00" },
+      { country: "Italy", zone: "2", kg01: "9.31-9.35", kg12: "9.50-9.74", kg23: "~9.70", kg35: "~10.00" },
+      { country: "Spain", zone: "2", kg01: "~8.27", kg12: "8.46-8.55", kg23: "~8.60", kg35: "~9.00" },
+      { country: "Sweden", zone: "2", kg01: "17.33", kg12: "17.99", kg23: "~18.50", kg35: "~19.00" },
+      { country: "Slovakia", zone: "2", kg01: "~13.02", kg12: "~13.50", kg23: "~14.00", kg35: "~14.50" },
+      { country: "Slovenia", zone: "2", kg01: "13.02", kg12: "~13.50", kg23: "~14.00", kg35: "~14.50" },
+      { country: "Hungary", zone: "2", kg01: "~13.30", kg12: "~13.80", kg23: "~14.20", kg35: "~15.00" },
+      { country: "Croatia", zone: "3", kg01: "13.6", kg12: "14.3", kg23: "15.34", kg35: "~16.00" },
+      { country: "Portugal", zone: "3", kg01: "13.6", kg12: "14.21", kg23: "~14.80", kg35: "~15.50" },
+      { country: "Latvia", zone: "3", kg01: "~14.70", kg12: "~15.00", kg23: "~15.50", kg35: "~16.00" },
+      { country: "Lithuania", zone: "3", kg01: "~13.95", kg12: "~14.50", kg23: "~15.00", kg35: "~15.50" },
+      { country: "Estonia", zone: "3", kg01: "~14.50", kg12: "~15.00", kg23: "~15.50", kg35: "~16.00" },
+      { country: "Finland", zone: "3", kg01: "~18.00", kg12: "~18.50", kg23: "~19.00", kg35: "~20.00" }
+    ];
+
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
     const tasksRef = ref(db, "dailyChecklist/tasks");
+    const forumRef = ref(db, "dailyChecklist/forum");
     const statusNote = document.getElementById("statusNote");
     const tasksBody = document.getElementById("tasksBody");
     const activeUserSelect = document.getElementById("activeUserSelect");
     const linksGrid = document.getElementById("linksGrid");
+    const shippingBody = document.getElementById("shippingBody");
+    const shippingSearch = document.getElementById("shippingSearch");
+    const zoneFilter = document.getElementById("zoneFilter");
+    const newTaskInput = document.getElementById("newTaskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const resetTasksBtn = document.getElementById("resetTasksBtn");
+    const ordersInput = document.getElementById("ordersInput");
+    const generateOrdersBtn = document.getElementById("generateOrdersBtn");
+    const clearOrdersBtn = document.getElementById("clearOrdersBtn");
+    const orderLinksList = document.getElementById("orderLinksList");
+    const forumInput = document.getElementById("forumInput");
+    const addForumBtn = document.getElementById("addForumBtn");
+    const forumList = document.getElementById("forumList");
+
+    let shippingSort = { key: "country", direction: "asc" };
 
     const savedUser = localStorage.getItem("activeUserName");
     if (savedUser) activeUserSelect.value = savedUser;
@@ -688,14 +1174,250 @@
       });
     }
 
+    async function addNewTask() {
+      const name = newTaskInput.value.trim();
+      if (!name) return;
+
+      try {
+        const snap = await get(tasksRef);
+        const value = snap.val() || {};
+        const ids = Object.values(value).map(v => Number(v.id || 0));
+        const nextId = ids.length ? Math.max(...ids) + 1 : 1;
+
+        await update(ref(db, `dailyChecklist/tasks/${nextId}`), {
+          id: nextId,
+          bobi: false,
+          teya: false,
+          yo: false,
+          name
+        });
+
+        newTaskInput.value = "";
+        statusNote.textContent = "Добавена нова задача.";
+      } catch (err) {
+        console.error(err);
+        statusNote.textContent = "Грешка при добавяне на задача.";
+      }
+    }
+
+    async function resetAllTasks() {
+      const confirmed = confirm("Сигурна ли си, че искаш да занулиш всички отметки?");
+      if (!confirmed) return;
+
+      try {
+        const snap = await get(tasksRef);
+        const value = snap.val() || {};
+        const updates = {};
+
+        Object.values(value).forEach(task => {
+          updates[`${task.id}/bobi`] = false;
+          updates[`${task.id}/teya`] = false;
+          updates[`${task.id}/yo`] = false;
+        });
+
+        await update(tasksRef, updates);
+        statusNote.textContent = "Всички отметки са нулирани.";
+      } catch (err) {
+        console.error(err);
+        statusNote.textContent = "Грешка при reset.";
+      }
+    }
+
+    function parseSortValue(value) {
+      const str = String(value).replace("~", "").trim();
+      const first = str.split("-")[0];
+      const numeric = parseFloat(first.replace(",", "."));
+      return isNaN(numeric) ? str.toLowerCase() : numeric;
+    }
+
+    function updateSortIndicators() {
+      document.querySelectorAll(".sort-ind").forEach(el => el.textContent = "");
+      const current = document.getElementById("ind-" + shippingSort.key);
+      if (current) current.textContent = shippingSort.direction === "asc" ? "▲" : "▼";
+    }
+
+    function renderShippingTable() {
+      const q = shippingSearch.value.trim().toLowerCase();
+      const zone = zoneFilter.value;
+
+      let rows = [...shippingData];
+
+      if (zone) {
+        rows = rows.filter(r => String(r.zone) === zone);
+      }
+
+      if (q) {
+        rows = rows.filter(r =>
+          Object.values(r).some(v => String(v).toLowerCase().includes(q))
+        );
+      }
+
+      rows.sort((a, b) => {
+        const av = parseSortValue(a[shippingSort.key]);
+        const bv = parseSortValue(b[shippingSort.key]);
+
+        if (av < bv) return shippingSort.direction === "asc" ? -1 : 1;
+        if (av > bv) return shippingSort.direction === "asc" ? 1 : -1;
+        return 0;
+      });
+
+      shippingBody.innerHTML = rows.map(r => `
+        <tr>
+          <td>${r.country}</td>
+          <td>${r.zone}</td>
+          <td>${r.kg01}</td>
+          <td>${r.kg12}</td>
+          <td>${r.kg23}</td>
+          <td>${r.kg35}</td>
+        </tr>
+      `).join("");
+
+      updateSortIndicators();
+    }
+
+    function normalizeOrders(raw) {
+      return raw
+        .split(/\r?\n/)
+        .map(x => x.trim())
+        .filter(Boolean)
+        .slice(0, 50);
+    }
+
+    function buildNsActiveUrl(orderId) {
+      return `https://app.noverstock.eu/orders?filter%5BexternalId%5D=${encodeURIComponent(orderId)}&pagination%5Blimit%5D=100`;
+    }
+
+    function buildNsCancelledUrl(orderId) {
+      return `https://app.noverstock.eu/cancelled-orders?filter%5BexternalId%5D=${encodeURIComponent(orderId)}&pagination%5Blimit%5D=100`;
+    }
+
+    function renderOrderLinks() {
+      const orders = normalizeOrders(ordersInput.value);
+
+      if (!orders.length) {
+        orderLinksList.innerHTML = "";
+        return;
+      }
+
+      orderLinksList.innerHTML = orders.map(orderId => `
+        <div class="order-item">
+          <div class="order-id">${orderId}</div>
+          <div class="order-actions">
+            <a class="link-btn" href="${buildNsActiveUrl(orderId)}" target="_blank" rel="noopener noreferrer">NS ACTIVE ORDERS</a>
+            <a class="link-btn" href="${buildNsCancelledUrl(orderId)}" target="_blank" rel="noopener noreferrer">NS CANCELLED ORDERS</a>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function formatDateTime(ts) {
+      const d = new Date(ts);
+      if (isNaN(d.getTime())) return "";
+      const dd = String(d.getDate()).padStart(2, "0");
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const yyyy = d.getFullYear();
+      const hh = String(d.getHours()).padStart(2, "0");
+      const min = String(d.getMinutes()).padStart(2, "0");
+      return `${dd}.${mm}.${yyyy} ${hh}:${min}`;
+    }
+
+    async function addForumComment() {
+      const text = forumInput.value.trim();
+      if (!text) return;
+
+      const author = activeUserSelect.value;
+
+      try {
+        await push(forumRef, {
+          author,
+          text,
+          createdAt: Date.now()
+        });
+        forumInput.value = "";
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function deleteForumComment(key) {
+      const confirmed = confirm("Да изтрия ли този коментар?");
+      if (!confirmed) return;
+
+      try {
+        await remove(ref(db, `dailyChecklist/forum/${key}`));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderForum(value) {
+      if (!value) {
+        forumList.innerHTML = `<div class="forum-empty">Все още няма коментари.</div>`;
+        return;
+      }
+
+      const items = Object.entries(value)
+        .map(([key, val]) => ({ key, ...val }))
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      forumList.innerHTML = items.map(item => `
+        <div class="forum-item">
+          <div class="forum-item-top">
+            <div>
+              <div class="forum-author">${item.author || "Потребител"}</div>
+              <div class="forum-time">${formatDateTime(item.createdAt)}</div>
+            </div>
+            <button class="delete-comment-btn" data-delete-key="${item.key}" title="Изтрий">✕</button>
+          </div>
+          <div class="forum-text">${escapeHtml(item.text || "")}</div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll("[data-delete-key]").forEach(btn => {
+        btn.addEventListener("click", () => deleteForumComment(btn.dataset.deleteKey));
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    shippingSearch.addEventListener("input", renderShippingTable);
+    zoneFilter.addEventListener("change", renderShippingTable);
+    addTaskBtn.addEventListener("click", addNewTask);
+    newTaskInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addNewTask();
+    });
+    resetTasksBtn.addEventListener("click", resetAllTasks);
+    generateOrdersBtn.addEventListener("click", renderOrderLinks);
+    clearOrdersBtn.addEventListener("click", () => {
+      ordersInput.value = "";
+      orderLinksList.innerHTML = "";
+    });
+    addForumBtn.addEventListener("click", addForumComment);
+
+    document.querySelectorAll(".sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        const key = th.dataset.key;
+        if (shippingSort.key === key) {
+          shippingSort.direction = shippingSort.direction === "asc" ? "desc" : "asc";
+        } else {
+          shippingSort.key = key;
+          shippingSort.direction = "asc";
+        }
+        renderShippingTable();
+      });
+    });
+
     async function bootstrap() {
       renderCalendar();
       renderLinks();
-
-      if (firebaseConfig.databaseURL === "PASTE_YOUR_REALTIME_DATABASE_URL_HERE") {
-        statusNote.textContent = "Добави databaseURL от Firebase Realtime Database в index.html.";
-        return;
-      }
+      renderShippingTable();
 
       onValue(tasksRef, async (snapshot) => {
         const value = snapshot.val();
@@ -716,6 +1438,12 @@
       }, (error) => {
         console.error(error);
         statusNote.textContent = "Проблем със свързването.";
+      });
+
+      onValue(forumRef, (snapshot) => {
+        renderForum(snapshot.val());
+      }, (error) => {
+        console.error(error);
       });
     }
 
