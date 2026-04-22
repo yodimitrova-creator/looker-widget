@@ -2030,21 +2030,23 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
-      console.log("CLICKUP RAW:", view, data);
+      console.log("CLICKUP RAW", view, data);
 
       const candidates = [
-        data.tasks_due_today,
-        data.subtasks,
-        data.tasks_tagged,
-        data.items
+        ["tasks_due_today", data.tasks_due_today],
+        ["subtasks", data.subtasks],
+        ["tasks_tagged", data.tasks_tagged],
+        ["items", data.items]
       ];
 
-      for (const arr of candidates) {
+      for (const [name, arr] of candidates) {
         if (Array.isArray(arr) && arr.length > 0) {
+          console.log("CLICKUP PICKED", view, name, arr);
           return arr;
         }
       }
 
+      console.log("CLICKUP PICKED", view, "EMPTY");
       return [];
     }
 
@@ -2063,7 +2065,8 @@
         item.dueDate ||
         item.due ||
         item.Due ||
-        item.date;
+        item.date ||
+        item.duedate;
 
       const d = parseClickUpDate(rawDue);
       return d ? formatDateTime(d.getTime()) : String(rawDue || "-");
@@ -2141,6 +2144,10 @@
           fetchClickUpView("urgent"),
           fetchClickUpView("nonurgent")
         ]);
+ 
+        console.log("TODAY RAW:", todayRaw);
+        console.log("URGENT RAW:", urgentRaw);
+        console.log("COMMON RAW:", commonRaw);
 
         const today = dedupeClickUpItems(todayRaw);
         const urgent = dedupeClickUpItems(urgentRaw);
@@ -2161,9 +2168,12 @@
             item.dueDate ||
             item.due ||
             item.Due ||
-            item.date;
+            item.date ||
+            item.duedate;
 
           const due = parseClickUpDate(rawDue);
+          console.log("TODAY ITEM:", item.name, "RAW DUE:", rawDue, "PARSED:", due);
+
           if (!due) return true;
 
           return due.getFullYear() === now.getFullYear() &&
