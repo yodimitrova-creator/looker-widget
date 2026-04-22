@@ -2028,9 +2028,23 @@
     async function fetchClickUpView(view) {
       const res = await fetch(`${CLICKUP_WEBAPP_URL}?view=${encodeURIComponent(view)}&t=${Date.now()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
       const data = await res.json();
-      const items = data.subtasks || data.tasks_due_today || data.tasks_tagged || data.items || [];
-      return Array.isArray(items) ? items : [];
+
+      const candidates = [
+        data.subtasks,
+        data.tasks_due_today,
+        data.tasks_tagged,
+        data.items
+      ];
+
+      for (const arr of candidates) {
+        if (Array.isArray(arr) && arr.length > 0) {
+          return arr;
+        }
+      }
+
+      return [];
     }
 
     function dedupeClickUpItems(items) {
