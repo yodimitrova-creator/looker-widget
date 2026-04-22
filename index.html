@@ -1761,17 +1761,6 @@
       `).join("");
     }
 
-      termsResultsBody.innerHTML = results.map(row => `
-        <tr>
-          <td>${escapeHtml(row.term || "")}</td>
-          <td>${escapeHtml(row.status || "")}</td>
-          <td>${escapeHtml(row.translatedTerm || "")}</td>
-          <td>${escapeHtml(row.suggestedTerm || "")}</td>
-          <td>${escapeHtml(row.category || "")}</td>
-        </tr>
-      `).join("");
-    }
-
     async function runTermsCheck() {
       const terms = parseTermsInput(termsInput.value);
 
