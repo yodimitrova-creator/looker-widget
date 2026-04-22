@@ -1046,8 +1046,8 @@
                       <tr>
                         <th>Термин</th>
                         <th>Статус</th>
-                        <th>Превод</th>
-                        <th>Предложение</th>
+                        <th>Бележка</th>
+                        <th>Предложен немски термин</th>
                         <th>Категория</th>
                       </tr>
                     </thead>
@@ -1749,6 +1749,17 @@
         `;
         return;
       }
+
+      termsResultsBody.innerHTML = results.map(row => `
+        <tr>
+          <td>${escapeHtml(row.term || "")}</td>
+          <td>${escapeHtml(row.status || "")}</td>
+          <td>${escapeHtml(row.note || "")}</td>
+          <td>${escapeHtml(row.suggestedGermanTerm || "")}</td>
+          <td>${escapeHtml(row.category || "")}</td>
+        </tr>
+      `).join("");
+    }
 
       termsResultsBody.innerHTML = results.map(row => `
         <tr>
