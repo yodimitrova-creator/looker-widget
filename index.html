@@ -137,6 +137,41 @@
       color:#7b4d85;
     }
 
+    .mid-layout{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .left-stack{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .right-main{
+      flex:1.3;
+    }
+
+    .zero-stop-card{
+      padding:12px;
+    }
+
+    .ops-box{
+      background:#faf7ff;
+      border:1px solid #eee;
+      border-radius:10px;
+      padding:10px;
+      margin-bottom:10px;
+    }
+
+    .ops-box h3{
+      margin:0 0 6px;
+      font-size:14px;
+}
+
+
     .day.today.has-note::after{ color:#fff; }
 
     .image-card{ padding:8px; }
@@ -1013,7 +1048,7 @@
           </div>
 
           <div class="mid-layout">
-            <div class="stack">
+            <div class="left-stack">
               <div class="card orders-card">
                 <h2 class="section-title">NS Order Link Generator</h2>
 
@@ -1028,6 +1063,7 @@
 
                 <div id="orderLinksList" class="order-links-list"></div>
               </div>
+
               <div class="card terms-card">
                 <h2 class="section-title">Проверка на термини</h2>
 
@@ -1046,8 +1082,8 @@
                       <tr>
                         <th>Термин</th>
                         <th>Статус</th>
-                        <th>Бележка</th>
-                        <th>Предложен немски термин</th>
+                        <th>Превод</th>
+                        <th>Предложение</th>
                         <th>Категория</th>
                       </tr>
                     </thead>
@@ -1057,40 +1093,82 @@
 
                 <div class="status-note" id="termsStatusNote">Готово за проверка.</div>
               </div>
+            </div>
 
-              <div class="card shipping-card">
-                <h2 class="section-title">Транспортни цени</h2>
+            <div class="right-main">
+              <div class="card zero-stop-card">
+                <h2 class="section-title">🛑 Спиране на нули / Backup правила ✨</h2>
 
-                <div class="shipping-toolbar">
-                  <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
-                  <select id="zoneFilter" class="table-filter" style="width:auto;">
-                    <option value="">Всички зони</option>
-                    <option value="Domestic">Domestic</option>
-                    <option value="1">Zone 1</option>
-                    <option value="2">Zone 2</option>
-                    <option value="3">Zone 3</option>
-                  </select>
+                <div class="ops-box" style="margin-bottom:10px;">
+                  <h3>🏷️ 1. Тагове</h3>
+                  <p><b>Махаме тагове, коментари, отметки:</b><br>
+                    Tag2, Tag4, Tag5, Tag6, Tag7, Tag9, Tag10, FOS, Follow, Idealo, MUp, NEW, Set
+                  </p>
+                  <p><b>НЕ махаме тагове, коментари, отметки:</b><br>
+                    Tag1, Tag3, Tag8, EX, QS, FP, HF, STOP
+                  </p>
                 </div>
 
-                <div class="table-wrap">
-                  <table class="shipping-table">
-                    <thead>
-                      <tr>
-                        <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
-                        <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
-                        <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
-                        <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
-                        <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
-                        <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
-                      </tr>
-                    </thead>
-                    <tbody id="shippingBody"></tbody>
-                  </table>
+                <div class="ops-box" style="margin-bottom:10px;">
+                  <h3>📦 2. Ако има таг Set</h3>
+                  <ul>
+                    <li>Оправяме цени, ако останал друг активен сет</li>
+                    <li>Оправяме коментари във Форкаст</li>
+                    <li>Махаме тага на сета, който е свършил</li>
+                  </ul>
+                </div>
+
+                <div class="ops-box" style="margin-bottom:10px;">
+                  <h3>🔁 3. Ако има наличност на backup</h3>
+                  <ul>
+                    <li>Сменяме еаните, оправяме доставна цена</li>
+                    <li>Пишем на амазонките: <b>"Спирам EAN ... / Пускам EAN ..."</b></li>
+                  </ul>
+                </div>
+
+                <div class="ops-box">
+                  <h3>📌 Разни правила</h3>
+                  <p><b>При продукт, който оставяме в бекъп пускане на стока:</b></p>
+                  <ol>
+                    <li>Проверяваме дали е навързано във Форкаст, ако не — на Гери</li>
+                    <li>Слагаме коментар в НС: <b>"има на друг еан"</b> и слагаме еана на основния продукт</li>
+                    <li>Слагаме на бекъпа в НС SKU-то на основния продукт</li>
+                  </ol>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+
+          <div class="card shipping-card">
+            <h2 class="section-title">Транспортни цени</h2>
+
+            <div class="shipping-toolbar">
+              <input id="shippingSearch" class="table-search" type="text" placeholder="Търси държава или стойност..." />
+              <select id="zoneFilter" class="table-filter" style="width:auto;">
+                <option value="">Всички зони</option>
+                <option value="Domestic">Domestic</option>
+                <option value="1">Zone 1</option>
+                <option value="2">Zone 2</option>
+                <option value="3">Zone 3</option>
+              </select>
+            </div>
+
+            <div class="table-wrap">
+              <table class="shipping-table">
+                <thead>
+                  <tr>
+                    <th class="sortable" data-key="country">Country <span class="sort-ind" id="ind-country"></span></th>
+                    <th class="sortable" data-key="zone">Zone <span class="sort-ind" id="ind-zone"></span></th>
+                    <th class="sortable" data-key="kg01">0-1kg (€) <span class="sort-ind" id="ind-kg01"></span></th>
+                    <th class="sortable" data-key="kg12">1-2kg (€) <span class="sort-ind" id="ind-kg12"></span></th>
+                    <th class="sortable" data-key="kg23">2-3kg (€) <span class="sort-ind" id="ind-kg23"></span></th>
+                    <th class="sortable" data-key="kg35">3-5kg (€) <span class="sort-ind" id="ind-kg35"></span></th>
+                  </tr>
+                </thead>
+                <tbody id="shippingBody"></tbody>
+              </table>
+            </div>
+          </div>
 
         <div class="card operations-card">
           <div class="ops-header">
