@@ -2139,7 +2139,8 @@
 
     async function loadClickUp(force = false) {
       try {
-        const [todayRaw, urgentRaw, commonRaw] = await Promise.all([
+        const [subtasksRaw, todayRaw, urgentRaw, commonRaw] = await Promise.all([
+          fetchClickUpView("subtasks"),
           fetchClickUpView("board"),
           fetchClickUpView("urgent"),
           fetchClickUpView("nonurgent")
@@ -2150,6 +2151,7 @@
         console.log("COMMON RAW:", commonRaw);
 
         const today = dedupeClickUpItems(todayRaw);
+        const subtasks = dedupeClickUpItems(subtasksRaw);
         const urgent = dedupeClickUpItems(urgentRaw);
         const common = dedupeClickUpItems(commonRaw);
         const combined = dedupeClickUpItems([...today, ...urgent, ...common]);
@@ -2184,6 +2186,7 @@
         const commonFiltered = common.filter(item => !overdue.some(o => String(o.id || o.url || o.name) === String(item.id || item.url || item.name)));
 
         clickupGrid.innerHTML = [
+          renderClickUpSection("Седмични/Месечни проверки", subtasks),
           renderClickUpSection("За днес", todayFiltered),
           renderClickUpSection("Спешни", urgent),
           renderClickUpSection("Общи", commonFiltered),
