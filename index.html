@@ -82,6 +82,11 @@
       color:var(--title);
     }
 
+    .terms-card{
+      padding:12px;
+    }
+
+
     .calendar-grid{
       display:grid;
       grid-template-columns:repeat(7,1fr);
@@ -1023,6 +1028,35 @@
 
                 <div id="orderLinksList" class="order-links-list"></div>
               </div>
+              <div class="card terms-card">
+                <h2 class="section-title">Проверка на термини</h2>
+
+                <div class="orders-toolbar">
+                  <textarea id="termsInput" class="text-area" placeholder="Пейстни термини тук...&#10;Пример: Glanz, Serum, Hauttyp"></textarea>
+                </div>
+
+                <div class="orders-toolbar">
+                  <button id="checkTermsBtn" class="action-btn">🔎 Провери термините</button>
+                  <button id="clearTermsBtn" class="action-btn secondary">🧹 Изчисти</button>
+                </div>
+
+                <div class="table-wrap">
+                  <table class="check-table">
+                    <thead>
+                      <tr>
+                        <th>Термин</th>
+                        <th>Статус</th>
+                        <th>Превод</th>
+                        <th>Предложение</th>
+                        <th>Категория</th>
+                      </tr>
+                    </thead>
+                    <tbody id="termsResultsBody"></tbody>
+                  </table>
+                </div>
+
+                <div class="status-note" id="termsStatusNote">Готово за проверка.</div>
+              </div>
 
               <div class="card shipping-card">
                 <h2 class="section-title">Транспортни цени</h2>
@@ -1220,6 +1254,7 @@
     };
 
     const CLICKUP_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwMSDYadAB1h8FYYidUhG6e5PiBlW6gCh5TcQEctxntvCpFF2ci6Izh2xV4QI9b8b3B/exec";
+    const TERMS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw9-8Ch7BMWSTDsQOGdzTLTezpCVoymE5LBfXkE7kvfcgJpcdxfzbohsH8d2i7i-1yf/exec";
     const CLICKUP_REFRESH_MS = 5 * 60 * 1000;
     const ALLOWED_EMAILS = [
       "yo.dimitrova@polarmoda.bg"
@@ -1340,6 +1375,11 @@
     const linkUrlInput = document.getElementById("linkUrlInput");
     const addLinkBtn = document.getElementById("addLinkBtn");
     const clickupGrid = document.getElementById("clickupGrid");
+    const termsInput = document.getElementById("termsInput");
+    const checkTermsBtn = document.getElementById("checkTermsBtn");
+    const clearTermsBtn = document.getElementById("clearTermsBtn");
+    const termsResultsBody = document.getElementById("termsResultsBody");
+    const termsStatusNote = document.getElementById("termsStatusNote");
 
     let shippingSort = { key: "country", direction: "asc" };
     let currentWheelRotation = 0;
@@ -1691,6 +1731,72 @@
       `;
     }
 
+
+    function parseTermsInput(raw) {
+      return String(raw || "")
+        .replace(/\n/g, ",")
+        .split(",")
+        .map(t => t.trim())
+        .filter(Boolean);
+    }
+
+    function renderTermsResults(results) {
+      if (!results.length) {
+        termsResultsBody.innerHTML = `
+          <tr>
+            <td colspan="5">Няма резултати.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      termsResultsBody.innerHTML = results.map(row => `
+        <tr>
+          <td>${escapeHtml(row.term || "")}</td>
+          <td>${escapeHtml(row.status || "")}</td>
+          <td>${escapeHtml(row.translatedTerm || "")}</td>
+          <td>${escapeHtml(row.suggestedTerm || "")}</td>
+          <td>${escapeHtml(row.category || "")}</td>
+        </tr>
+      `).join("");
+    }
+
+    async function runTermsCheck() {
+      const terms = parseTermsInput(termsInput.value);
+
+      if (!terms.length) {
+        termsResultsBody.innerHTML = "";
+        termsStatusNote.textContent = "Няма въведени термини.";
+        return;
+      }
+
+      termsStatusNote.textContent = "Проверка...";
+
+      try {
+        const response = await fetch(TERMS_WEBAPP_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify({ terms })
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+          termsStatusNote.textContent = "Грешка: " + (data.error || "Unknown error");
+          return;
+        }
+
+        renderTermsResults(data.results || []);
+        termsStatusNote.textContent = `Проверени термини: ${(data.results || []).length}`;
+      } catch (err) {
+        console.error(err);
+        termsStatusNote.textContent = "Грешка при връзката с Apps Script.";
+      }
+    }
+
+
     function formatDateTime(ts) {
       const d = new Date(ts);
       if (isNaN(d.getTime())) return "";
@@ -1773,6 +1879,9 @@
         btn.addEventListener("click", () => togglePinComment(btn.dataset.pinKey, btn.dataset.pinState === "1"));
       });
     }
+
+
+
 
     const wheelSize = wheelCanvas.width;
     const wheelCx = wheelSize / 2;
@@ -2083,6 +2192,17 @@
     addForumBtn.addEventListener("click", addForumComment);
     spinWheelBtn.addEventListener("click", spinWheel);
     reloadClickUpBtn.addEventListener("click", () => loadClickUp(true));
+
+
+    checkTermsBtn.addEventListener("click", runTermsCheck);
+
+    clearTermsBtn.addEventListener("click", () => {
+      termsInput.value = "";
+      termsResultsBody.innerHTML = "";
+      termsStatusNote.textContent = "Изчистено.";
+    });
+
+
 
     document.querySelectorAll(".sortable").forEach(th => {
       th.addEventListener("click", () => {
