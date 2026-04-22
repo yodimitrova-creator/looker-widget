@@ -2030,10 +2030,11 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
+      console.log("CLICKUP RAW:", view, data);
 
       const candidates = [
-        data.subtasks,
         data.tasks_due_today,
+        data.subtasks,
         data.tasks_tagged,
         data.items
       ];
@@ -2057,8 +2058,15 @@
     }
 
     function formatDueText(item) {
-      const d = parseClickUpDate(item.due_date || item.dueDate || item.due);
-      return d ? formatDateTime(d.getTime()) : String(item.due_date || item.dueDate || item.due || "-");
+      const rawDue =
+        item.due_date ||
+        item.dueDate ||
+        item.due ||
+        item.Due ||
+        item.date;
+
+      const d = parseClickUpDate(rawDue);
+      return d ? formatDateTime(d.getTime()) : String(rawDue || "-");
     }
 
     function getClickUpUrl(item) {
@@ -2148,9 +2156,19 @@
         });
 
         const todayFiltered = today.filter(item => {
-          const due = parseClickUpDate(item.due_date || item.dueDate || item.due);
+          const rawDue =
+            item.due_date ||
+            item.dueDate ||
+            item.due ||
+            item.Due ||
+            item.date;
+
+          const due = parseClickUpDate(rawDue);
           if (!due) return true;
-          return due.getFullYear() === now.getFullYear() && due.getMonth() === now.getMonth() && due.getDate() === now.getDate();
+
+          return due.getFullYear() === now.getFullYear() &&
+                due.getMonth() === now.getMonth() &&
+                due.getDate() === now.getDate();
         });
 
         const commonFiltered = common.filter(item => !overdue.some(o => String(o.id || o.url || o.name) === String(item.id || item.url || item.name)));
